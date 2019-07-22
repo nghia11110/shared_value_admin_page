@@ -1,14 +1,13 @@
 const knex = require('../../db');
 
 async function getAllHotels(condition) {
-  let { page, perPage } = condition;
-  const hotels = await knex('hotels')
+  const { page, perPage } = condition;
+  const data = await knex('hotels')
     .whereNull('deleted_at')
-    .offset(page*perPage - perPage)
-    .limit(perPage)
     .orderBy('id', 'esc')
-    .select('id','name', 'key_name');
-  return hotels;
+    .select('id','name', 'key_name')
+    .paginate(perPage, page);
+  return data;
 }
 
 async function updateHotelInfo({ name, username: email, id }) {

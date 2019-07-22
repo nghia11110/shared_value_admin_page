@@ -3,16 +3,17 @@ const { getAllHotels } = require('../repository');
 const { FETCH_INFO_ERROR_MESSAGE } = require('../constants');
 
 async function loadPageHotels(req, res) {
-  let perPage = 20;
-  let page = req.params.page || 1;
-  let condition = { page, perPage};
-  let hotels = {};
+  const perPage = 10;
+  const page = req.params.page || 1;
+  const condition = { page, perPage};
+  let data = {};
   try {
-    hotels = await getAllHotels(condition);
-  } catch (getUserError) {
+    data = await getAllHotels(condition);
+  } catch (error) {
+    console.log(error);
     req.session.messages = { databaseError: FETCH_INFO_ERROR_MESSAGE };
   }
-  res.render('pages/hotels', { hotels, 'current': page, 'pages': Math.ceil(hotels.length / perPage) });
+  res.render('pages/hotels', { 'hotels': data.data, 'current': data.current_page, 'pages': Math.ceil(data.total / data.per_page) });
 }
 
 module.exports = loadPageHotels;
