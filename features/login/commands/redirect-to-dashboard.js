@@ -20,7 +20,7 @@ async function redirectToDashboard(req, res) {
 
   debug('login:redirectToDashboard');
   req.session.userInfo = { ...userInfo };
-  return res.redirect('/');
+  return res.redirect('/profile');
 }
 
 module.exports = redirectToDashboard;
