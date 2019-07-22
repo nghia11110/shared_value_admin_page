@@ -1,32 +1,27 @@
 <body>
   <!-- Sidenav -->
-  <% include ../partials/sidebar %>
+  <% include ../../partials/sidebar %>
   <!-- Main content -->
   <div class="main-content">
     <!-- Top navbar -->
-    <% include ../partials/navbar %>
+    <% include ../../partials/navbar %>
     <!-- Header -->
-    <% include ../partials/profile/header %>
+    <% include ../../partials/header %>
     <!-- Page content -->
     <div class="container-fluid mt--7">
       <div class="row">
-        <div class="col-xl-4 order-xl-2 mb-5 mb-xl-0">
-        </div>
         <div class="col-xl-8 order-xl-1">
           <div class="card bg-secondary shadow">
             <div class="card-header bg-white border-0">
               <div class="row align-items-center">
                 <div class="col-8">
-                  <h3 class="mb-0">My account</h3>
-                </div>
-                <div class="col-4 text-right">
-                  <a href="#!" class="btn btn-sm btn-primary">Settings</a>
+                  <h3 class="mb-0">ホテル追加</h3>
                 </div>
               </div>
             </div>
             <div class="card-body">
-              <form action="/update-profile-info" method="POST">
-                <h6 class="heading-small text-muted mb-4">User information</h6>
+              <form action="/hotel/add" method="POST">
+                <h6 class="heading-small text-muted mb-4">ホテル情報</h6>
                 <div class="pl-lg-4">
                   <% if (locals.messages && messages.success) { %>
                     <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -47,8 +42,8 @@
                   <div class="row">
                     <div class="col-lg-12">
                       <div class="form-group">
-                        <label class="form-control-label" for="input-name">Name</label>
-                        <input type="text" id="input-name" class="form-control form-control-alternative" name="name" placeholder="Name" value="<%= locals.userInfo && locals.userInfo.name %>">
+                        <label class="form-control-label" for="input-name">ホテル名</label>
+                        <input type="text" id="input-name" class="form-control form-control-alternative" name="hotelname" placeholder="サクラクロス" value="">
                         <% if (locals.messages && messages.errors && messages.errors.name) { %>
                           <strong class="invalid-feedback" style="display: block"><%= messages.errors.name %></strong>
                         <% } %>
@@ -56,15 +51,15 @@
                     </div>
                     <div class="col-lg-12">
                       <div class="form-group">
-                        <label class="form-control-label" for="input-email">Email address</label>
-                        <input type="email" id="input-email" class="form-control form-control-alternative" name="username" placeholder="jesse@example.com" value="<%= locals.userInfo && locals.userInfo.email %>">
+                        <label class="form-control-label" for="input-email">Key Name</label>
+                        <input type="text" id="input-email" class="form-control form-control-alternative" name="keyname" placeholder="sakuracross" value="">
                         <% if (locals.messages && messages.errors && messages.errors.username) { %>
                           <strong class="invalid-feedback" style="display: block"><%= messages.errors.username %></strong>
                         <% } %>
                       </div>
                     </div>
                     <div class="col-lg-12 text-center">
-                      <button class="btn btn-success mt-4 mb-4">Save</button>
+                      <button class="btn btn-success mt-4 mb-4">追加</button>
                     </div>
                   </div>
                 </div>
@@ -74,10 +69,10 @@
         </div>
       </div>
       <!-- Footer -->
-      <% include ../partials/footer %>
+      <% include ../../partials/footer %>
     </div>
   </div>
 
   <!-- Include scripts -->
-  <% include ../partials/scripts %>
+  <% include ../../partials/scripts %>
 </body>
