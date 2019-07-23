@@ -8,6 +8,7 @@ const mountLogoutRoutes = require('../features/logout/routes');
 const mountResetPasswordRoutes = require('../features/reset-password/routes');
 const mountProfileRoutes = require('../features/profile/routes');
 const mountHotelRoutes = require('../features/hotel/routes');
+const mountSiteRoutes = require('../features/site/routes');
 
 function isAuthenticated(req, res, next) {
   if (req.user && req.isAuthenticated()) {
@@ -40,5 +41,6 @@ mountLogoutRoutes(router, [isAuthenticated]);
 mountResetPasswordRoutes(router);
 mountProfileRoutes(router, [isAuthenticated]);
 mountHotelRoutes(router, [isAuthenticated]);
+mountSiteRoutes(router, [isAuthenticated]);
 
 module.exports = router;

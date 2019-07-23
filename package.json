@@ -6,7 +6,7 @@
     "pm2": "pm2",
     "gulp": "gulp",
     "start": "nodemon ./bin/www",
-    "start:staging": "pm2 start",
+    "start:pm2": "pm2 start",
     "dev": "concurrently \"pm2 start\" \"gulp\"",
     "monitor": "pm2 monit",
     "reload-env": "pm2 reload --update-env ecosystem.config.js",

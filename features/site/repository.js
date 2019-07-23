@@ -1,53 +1,55 @@
 const knex = require('../../db');
 
-async function getAllHotels(condition) {
+async function getAllSites(condition) {
   const { page, perPage } = condition;
-  const data = await knex('hotels')
+  const data = await knex('sites')
     .whereNull('deleted_at')
     .orderBy('updated_at', 'desc')
-    .select('id','name', 'key_name')
+    .select('id','name', 'key_name', 'url')
     .paginate(perPage, page);
   return data;
 }
 
-async function createHotel({ hotelname, keyname }) {
-  const [hotel] = await knex('hotels')
+async function createSite({ sitename, keyname , url}) {
+  const [site] = await knex('sites')
     .insert({
-      name: hotelname,
+      name: sitename,
       key_name: keyname,
+      url,
       created_at: new Date(),
       updated_at: new Date(),
     })
     .returning(['id','name', 'key_name']);
-  return hotel;
+  return site;
 }
 
-async function updateHotel({ id, hotelname: name, keyname: key_name }) {
-  const [hotel] = await knex('hotels')
+async function updateSite({ id, sitename: name, keyname: key_name, url }) {
+  const [site] = await knex('sites')
     .where({ id })
     .update({
       name,
       key_name,
+      url,
       updated_at: new Date(),
     })
     .returning(['id', 'name', 'key_name']);
-  return hotel;
+  return site;
 }
 
-async function deleteHotel({ id }) {
-  const [hotel] = await knex('hotels')
+async function deleteSite({ id }) {
+  const [site] = await knex('sites')
     .where({ id })
     // .del()
     .update({
       deleted_at: new Date(),
     })
     .returning(['id']);
-  return hotel;
+  return site;
 }
 
 module.exports = {
-  getAllHotels,
-  createHotel,
-  updateHotel,
-  deleteHotel
+  getAllSites,
+  createSite,
+  updateSite,
+  deleteSite
 };
