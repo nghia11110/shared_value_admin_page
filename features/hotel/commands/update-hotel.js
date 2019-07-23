@@ -1,11 +1,11 @@
-const { updateHotel: updateHotelInfo } = require('../repository');
+const { updateHotel: updateHotelRepo } = require('../repository');
 const { UPDATE_INFO_SUCCESS_MESSAGE, UPDATE_INFO_ERROR_MESSAGE } = require('../constants');
 
 async function updateHotel(req, res) {
   let hotel = {};
   const profileSuccessMessage = UPDATE_INFO_SUCCESS_MESSAGE;
   try {
-    hotel = await updateHotelInfo({ ...req.body });
+    hotel = await updateHotelRepo({ ...req.body });
   } catch (error) {
     console.log(error);
     hotel = error;

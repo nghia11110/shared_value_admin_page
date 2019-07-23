@@ -13,7 +13,7 @@ async function loadPageHotels(req, res) {
     console.log(error);
     req.session.messages = { databaseError: FETCH_INFO_ERROR_MESSAGE };
   }
-  res.render('pages/hotels', { 'hotels': data.data, 'current': data.current_page, 'pages': Math.ceil(data.total / data.per_page) });
+  res.render('pages/hotels', { 'hotels': data.data, 'current': data.current_page, 'pages': Math.ceil(data.total / data.per_page), 'per_page': data.per_page });
 }
 
 module.exports = loadPageHotels;

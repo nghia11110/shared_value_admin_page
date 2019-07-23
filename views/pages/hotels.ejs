@@ -28,15 +28,20 @@
               <table class="table align-items-center table-flush">
                 <thead class="thead-light">
                   <tr>
-                    <th scope="col">ID</th>
+                    <th scope="col">No</th>
+                    <th scope="col">ホテルID</th>
                     <th scope="col">ホテル名</th>
                     <th scope="col">Key Name</th>
                     <th scope="col"></th>
                   </tr>
                 </thead>
                 <tbody>
+                  <% No = per_page * (current - 1) + 1; %>
                   <% hotels.forEach(hotel => { %>
                     <tr>
+                    <td>
+                      <%= No++ %>
+                    </td>
                     <td>
                       <%= hotel.id %>
                     </td>
