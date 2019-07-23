@@ -1,27 +1,25 @@
-const { updateUserInfo } = require('../repository');
+const { updateHotel: updateHotelInfo } = require('../repository');
 const { UPDATE_INFO_SUCCESS_MESSAGE, UPDATE_INFO_ERROR_MESSAGE } = require('../constants');
 
 async function updateHotel(req, res) {
-  let user = {};
-  const {
-    user: { id },
-  } = req;
+  let hotel = {};
   const profileSuccessMessage = UPDATE_INFO_SUCCESS_MESSAGE;
   try {
-    user = await updateUserInfo({ ...req.body, id });
+    hotel = await updateHotelInfo({ ...req.body });
   } catch (error) {
-    user = error;
+    console.log(error);
+    hotel = error;
   }
 
-  if (user.email) {
+  if (hotel.id) {
     req.session.messages = { success: profileSuccessMessage };
-    req.session.userInfo = { ...user };
-    res.redirect('/profile');
+    res.redirect('/hotels');
+    return;
   }
 
   const databaseError = UPDATE_INFO_ERROR_MESSAGE;
   req.session.messages = { errors: { databaseError } };
-  res.redirect('/profile');
+  res.redirect('/hotel/edit');
 }
 
 module.exports = updateHotel;

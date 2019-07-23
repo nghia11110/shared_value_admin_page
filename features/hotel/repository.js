@@ -10,18 +10,6 @@ async function getAllHotels(condition) {
   return data;
 }
 
-async function updateHotelInfo({ name, username: email, id }) {
-  const [user] = await knex('users')
-    .where({ id })
-    .update({
-      name,
-      email,
-      updated_at: new Date(),
-    })
-    .returning(['email', 'name']);
-  return user;
-}
-
 async function createHotel({ hotelname, keyname }) {
   const [hotel] = await knex('hotels')
     .insert({
@@ -34,8 +22,29 @@ async function createHotel({ hotelname, keyname }) {
   return hotel;
 }
 
+async function updateHotel({ id, hotelname: name, keyname: key_name }) {
+  const [hotel] = await knex('hotels')
+    .where({ id })
+    .update({
+      name,
+      key_name,
+      updated_at: new Date(),
+    })
+    .returning(['id', 'name', 'key_name']);
+  return hotel;
+}
+
+async function deleteHotel({ id }) {
+  const [hotel] = await knex('hotels')
+    .where({ id })
+    .del()
+    .returning(['id']);
+  return hotel;
+}
+
 module.exports = {
   getAllHotels,
-  updateHotelInfo,
-  createHotel
+  createHotel,
+  updateHotel,
+  deleteHotel
 };

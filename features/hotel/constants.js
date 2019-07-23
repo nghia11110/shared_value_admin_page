@@ -7,12 +7,12 @@ const NAME_MAX = 60;
 // 3: ERROR
 // 4: final constant name: NAME_MIN_ERROR
 
-const NAME_MIN_ERROR = `Name length must be at least ${NAME_MIN} characters long`;
-const NAME_MAX_ERROR = `Name length must be less than or equal to ${NAME_MAX} characters long`;
+const NAME_MIN_ERROR = `String length must be at least ${NAME_MIN} characters long`;
+const NAME_MAX_ERROR = `String length must be less than or equal to ${NAME_MAX} characters long`;
 const USERNAME_EMAIL_ERROR = 'Email must be a valid email address';
-const UPDATE_INFO_SUCCESS_MESSAGE = 'Profile successfully updated.';
-const UPDATE_INFO_ERROR_MESSAGE = 'Could not save your account information';
-const FETCH_INFO_ERROR_MESSAGE = 'Could not fetch hotels information';
+const UPDATE_INFO_SUCCESS_MESSAGE = 'Successfully updated.';
+const UPDATE_INFO_ERROR_MESSAGE = 'Could not save your information';
+const FETCH_INFO_ERROR_MESSAGE = 'Could not fetch information';
 
 module.exports = {
   NAME_MIN,
