@@ -7,6 +7,7 @@ const path = require('path');
 const expressLayouts = require('express-ejs-layouts');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
+const querystring = require('querystring');
 const RedisStore = require('connect-redis')(session);
 
 const initAuthMiddleware = require('./features/login/init-auth-middleware');
@@ -29,6 +30,8 @@ const redisStore = new RedisStore(redisStoreConfig);
 
 const staticFolder = process.env.NODE_ENV === 'development' ? 'public' : 'dist';
 const app = express();
+
+app.locals.querystring = querystring;
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

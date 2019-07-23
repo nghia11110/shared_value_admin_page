@@ -4,7 +4,7 @@ async function getAllHotels(condition) {
   const { page, perPage } = condition;
   const data = await knex('hotels')
     .whereNull('deleted_at')
-    .orderBy('created_at', 'desc')
+    .orderBy('updated_at', 'desc')
     .select('id','name', 'key_name')
     .paginate(perPage, page);
   return data;
