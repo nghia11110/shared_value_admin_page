@@ -1,0 +1,156 @@
+<body>
+  <% pageLink = 'crawl-settings' %>
+  <!-- Sidenav -->
+  <% include ../partials/sidebar %>
+  <!-- Main content -->
+  <div class="main-content">
+    <!-- Top navbar -->
+    <% include ../partials/navbar %>
+    <!-- Header -->
+    <% include ../partials/header %>
+    <!-- Page content -->
+    <div class="container-fluid mt--7">
+      <!-- Table -->
+      <div class="row">
+        <div class="col">
+          <div class="card shadow">
+            <div class="card-header bg-white border-0">
+              <div class="row align-items-center">
+                <div class="col-8">
+                  <h3 class="mb-0">クロール条件一覧</h3>
+                </div>
+                <div class="col-4 text-right">
+                  <a href="/crawl-settings/add" class="btn btn-sm btn-primary">クロール条件追加</a>
+                </div>
+              </div>
+            </div>
+            <div class="table-responsive">
+              <table class="table align-items-center table-flush">
+                <thead class="thead-light">
+                  <tr>
+                    <th scope="col">No</th>
+                    <th class="text-center" scope="col">ホテル</th>
+                    <th class="text-center" scope="col">サイト</th>
+                    <th class="text-center" scope="col">URL</th>
+                    <th class="text-center" scope="col">クロール条件</th>
+                    <th scope="col"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% No = per_page * (current - 1) + 1; %>
+                  <% crawlSettings.forEach(crawlSetting => { %>
+                    <tr>
+                    <td>
+                      <%= No++ %>
+                    </td>
+                    <td>
+                      <%= crawlSetting.hotel_name %>
+                    </td>
+                    <td>
+                      <%= crawlSetting.site_name %>
+                    </td>
+                    <td>
+                      <%= crawlSetting.base_url %>
+                    </td>
+                    <td>
+                      <% if(crawlSetting.crawl_conditions[0].data) { %>
+                        <div class="table-responsive">
+                          <table class="align-items-center table-flush">
+                            <thead class="thead-light">
+                              <tr>
+                                <th class="text-center" scope="col">条件ID</th>
+                                <th class="text-center" scope="col">crawl_target_days</th>
+                                <th class="text-center" scope="col">stay_days</th>
+                                <th class="text-center" scope="col">stay_adults</th>
+                                <th class="text-center" scope="col">stay_children</th>
+                                <th class="text-center" scope="col">stay_rooms</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <% crawlSetting.crawl_conditions.forEach(crawlCondition => { %>
+                                <% if (crawlCondition && crawlCondition.data) { %>
+                                  <td>
+                                    <%= crawlCondition.data.id %>
+                                  </td>
+                                  <td>
+                                    <%= crawlCondition.data.crawl_target_days %>
+                                  </td>
+                                  <td>
+                                    <%= crawlCondition.data.stay_days %>
+                                  </td>
+                                  <td>
+                                    <%= crawlCondition.data.stay_adults %>
+                                  </td>
+                                  <td>
+                                    <%= crawlCondition.data.stay_children %>
+                                  </td>
+                                  <td>
+                                    <%= crawlCondition.data.stay_rooms %>
+                                  </td>
+                                <% } %>
+                              </tr>
+                              <% }) %> 
+                            </tbody>
+                          </table>
+                        </div>
+                      <% } %>
+                    </td>
+                    <td class="text-right">
+                      <div class="dropdown">
+                        <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          <i class="fas fa-ellipsis-v"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+                          <a class="dropdown-item" href="/crawl-settings/edit/?<%= querystring.stringify(crawlSetting) %>">Edit</a>
+                          <a class="dropdown-item" href="/crawl-settings/delete/?<%= querystring.stringify(crawlSetting) %>">Delete</a>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                  <% }) %> 
+                </tbody>
+              </table>
+            </div>
+            <div class="card-footer py-4">
+              <nav aria-label="...">
+                <% if (pages > 0) { %>
+                    <ul class="pagination justify-content-end mb-0">
+                        <% if (current == 1) { %>
+                            <li class="page-item disabled"><a class="page-link">First</a></li>
+                        <% } else { %>
+                            <li class="page-item"><a class="page-link" href="/<%=pageLink%>/1">First</a></li>
+                        <% } %>
+                        <% var i = (Number(current) > 5 ? Number(current) - 4 : 1) %>
+                        <% if (i !== 1) { %>
+                            <li class="page-item disabled"><a>...</a></li>
+                        <% } %>
+                        <% for (; i <= (Number(current) + 4) && i <= pages; i++) { %>
+                            <% if (i == current) { %>
+                                <li class="page-item active"><a class="page-link"><%= i %></a></li>
+                            <% } else { %>
+                                <li class="page-item"><a class="page-link" href="/<%=pageLink%>/<%= i %>"><%= i %></a></li>
+                            <% } %>
+                            <% if (i == Number(current) + 4 && i < pages) { %>
+                                <li class="page-item disabled"><a>...</a></li>
+                            <% } %>
+                        <% } %>
+                        <% if (current == pages) { %>
+                            <li class="page-item disabled"><a class="page-link">Last</a></li>
+                        <% } else { %>
+                            <li class="page-item"><a class="page-link" href="/<%=pageLink%>/<%= pages %>">Last</a></li>
+                        <% } %>
+                    </ul>
+                <% } %>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Footer -->
+      <% include ../partials/footer %>
+    </div>
+  </div>
+
+  <!-- Include scripts -->
+  <% include ../partials/scripts %>
+</body>
