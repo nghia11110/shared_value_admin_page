@@ -12,7 +12,7 @@ const schema = Joi.object().keys({
   username: Joi.string().email({ minDomainAtoms: 2 }),
 });
 
-async function validateRegisterSitePayload(req, res, next) {
+async function validateRegisterCrawlSettingPayload(req, res, next) {
   let payloadValidation;
   try {
     payloadValidation = await Joi.validate(req.body, schema, { abortEarly: false });
@@ -41,4 +41,4 @@ async function validateRegisterSitePayload(req, res, next) {
   return next();
 }
 
-module.exports = validateRegisterSitePayload;
+module.exports = validateRegisterCrawlSettingPayload;

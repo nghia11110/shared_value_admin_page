@@ -26,17 +26,34 @@ async function getAllCrawlSettings(condition) {
   return data;
 }
 
-async function createCrawlSetting({ sitename, keyname , url}) {
-  const [site] = await knex('sites')
-    .insert({
-      name: sitename,
-      key_name: keyname,
-      url,
-      created_at: new Date(),
-      updated_at: new Date(),
-    })
-    .returning(['id','name', 'key_name']);
-  return site;
+async function createCrawlSetting(object) {
+  const promise = [];
+  const {
+    hotel_id,
+    site_id,
+    url,
+    'crawl-condition-checkbox[]': crawlConditionCheckbox,
+    'crawl-condition-crawl-target-days[]': crawlTargetDays,
+  } = object;
+  const listSettingAdultRoom = JSON.parse(object['list-setting-adult-room']);
+  // const insertCrawlHotel = knex('crawl_hotels')
+  //   .insert({
+  //     hotel_id,
+  //     site_id,
+  //     base_url: url,
+  //     created_at: new Date(),
+  //     updated_at: new Date(),
+  //   })
+  //   .returning(['id']);
+  // promise.push(insertCrawlHotel);
+  const listSettingAdultRoomArray = [];
+  for (el in listSettingAdultRoom) {
+    listSettingAdultRoomArray.push(listSettingAdultRoom[el]);
+  }
+  for (i = 0; i < crawlTargetDays.length; i++) {
+    
+  }
+  return true;
 }
 
 async function updateCrawlSetting({ id, sitename: name, keyname: key_name, url }) {

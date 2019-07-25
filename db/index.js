@@ -11,7 +11,7 @@ KnexQueryBuilder.prototype.paginate = function (per_page, current_page) {
   const clone = this.clone()
 
   return Promise.all([
-      this.offset(offset).limit(per_page),
+      per_page > 0 ? this.offset(offset).limit(per_page) : this.offset(offset),
       knex.count('*').from(clone.as('t1')),
     ])
     .then(([rows, total]) => {

@@ -1,24 +1,24 @@
 const { wrap } = require('async-middleware');
 
-// const requestBodyValidation = require('./commands/verify-request-body');
-// const updateSite = require('./commands/update-site');
-// const createSite = require('./commands/create-site');
-// const deleteSite = require('./commands/delete-site');
+const validateRegisterCrawlSettingPayload = require('./commands/verify-request-body');
+// const updateCrawlSetting = require('./commands/update-crawl-setting');
+const createCrawlSetting = require('./commands/create-crawl-setting');
+// const deleteCrawlSetting = require('./commands/delete-crawl-setting');
 
 const loadPage = require('./commands/load-page');
-// const loadPageAddSite = require('./commands/load-page-add-site');
-// const loadPageEditSite = require('./commands/load-page-edit-site');
-// const loadPageDeleteSite = require('./commands/load-page-delete-site');
+const loadPageAddCrawlSetting = require('./commands/load-page-add-crawl-setting');
+// const loadPageEditCrawlSetting = require('./commands/load-page-edit-crawl-setting');
+// const loadPageDeleteCrawlSetting = require('./commands/load-page-delete-crawl-setting');
 
 module.exports = (router, middlewares = []) => {
   router.get('/crawl-settings/:page*?', middlewares.map(middleware => wrap(middleware)), wrap(loadPage));
-  // router.get('/site/add', wrap(loadPageAddSite));
-  // router.get('/site/edit', wrap(loadPageEditSite));
-  // router.get('/site/delete', wrap(loadPageDeleteSite));
+  router.get('/crawl-setting/add', wrap(loadPageAddCrawlSetting));
+  // router.get('/crawl-setting/edit', wrap(loadPageEditCrawlSetting));
+  // router.get('/crawl-setting/delete', wrap(loadPageDeleteCrawlSetting));
 
-  // router.post('/site/edit', /*wrap(requestBodyValidation), */wrap(updateSite));
-  // router.post('/site/add', /*wrap(requestBodyValidation), */wrap(createSite));
-  // router.post('/site/delete', /*wrap(requestBodyValidation), */wrap(deleteSite));
+  // router.post('/crawl-setting/edit', /*wrap(requestBodyValidation), */wrap(updateCrawlSetting));
+  router.post('/crawl-setting/add', /*wrap(validateRegisterCrawlSettingPayload), */wrap(createCrawlSetting));
+  // router.post('/crawl-setting/delete', /*wrap(requestBodyValidation), */wrap(deleteCrawlSetting));
 
   return router;
 };
