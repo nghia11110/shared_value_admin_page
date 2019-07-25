@@ -17,7 +17,7 @@ module.exports = (router, middlewares = []) => {
   // router.get('/crawl-setting/delete', wrap(loadPageDeleteCrawlSetting));
 
   // router.post('/crawl-setting/edit', /*wrap(requestBodyValidation), */wrap(updateCrawlSetting));
-  router.post('/crawl-setting/add', /*wrap(validateRegisterCrawlSettingPayload), */wrap(createCrawlSetting));
+  router.post('/crawl-setting/add', wrap(validateRegisterCrawlSettingPayload), wrap(createCrawlSetting));
   // router.post('/crawl-setting/delete', /*wrap(requestBodyValidation), */wrap(deleteCrawlSetting));
 
   return router;

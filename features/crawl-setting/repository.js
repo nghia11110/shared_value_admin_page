@@ -28,32 +28,63 @@ async function getAllCrawlSettings(condition) {
 
 async function createCrawlSetting(object) {
   const promise = [];
+  const listSettingAdultRoomArray = [];
   const {
     hotel_id,
     site_id,
     url,
     'crawl-condition-checkbox[]': crawlConditionCheckbox,
-    'crawl-condition-crawl-target-days[]': crawlTargetDays,
   } = object;
   const listSettingAdultRoom = JSON.parse(object['list-setting-adult-room']);
-  // const insertCrawlHotel = knex('crawl_hotels')
-  //   .insert({
-  //     hotel_id,
-  //     site_id,
-  //     base_url: url,
-  //     created_at: new Date(),
-  //     updated_at: new Date(),
-  //   })
-  //   .returning(['id']);
-  // promise.push(insertCrawlHotel);
-  const listSettingAdultRoomArray = [];
+  let crawlTargetDays = [];
+  if (!Array.isArray(object['crawl-condition-crawl-target-days[]'])) {
+    crawlTargetDays.push(object['crawl-condition-crawl-target-days[]']);
+  } else {
+    crawlTargetDays = object['crawl-condition-crawl-target-days[]'];
+  }
+
+ const [updateCrawlHotel] = await knex('crawl_hotels')
+    .where({ hotel_id, site_id })
+    .update({
+      updated_at: new Date(),
+    })
+    .returning(['id']);
+
+  if (!updateCrawlHotel) {
+    const insertCrawlHotel = knex('crawl_hotels')
+      .insert({
+        hotel_id,
+        site_id,
+        base_url: url,
+        created_at: new Date(),
+        updated_at: new Date(),
+      })
+      .returning(['id']);
+    promise.push(insertCrawlHotel);
+  }
+
   for (el in listSettingAdultRoom) {
     listSettingAdultRoomArray.push(listSettingAdultRoom[el]);
   }
   for (i = 0; i < crawlTargetDays.length; i++) {
-    
+    promise.push(
+      knex('crawl_conditions')
+      .insert({
+        hotel_id,
+        site_id,
+        crawl_target_days: parseInt(crawlTargetDays[i]),
+        stay_adults: listSettingAdultRoomArray[i].stay_adults,
+        stay_rooms: listSettingAdultRoomArray[i].stay_rooms,
+        stay_days: listSettingAdultRoomArray[i].stay_days,
+        stay_children: listSettingAdultRoomArray[i].stay_children,
+        created_at: new Date(),
+        updated_at: new Date(),
+      })
+      .returning(['id'])
+    );
   }
-  return true;
+
+  return Promise.all(promise);
 }
 
 async function updateCrawlSetting({ id, sitename: name, keyname: key_name, url }) {

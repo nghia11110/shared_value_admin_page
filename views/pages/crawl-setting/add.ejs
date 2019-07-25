@@ -72,6 +72,9 @@
                     <div class="col-lg-12">
                       <div class="form-group">
                         <label class="form-control-label" for="input-url">クロール条件</label>
+                        <% if (locals.messages && locals.messages.errors && locals.messages.errors.crawl_condition) { %>
+                          <strong class="invalid-feedback" style="display: block"><%= locals.messages.errors.crawl_condition %></strong>
+                        <% } %>
                         <div class="table-responsive">
                           <table class="align-items-center table-flush">
                             <thead class="thead-light">
@@ -115,9 +118,6 @@
                             </tbody>
                           </table>
                         </div>
-                        <% if (locals.messages && locals.messages.errors && locals.messages.errors.crawl_condition) { %>
-                          <strong class="invalid-feedback" style="display: block"><%= locals.messages.errors.crawl_condition %></strong>
-                        <% } %>
                       </div>
                     </div>
                     <div class="col-lg-12">

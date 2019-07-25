@@ -9,7 +9,7 @@ var Custom = (function() {
           'stay_adults': parseInt(arr[0]) + 1,
           'stay_rooms': parseInt(arr[1]) + 1,
           'stay_days': 1,
-          'stay_childrens': 0
+          'stay_children': 0
         };
         listSettingAdultRoom[id] = object;
         $('#input-list-setting-adult-room').val(JSON.stringify(listSettingAdultRoom));
