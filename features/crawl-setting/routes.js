@@ -7,13 +7,13 @@ const createCrawlSetting = require('./commands/create-crawl-setting');
 
 const loadPage = require('./commands/load-page');
 const loadPageAddCrawlSetting = require('./commands/load-page-add-crawl-setting');
-// const loadPageEditCrawlSetting = require('./commands/load-page-edit-crawl-setting');
+const loadPageEditCrawlSetting = require('./commands/load-page-edit-crawl-setting');
 // const loadPageDeleteCrawlSetting = require('./commands/load-page-delete-crawl-setting');
 
 module.exports = (router, middlewares = []) => {
   router.get('/crawl-settings/:page*?', middlewares.map(middleware => wrap(middleware)), wrap(loadPage));
   router.get('/crawl-setting/add', wrap(loadPageAddCrawlSetting));
-  // router.get('/crawl-setting/edit', wrap(loadPageEditCrawlSetting));
+  router.get('/crawl-setting/edit', wrap(loadPageEditCrawlSetting));
   // router.get('/crawl-setting/delete', wrap(loadPageDeleteCrawlSetting));
 
   // router.post('/crawl-setting/edit', /*wrap(requestBodyValidation), */wrap(updateCrawlSetting));

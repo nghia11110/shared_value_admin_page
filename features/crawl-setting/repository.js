@@ -14,14 +14,17 @@ async function getAllCrawlSettings(condition) {
       'crawl_hotels.base_url',
       'hotels.name as hotel_name',
       'sites.name as site_name',
+      'crawl_hotels.updated_at',
       knex.raw("array_agg(json_build_object('data',crawl_conditions.*)) as crawl_conditions"))
     .groupBy('crawl_hotels.hotel_id',
       'crawl_hotels.site_id',
       'crawl_hotels.base_url',
       'hotels.name',
-      'sites.name')
+      'sites.name',
+      'crawl_hotels.updated_at',)
     .whereNull('crawl_hotels.deleted_at')
     .whereNull('crawl_conditions.deleted_at')
+    .orderBy('crawl_hotels.updated_at', 'desc')
     .paginate(perPage, page);
   return data;
 }
