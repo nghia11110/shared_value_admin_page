@@ -10,30 +10,30 @@
     <!-- Page content -->
     <div class="container-fluid mt--7">
       <div class="row">
-        <div class="col-xl-8 order-xl-1">
+        <div class="col-xl-12 order-xl-1">
           <div class="card bg-secondary shadow">
             <div class="card-header bg-white border-0">
               <div class="row align-items-center">
                 <div class="col-8">
-                  <h3 class="mb-0">サイト編集</h3>
+                  <h3 class="mb-0">クロール条件編集</h3>
                 </div>
               </div>
             </div>
             <div class="card-body">
-              <form action="/site/edit" method="POST">
-                <h6 class="heading-small text-muted mb-4">サイト情報</h6>
+              <form action="/crawl-setting/add" method="POST" id="add-crawl-setting">
+                <h6 class="heading-small text-muted mb-4">クロール条件情報</h6>
                 <div class="pl-lg-4">
-                  <% if (locals.messages && messages.success) { %>
+                  <% if (locals.messages && locals.messages.success) { %>
                     <div class="alert alert-success alert-dismissible fade show" role="alert">
-                      <%= messages.success %>
+                      <%= locals.messages.success %>
                       <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">×</span>
                       </button>
                     </div>
                   <% } %>
-                  <% if (locals.messages && messages.errors && messages.errors.databaseError) { %>
+                  <% if (locals.messages && locals.messages.errors && locals.messages.errors.databaseError) { %>
                     <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                      <%= messages.errors %>
+                      <%= locals.messages.errors.databaseError %>
                       <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">×</span>
                       </button>
@@ -42,38 +42,87 @@
                   <div class="row">
                     <div class="col-lg-12">
                       <div class="form-group">
-                        <label class="form-control-label" for="input-name">サイト名</label>
-                        <input type="text" id="input-name" class="form-control form-control-alternative" name="sitename" placeholder="サクラクロス" value="<%= data.name %>">
-                        <% if (locals.messages && messages.errors && messages.errors.name) { %>
-                          <strong class="invalid-feedback" style="display: block"><%= messages.errors.name %></strong>
-                        <% } %>
+                        <label class="form-control-label" for="input-name">ホテル</label>
+                        <select class="custom-select" name="hotel_id" form="add-crawl-setting" disabled="">
+                          <option value=""><%= data.hotel_id %>. <%= data.hotel_name %></option>
+                        </select>
                       </div>
                     </div>
                     <div class="col-lg-12">
                       <div class="form-group">
-                        <label class="form-control-label" for="input-email">Key Name</label>
-                        <input type="text" id="input-email" class="form-control form-control-alternative" name="keyname" placeholder="sakuracross" value="<%= data.key_name %>">
-                        <% if (locals.messages && messages.errors && messages.errors.username) { %>
-                          <strong class="invalid-feedback" style="display: block"><%= messages.errors.username %></strong>
-                        <% } %>
+                        <label class="form-control-label" for="input-email">サイト</label>
+                        <select class="custom-select" name="site_id" form="add-crawl-setting" disabled="">
+                          <option value=""><%= data.site_id %>. <%= data.site_name %></option>
+                        </select>
                       </div>
                     </div>
                     <div class="col-lg-12">
                       <div class="form-group">
                         <label class="form-control-label" for="input-url">URL</label>
-                        <input type="text" id="input-url" class="form-control form-control-alternative" name="url" placeholder="sakuracross" value="<%= data.url %>">
-                        <% if (locals.messages && messages.errors && messages.errors.username) { %>
-                          <strong class="invalid-feedback" style="display: block"><%= messages.errors.username %></strong>
+                        <input type="url" id="input-url" class="form-control form-control-alternative" name="url" placeholder="例：https://travel.rakuten.co.jp/hotelinfo/plan/xxx" value="<%= data.base_url %>">
+                        <% if (locals.messages && locals.messages.errors && locals.messages.errors.url) { %>
+                          <strong class="invalid-feedback" style="display: block"><%= locals.messages.errors.url %></strong>
                         <% } %>
                       </div>
                     </div>
                     <div class="col-lg-12">
+                      <div class="form-group">
+                        <label class="form-control-label" for="input-url">クロール条件</label>
+                        <% if (locals.messages && locals.messages.errors && locals.messages.errors.crawl_condition) { %>
+                          <strong class="invalid-feedback" style="display: block"><%= locals.messages.errors.crawl_condition %></strong>
+                        <% } %>
+                        <div class="table-responsive">
+                          <table class="align-items-center table-flush">
+                            <thead class="thead-light">
+                              <tr>
+                                <th scope="col" style="width: 5%"></th>
+                                <% for (noRoom1 = 0 ; noRoom1 < maxRoom; noRoom1++) { %>
+                                  <th class="text-center" scope="col"><%= noRoom1 + 1 %>部屋</th>
+                                <% } %>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <% for (noAdult = 0 ; noAdult < maxAdult; noAdult++) { %>
+                                <tr>
+                                  <th class="text-center">
+                                    <%= noAdult + 1 %>人
+                                  </th>
+                                  <% for (noRoom = 0 ; noRoom < maxRoom; noRoom++) { %>
+                                    <% if (crawlConditonMatrix[noAdult][noRoom]) { %>
+                                      <td class="">
+                                        <div class="custom-control custom-control-alternative custom-checkbox">
+                                          <input class="crawl-condition-checkbox custom-control-input" id="crawl-condition-checkbox<%=noAdult%><%=noRoom%>" type="checkbox" name="crawl-condition-checkbox[]">
+                                          <label class="custom-control-label" for="crawl-condition-checkbox<%=noAdult%><%=noRoom%>">
+                                            <span class="text-muted">チェック</span>
+                                          </label>
+                                        </div>
+                                        <div class="" style="margin-top: 10px">
+                                          <input type="number" id="crawl-condition-crawl-target-days<%=noAdult%><%=noRoom%>" class="form-control form-control-alternative" name="crawl-condition-crawl-target-days[]" placeholder="crawl-target-days" value="" disabled="">
+                                        </div>
+                                      </td>
+                                    <% } else { %>
+                                      <td>
+                                        <input type="checkbox" id="" class="invisible">
+                                        <div class="" style="margin-top: 10px">
+                                          <input type="text" id="" class="form-control form-control-alternative" name="" placeholder="" value="" disabled>
+                                        </div>
+                                      </td>
+                                    <% } %>
+                                  <% } %>
+                                </tr>
+                              <% } %>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-12">
                       <div class="">
-                        <input type="text" id="input-id" class="invisible" name="id" value="<%= data.id %>">
+                        <input type="text" id="input-list-setting-adult-room" class="invisible" name="list-setting-adult-room" value="">
                       </div>
                     </div>
                     <div class="col-lg-12 text-center">
-                      <button class="btn btn-success mt-4 mb-4">編集</button>
+                      <button class="btn btn-success mt-4 mb-4">追加</button>
                     </div>
                   </div>
                 </div>

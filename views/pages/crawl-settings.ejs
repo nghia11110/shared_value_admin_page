@@ -105,6 +105,7 @@
                           <i class="fas fa-ellipsis-v"></i>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+                          <% crawlSetting.crawl_conditions = JSON.stringify(crawlSetting.crawl_conditions) %>
                           <a class="dropdown-item" href="/crawl-setting/edit/?<%= querystring.stringify(crawlSetting) %>">Edit</a>
                           <a class="dropdown-item" href="/crawl-setting/delete/?<%= querystring.stringify(crawlSetting) %>">Delete</a>
                         </div>

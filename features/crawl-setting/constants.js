@@ -1,5 +1,15 @@
 const NAME_MIN = 3;
 const NAME_MAX = 60;
+const maxAdult = 6;
+const maxRoom = 6;
+const crawlConditonMatrix = [
+  [1,0,0,0,0,0],
+  [1,0,0,0,0,0],
+  [1,0,0,0,0,0],
+  [1,1,0,0,0,0],
+  [1,1,0,0,0,0],
+  [1,1,1,0,0,0]
+];
 
 // Errors constant name is created from:
 // 1: uppercase input name + _ + (eg: NAME)
@@ -24,5 +34,8 @@ module.exports = {
   UPDATE_INFO_SUCCESS_MESSAGE,
   UPDATE_INFO_ERROR_MESSAGE,
   FETCH_INFO_ERROR_MESSAGE,
-  NO_INPUT_CRAWL_TARGET_DAYS_ERROR
+  NO_INPUT_CRAWL_TARGET_DAYS_ERROR,
+  maxAdult,
+  maxRoom,
+  crawlConditonMatrix
 };
