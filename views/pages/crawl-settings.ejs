@@ -62,7 +62,7 @@
                           <table class="align-items-center table-flush">
                             <thead class="thead-light">
                               <tr>
-                                <th class="text-center" scope="col">条件ID</th>
+                                <!-- <th class="text-center" scope="col">条件ID</th> -->
                                 <th class="text-center" scope="col">crawl_target_days</th>
                                 <th class="text-center" scope="col">stay_days</th>
                                 <th class="text-center" scope="col">stay_adults</th>
@@ -73,9 +73,9 @@
                             <tbody>
                               <% crawlSetting.crawl_conditions.forEach(crawlCondition => { %>
                                 <% if (crawlCondition && crawlCondition.data) { %>
-                                  <td>
-                                    <%= crawlCondition.data.id %>
-                                  </td>
+                                  <!-- <td>
+                                    <%= // crawlCondition.data.id %>
+                                  </td -->
                                   <td>
                                     <%= crawlCondition.data.crawl_target_days %>
                                   </td>
