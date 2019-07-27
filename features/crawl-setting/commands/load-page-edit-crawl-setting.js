@@ -1,10 +1,13 @@
-const { maxAdult, maxRoom, crawlConditonMatrix } = require('../constants');
+const { maxAdult, maxRoom, crawlConditonMatrix, stateCrawlConditionMatrix } = require('../constants');
 
 async function loadPageEditSite(req, res) {
   const data = req.query;
   data.crawl_conditions = JSON.parse(data.crawl_conditions);
-  // console.log(data.crawl_conditions[0].data);
-  res.render('pages/crawl-setting/edit', { 'data': req.query, maxAdult, maxRoom, crawlConditonMatrix });
+  data.crawl_conditions.forEach(crawlCondition => {
+    stateCrawlConditionMatrix[crawlCondition.data.stay_adults - 1][crawlCondition.data.stay_rooms - 1] = crawlCondition.data.crawl_target_days;
+  });
+  // console.log(stateCrawlConditionMatrix);
+  res.render('pages/crawl-setting/edit', { data, maxAdult, maxRoom, crawlConditonMatrix, stateCrawlConditionMatrix });
 }
 
 module.exports = loadPageEditSite;

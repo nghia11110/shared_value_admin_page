@@ -20,7 +20,7 @@
               </div>
             </div>
             <div class="card-body">
-              <form action="/crawl-setting/add" method="POST" id="add-crawl-setting">
+              <form action="/crawl-setting/edit" method="POST" id="edit-crawl-setting">
                 <h6 class="heading-small text-muted mb-4">クロール条件情報</h6>
                 <div class="pl-lg-4">
                   <% if (locals.messages && locals.messages.success) { %>
@@ -43,16 +43,16 @@
                     <div class="col-lg-12">
                       <div class="form-group">
                         <label class="form-control-label" for="input-name">ホテル</label>
-                        <select class="custom-select" name="hotel_id" form="add-crawl-setting" disabled="">
-                          <option value=""><%= data.hotel_id %>. <%= data.hotel_name %></option>
+                        <select class="custom-select" name="hotel_id" form="edit-crawl-setting" readonly="readonly">
+                          <option value="<%= data.hotel_id %>"><%= data.hotel_id %>. <%= data.hotel_name %></option>
                         </select>
                       </div>
                     </div>
                     <div class="col-lg-12">
                       <div class="form-group">
                         <label class="form-control-label" for="input-email">サイト</label>
-                        <select class="custom-select" name="site_id" form="add-crawl-setting" disabled="">
-                          <option value=""><%= data.site_id %>. <%= data.site_name %></option>
+                        <select class="custom-select" name="site_id" form="edit-crawl-setting" readonly="readonly">
+                          <option value="<%= data.site_id %>"><%= data.site_id %>. <%= data.site_name %></option>
                         </select>
                       </div>
                     </div>
@@ -91,19 +91,27 @@
                                     <% if (crawlConditonMatrix[noAdult][noRoom]) { %>
                                       <td class="">
                                         <div class="custom-control custom-control-alternative custom-checkbox">
-                                          <input class="crawl-condition-checkbox custom-control-input" id="crawl-condition-checkbox<%=noAdult%><%=noRoom%>" type="checkbox" name="crawl-condition-checkbox[]">
-                                          <label class="custom-control-label" for="crawl-condition-checkbox<%=noAdult%><%=noRoom%>">
+                                          <% if (stateCrawlConditionMatrix[noAdult][noRoom] > 0) { %>
+                                            <input class="crawl-condition-checkbox custom-control-input" id="crawl-condition-checkbox<%=noAdult%>-<%=noRoom%>" type="checkbox" name="crawl-condition-checkbox[]" checked>
+                                          <% } else { %>
+                                            <input class="crawl-condition-checkbox custom-control-input" id="crawl-condition-checkbox<%=noAdult%>-<%=noRoom%>" type="checkbox" name="crawl-condition-checkbox[]">
+                                          <% } %>
+                                          <label class="custom-control-label" for="crawl-condition-checkbox<%=noAdult%>-<%=noRoom%>">
                                             <span class="text-muted">チェック</span>
                                           </label>
                                         </div>
-                                        <div class="" style="margin-top: 10px">
-                                          <input type="number" id="crawl-condition-crawl-target-days<%=noAdult%><%=noRoom%>" class="form-control form-control-alternative" name="crawl-condition-crawl-target-days[]" placeholder="crawl-target-days" value="" disabled="">
+                                        <div id="list-crawl-condition-crawl-target-days" style="margin-top: 5px">
+                                          <% if (stateCrawlConditionMatrix[noAdult][noRoom] > 0) { %>
+                                            <input type="number" min="1" id="crawl-condition-crawl-target-days<%=noAdult%>-<%=noRoom%>" class="form-control form-control-alternative" name="crawl-condition-crawl-target-days[]" placeholder="crawl-target-days" value="<%= stateCrawlConditionMatrix[noAdult][noRoom]%>" required>
+                                          <% } else { %>
+                                            <input type="number" min="1" id="crawl-condition-crawl-target-days<%=noAdult%>-<%=noRoom%>" class="form-control form-control-alternative" name="crawl-condition-crawl-target-days[]" placeholder="crawl-target-days" value="" required disabled>
+                                          <% } %>
                                         </div>
                                       </td>
                                     <% } else { %>
                                       <td>
                                         <input type="checkbox" id="" class="invisible">
-                                        <div class="" style="margin-top: 10px">
+                                        <div class="" style="margin-top: 5px">
                                           <input type="text" id="" class="form-control form-control-alternative" name="" placeholder="" value="" disabled>
                                         </div>
                                       </td>
@@ -122,7 +130,7 @@
                       </div>
                     </div>
                     <div class="col-lg-12 text-center">
-                      <button class="btn btn-success mt-4 mb-4">追加</button>
+                      <button class="btn btn-success mt-4 mb-4">編集</button>
                     </div>
                   </div>
                 </div>

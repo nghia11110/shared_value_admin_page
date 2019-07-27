@@ -1,7 +1,7 @@
 const { wrap } = require('async-middleware');
 
 const validateRegisterCrawlSettingPayload = require('./commands/verify-request-body');
-// const updateCrawlSetting = require('./commands/update-crawl-setting');
+const updateCrawlSetting = require('./commands/update-crawl-setting');
 const createCrawlSetting = require('./commands/create-crawl-setting');
 // const deleteCrawlSetting = require('./commands/delete-crawl-setting');
 
@@ -16,7 +16,7 @@ module.exports = (router, middlewares = []) => {
   router.get('/crawl-setting/edit', wrap(loadPageEditCrawlSetting));
   // router.get('/crawl-setting/delete', wrap(loadPageDeleteCrawlSetting));
 
-  // router.post('/crawl-setting/edit', /*wrap(requestBodyValidation), */wrap(updateCrawlSetting));
+  router.post('/crawl-setting/edit', wrap(validateRegisterCrawlSettingPayload)/*, wrap(updateCrawlSetting)*/);
   router.post('/crawl-setting/add', wrap(validateRegisterCrawlSettingPayload), wrap(createCrawlSetting));
   // router.post('/crawl-setting/delete', /*wrap(requestBodyValidation), */wrap(deleteCrawlSetting));
 

@@ -95,19 +95,19 @@
                                     <% if (crawlConditonMatrix[noAdult][noRoom]) { %>
                                       <td class="">
                                         <div class="custom-control custom-control-alternative custom-checkbox">
-                                          <input class="crawl-condition-checkbox custom-control-input" id="crawl-condition-checkbox<%=noAdult%><%=noRoom%>" type="checkbox" name="crawl-condition-checkbox[]">
-                                          <label class="custom-control-label" for="crawl-condition-checkbox<%=noAdult%><%=noRoom%>">
+                                          <input class="crawl-condition-checkbox custom-control-input" id="crawl-condition-checkbox<%=noAdult%>-<%=noRoom%>" type="checkbox" name="crawl-condition-checkbox[]">
+                                          <label class="custom-control-label" for="crawl-condition-checkbox<%=noAdult%>-<%=noRoom%>">
                                             <span class="text-muted">チェック</span>
                                           </label>
                                         </div>
-                                        <div class="" style="margin-top: 10px">
-                                          <input type="number" id="crawl-condition-crawl-target-days<%=noAdult%><%=noRoom%>" class="form-control form-control-alternative" name="crawl-condition-crawl-target-days[]" placeholder="crawl-target-days" value="" disabled="">
+                                        <div class="" style="margin-top: 5px">
+                                          <input type="number" min="1" id="crawl-condition-crawl-target-days<%=noAdult%>-<%=noRoom%>" class="form-control form-control-alternative" name="crawl-condition-crawl-target-days[]" placeholder="crawl-target-days" value="" required disabled>
                                         </div>
                                       </td>
                                     <% } else { %>  
                                       <td>
                                         <input type="checkbox" id="" class="invisible">
-                                        <div class="" style="margin-top: 10px">
+                                        <div class="" style="margin-top: 5px">
                                           <input type="text" id="" class="form-control form-control-alternative" name="" placeholder="" value="" disabled>
                                         </div>
                                       </td> 

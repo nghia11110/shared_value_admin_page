@@ -10,6 +10,14 @@ const crawlConditonMatrix = [
   [1,1,0,0,0,0],
   [1,1,1,0,0,0]
 ];
+const stateCrawlConditionMatrix = [
+  [0,0,0,0,0,0],
+  [0,0,0,0,0,0],
+  [0,0,0,0,0,0],
+  [0,0,0,0,0,0],
+  [0,0,0,0,0,0],
+  [0,0,0,0,0,0]
+];
 
 // Errors constant name is created from:
 // 1: uppercase input name + _ + (eg: NAME)
@@ -37,5 +45,6 @@ module.exports = {
   NO_INPUT_CRAWL_TARGET_DAYS_ERROR,
   maxAdult,
   maxRoom,
-  crawlConditonMatrix
+  crawlConditonMatrix,
+  stateCrawlConditionMatrix
 };
