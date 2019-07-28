@@ -49,6 +49,7 @@ async function createCrawlSetting(object) {
 
  const [updateCrawlHotel] = await knex('crawl_hotels')
     .where({ hotel_id, site_id })
+    .whereNull('deleted_at')
     .update({
       base_url: url,
       updated_at: new Date(),
@@ -165,15 +166,34 @@ async function updateCrawlSetting(object) {
   });
 }
 
-async function deleteCrawlSetting({ id }) {
-  const [site] = await knex('sites')
-    .where({ id })
-    // .del()
-    .update({
-      deleted_at: new Date(),
-    })
-    .returning(['id']);
-  return site;
+async function deleteCrawlSetting({ hotel_id, site_id }) {
+  return knex.transaction(function(trx) {
+    knex('crawl_conditions')
+      .transacting(trx)
+      .where({ hotel_id, site_id })
+      .whereNull('deleted_at')
+      .update({
+        deleted_at: new Date(),
+      })
+      .then(function() {
+        return knex('crawl_hotels')
+          .transacting(trx)
+          .where({ hotel_id, site_id })
+          .whereNull('deleted_at')
+          .update({
+            deleted_at: new Date(),
+          })
+      })
+      .then(trx.commit)
+      .catch(trx.rollback);
+  })
+  .then(function(res) {
+    console.log('Transaction complete.');
+    return res;
+  })
+  .catch(function(err) {
+    console.error(err);
+  });
 }
 
 module.exports = {
