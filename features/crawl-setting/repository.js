@@ -3,9 +3,11 @@ const knex = require('../../db');
 async function getAllCrawlSettings(condition) {
   const { page, perPage } = condition;
   const data = await knex('crawl_hotels')
-    .leftJoin('crawl_conditions', function() {
-      this.on('crawl_hotels.hotel_id', '=', 'crawl_conditions.hotel_id')
-        .andOn ('crawl_hotels.site_id', '=', 'crawl_conditions.site_id')
+    .leftJoin(knex('crawl_conditions')
+      .whereNull('crawl_conditions.deleted_at')
+      .as('cc'), function() {
+      this.on('crawl_hotels.hotel_id', '=', 'cc.hotel_id')
+        .andOn ('crawl_hotels.site_id', '=', 'cc.site_id')
     })
     .join('hotels', 'crawl_hotels.hotel_id', '=', 'hotels.id')
     .join('sites', 'crawl_hotels.site_id', '=', 'sites.id')
@@ -15,7 +17,7 @@ async function getAllCrawlSettings(condition) {
       'hotels.name as hotel_name',
       'sites.name as site_name',
       'crawl_hotels.updated_at',
-      knex.raw("array_agg(json_build_object('data',crawl_conditions.*)) as crawl_conditions"))
+      knex.raw("array_agg(json_build_object('data',cc.*)) as crawl_conditions"))
     .groupBy('crawl_hotels.hotel_id',
       'crawl_hotels.site_id',
       'crawl_hotels.base_url',
@@ -23,7 +25,6 @@ async function getAllCrawlSettings(condition) {
       'sites.name',
       'crawl_hotels.updated_at',)
     .whereNull('crawl_hotels.deleted_at')
-    .whereNull('crawl_conditions.deleted_at')
     .orderBy('crawl_hotels.updated_at', 'desc')
     .paginate(perPage, page);
   return data;
@@ -49,6 +50,7 @@ async function createCrawlSetting(object) {
  const [updateCrawlHotel] = await knex('crawl_hotels')
     .where({ hotel_id, site_id })
     .update({
+      base_url: url,
       updated_at: new Date(),
     })
     .returning(['id']);
@@ -161,38 +163,6 @@ async function updateCrawlSetting(object) {
   .catch(function(err) {
     console.error(err);
   });
-
-  // promise.push(knex('crawl_hotels')
-  //   .where({ hotel_id, site_id })
-  //   .update({
-  //     base_url: url,
-  //     updated_at: new Date(),
-  //   })
-  //   .returning(['id'])
-  // );
-
-  // for (el in listSettingAdultRoom) {
-  //   listSettingAdultRoomArray.push(listSettingAdultRoom[el]);
-  // }
-  // for (i = 0; i < crawlTargetDays.length; i++) {
-  //   promise.push(
-  //     knex('crawl_conditions')
-  //     .insert({
-  //       hotel_id,
-  //       site_id,
-  //       crawl_target_days: parseInt(crawlTargetDays[i]),
-  //       stay_adults: listSettingAdultRoomArray[i].stay_adults,
-  //       stay_rooms: listSettingAdultRoomArray[i].stay_rooms,
-  //       stay_days: listSettingAdultRoomArray[i].stay_days,
-  //       stay_children: listSettingAdultRoomArray[i].stay_children,
-  //       created_at: new Date(),
-  //       updated_at: new Date(),
-  //     })
-  //     .returning(['id'])
-  //   );
-  // }
-
-  // return Promise.all(promise);
 }
 
 async function deleteCrawlSetting({ id }) {

@@ -6,11 +6,9 @@ async function updateCrawlSetting(req, res) {
   try {
     crawlSetting = await updateCrawlSettingRepo(req.body);
     // console.log(crawlSetting);
-    if (crawlSetting[0][0].id) {
-      req.session.messages = { 'success': UPDATE_INFO_SUCCESS_MESSAGE };
-      res.redirect('/crawl-settings');
-      return;
-    }
+    req.session.messages = { 'success': UPDATE_INFO_SUCCESS_MESSAGE };
+    res.redirect('/crawl-settings');
+    return;
   } catch (error) {
     console.log(error);
     crawlSetting = error;
