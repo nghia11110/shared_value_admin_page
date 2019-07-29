@@ -1,6 +1,5 @@
 const Knex = require('knex');
 const KnexQueryBuilder = require('knex/lib/query/builder');
-const pg = require('pg');
 const knexConfig = require('./knexfile');
 
 const knex = Knex(knexConfig[process.env.NODE_ENV]);
