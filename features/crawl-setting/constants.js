@@ -31,7 +31,7 @@ const USERNAME_EMAIL_ERROR = 'Email must be a valid email address';
 const UPDATE_INFO_SUCCESS_MESSAGE = 'Successfully updated.';
 const UPDATE_INFO_ERROR_MESSAGE = 'Could not save your information';
 const FETCH_INFO_ERROR_MESSAGE = 'Could not fetch information';
-const NO_INPUT_CRAWL_TARGET_DAYS_ERROR = 'チェックを押して、crawl-target-daysに入力してください！';
+const NO_INPUT_CRAWL_TARGET_DAYS_ERROR = 'チェックして、crawl-target-daysに入力してください！';
 
 module.exports = {
   NAME_MIN,
