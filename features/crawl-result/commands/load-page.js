@@ -1,8 +1,13 @@
 const { getAllCrawlResults } = require('../repository');
+const { getAllHotelWithHotelRoomTypes } = require('../../hotel/repository');
+const { getAllSites } = require('../../site/repository');
 
 const { FETCH_INFO_ERROR_MESSAGE } = require('../constants');
 
 async function loadPageCrawlResults(req, res) {
+  const hotelData = await getAllHotelWithHotelRoomTypes({});
+  const siteData = await getAllSites({});
+  console.log(req.query);
   const searchHotelName = req.query.search_hotel_name ? req.query.search_hotel_name : '';
   const condition = { searchHotelName };
   let data = {};
@@ -12,7 +17,7 @@ async function loadPageCrawlResults(req, res) {
     console.log(error);
     req.session.messages = { errors: { databaseError: FETCH_INFO_ERROR_MESSAGE  } }; 
   }
-  res.render('pages/crawl-results', { 'crawlResults': data.data, 'current': data.current_page, 'pages': Math.ceil(data.total / data.per_page), 'per_page': data.per_page, searchHotelName });
+  res.render('pages/crawl-results', { 'crawlResults': data.data, hotelData: hotelData.data, siteData: siteData.data });
 }
 
 module.exports = loadPageCrawlResults;

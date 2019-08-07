@@ -12,110 +12,109 @@
       <div class="row">
         <div class="col-xl-12 mb-5 mb-xl-0">
           <div class="card bg-gradient-default shadow">
-            <div class="card-header bg-transparent">
-              <h1 class="text-white mb-0">Sales value</h1>
-              <div class="row">
-                <div class="col">
-                  <div class="form-group">
-                    <label class="form-control-label text-white mb-0" for="input-name">実行日</label>
-                    <div class="input-group input-group-alternative">
-                      <div class="input-group-prepend">
-                        <span class="input-group-text"><i class="ni ni-calendar-grid-58"></i></span>
-                      </div>
-
-                      <input class="form-control datepicker" placeholder="Select date" type="text" value="">
-                    </div>
-                  </div>
-                </div>
-                <div class="col">
-                  <div class="row">
-                    <div class="col-lg-12">
-                      <div class="form-group">
-                        <label class="form-control-label text-white mb-0" for="input-name">ホテル名</label>
-                        <select class="custom-select" name="hotel_id" form="add-crawl-setting">
-                          <% hotelData = []; %>
-                          <% hotelData.forEach(hotel => { %>
-                            <option value="<%= hotel.id %>"><%= hotel.id %>. <%= hotel.name %></option>
-                          <% }) %>
-                        </select>
+            <form action="/crawl-results" method="GET" id="get-crawl-result">
+              <div class="card-header bg-transparent">
+                <h1 class="text-white mb-0">Sales value</h1>
+                <div class="row">
+                  <div class="col">
+                    <div class="form-group">
+                      <label class="form-control-label text-white mb-0" for="input-name">実行日</label>
+                      <div class="input-group input-group-alternative">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text"><i class="ni ni-calendar-grid-58"></i></span>
+                        </div>
+                        <input class="form-control datepicker" name="implement_date" placeholder="Select date" type="text" value="">
                       </div>
                     </div>
                   </div>
-                  <div class="row">
-                    <div class="col-lg-12">
-                      <div class="form-group">
-                        <label class="form-control-label text-white mb-0" for="input-name">部屋タイプ</label>
-                        <select class="custom-select" name="hotel_id" form="add-crawl-setting">
-                          <% hotelData = []; %>
-                          <% hotelData.forEach(hotel => { %>
-                            <option value="<%= hotel.id %>"><%= hotel.id %>. <%= hotel.name %></option>
-                          <% }) %>
-                        </select>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-lg-12">
-                      <div class="form-group">
-                        <label class="form-control-label text-white mb-0" for="input-name">サイト</label>
-                        <select class="custom-select" name="hotel_id" form="add-crawl-setting">
-                          <% hotelData = []; %>
-                          <% hotelData.forEach(hotel => { %>
-                            <option value="<%= hotel.id %>"><%= hotel.id %>. <%= hotel.name %></option>
-                          <% }) %>
-                        </select>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col">
-                  <div class="form-group">
-                    <label class="form-control-label text-white mb-0" for="input-name">Range (From ~ To)</label>
+                  <div class="col">
                     <div class="row">
-                      <div class="input-daterange datepicker row align-items-center">
-                        <div class="col">
-                          <div class="form-group">
-                            <div class="input-group input-group-alternative">
-                              <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="ni ni-calendar-grid-58"></i></span>
-                              </div>
-                              <input class="form-control" placeholder="Start date" type="text" value="">
-                            </div>
-                          </div>
+                      <div class="col-lg-12">
+                        <div class="form-group">
+                          <label class="form-control-label text-white mb-0" for="input-name">ホテル名</label>
+                          <select class="custom-select crawl-results-hotel-id" name="hotel_id" form="get-crawl-result">
+                            <% hotelData.forEach(hotel => { %>
+                              <option value="<%= hotel.id %>"><%= hotel.id %>. <%= hotel.name %></option>
+                            <% }) %>
+                          </select>
                         </div>
-                        <div class="col">
-                          <div class="form-group">
-                            <div class="input-group input-group-alternative">
-                              <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="ni ni-calendar-grid-58"></i></span>
-                              </div>
-                              <input class="form-control" placeholder="End date" type="text" value="">
-                            </div>
-                          </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-lg-12">
+                        <div class="form-group">
+                          <label class="form-control-label text-white mb-0" for="input-name">部屋タイプ</label>
+                          <select class="custom-select crawl-results-hotel-room-type-id" name="hotel_room_type_id" form="get-crawl-result">
+                            <% hotelData.forEach(hotel => { %>
+                              <% hotel.hotel_room_types.forEach(hotelRoomType => { %>
+                                <option class="hotel_id-<%= hotelRoomType.data.hotel_id %>" value="<%= hotelRoomType.data.id %>" style="display:none;"><%= hotelRoomType.data.id %>. <%= hotelRoomType.data.name %></option>
+                              <% }) %>
+                            <% }) %>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-lg-12">
+                        <div class="form-group">
+                          <label class="form-control-label text-white mb-0" for="input-name">サイト</label>
+                          <select class="custom-select" name="site_id" form="get-crawl-result">
+                            <% siteData.forEach(hotel => { %>
+                              <option value="<%= hotel.id %>"><%= hotel.id %>. <%= hotel.name %></option>
+                            <% }) %>
+                          </select>
                         </div>
                       </div>
                     </div>
                   </div>
-                </div>
-                
-                <div class="col">
-                  <ul class="nav nav-pills justify-content-end">
-                    <li class="nav-item mr-2 mr-md-0" data-toggle="chart" data-target="#chart-sales" data-update='' data-prefix="¥" data-suffix="k">
-
-                      <!-- <a href="#" class="nav-link py-2 px-3 active" data-toggle="tab">
-                        <span class="d-none d-md-block">Month</span>
-                        <span class="d-md-none">M</span>
-                      </a> -->
-                    </li>
-                  </ul>
+                  <div class="col">
+                    <div class="form-group">
+                      <label class="form-control-label text-white mb-0" for="input-name">Range (From ~ To)</label>
+                      <div class="row">
+                        <div class="input-daterange datepicker row align-items-center">
+                          <div class="col">
+                            <div class="form-group">
+                              <div class="input-group input-group-alternative">
+                                <div class="input-group-prepend">
+                                  <span class="input-group-text"><i class="ni ni-calendar-grid-58"></i></span>
+                                </div>
+                                <input class="form-control" name="start_date" placeholder="Start date" type="text" value="">
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col">
+                            <div class="form-group">
+                              <div class="input-group input-group-alternative">
+                                <div class="input-group-prepend">
+                                  <span class="input-group-text"><i class="ni ni-calendar-grid-58"></i></span>
+                                </div>
+                                <input class="form-control" name="end_date" placeholder="End date" type="text" value="">
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-lg-12 text-center">
+                          <button class="btn btn-primary mt-4 mb-4">検索</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col">
+                    <ul class="nav nav-pills justify-content-end">
+                      <li class="nav-item mr-2 mr-md-0" data-toggle="chart" data-target="#chart-sales" data-update='' data-prefix="¥" data-suffix="k">
+                      </li>
+                    </ul>
+                  </div>
                 </div>
               </div>
-            </div>
+            </form>
             <div class="card-body">
               <!-- Chart -->
               <div class="chart">
                 <!-- Chart wrapper -->
-                <canvas id="chart-sales" class="chart-canvas" data-init='{"data":{"datasets":[{"data":[50, 20, 10, 30, 15, 40, 20, 60, 90]}],"labels":[1,2,3,4,5,6,7,8,9]}}'></canvas>
+                <canvas id="chart-sales" class="chart-canvas" data-init='{"data":{"datasets":[{"data":[50, 20, 10, 30, 15, 40, 20, 60, 200]}],"labels":[1,2,3,4,5,6,7,8,9]}}'></canvas>
               </div>
             </div>
           </div>
