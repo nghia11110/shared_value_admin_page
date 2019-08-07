@@ -3,9 +3,8 @@ var Custom = (function() {
   $('.' + 'hotel_id-' + $('select.crawl-results-hotel-id').val()).show( "fast" );
   $('select.crawl-results-hotel-id').change(function() {
     $('select.crawl-results-hotel-room-type-id option').hide();
-    var $this = $(this);
-    $('.' + 'hotel_id-' + $this.val()).show( "fast" );
-    $('select.crawl-results-hotel-room-type-id').val($('.' + 'hotel_id-' + $this.val()).first().val());
+    $('.' + 'hotel_id-' + $(this).val()).show( "fast" );
+    $('select.crawl-results-hotel-room-type-id').val($('.' + 'hotel_id-' + $(this).val()).first().val());
   });
 
   $('#list-crawl-condition-crawl-target-days input').each(function() {
