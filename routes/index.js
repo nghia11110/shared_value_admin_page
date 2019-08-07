@@ -10,6 +10,7 @@ const mountProfileRoutes = require('../features/profile/routes');
 const mountHotelRoutes = require('../features/hotel/routes');
 const mountSiteRoutes = require('../features/site/routes');
 const mountCrawlSettingRoutes = require('../features/crawl-setting/routes');
+const mountCrawlResultRoutes = require('../features/crawl-result/routes');
 
 function isAuthenticated(req, res, next) {
   if (req.user && req.isAuthenticated()) {
@@ -44,5 +45,6 @@ mountProfileRoutes(router, [isAuthenticated]);
 mountHotelRoutes(router, [isAuthenticated]);
 mountSiteRoutes(router, [isAuthenticated]);
 mountCrawlSettingRoutes(router, [isAuthenticated]);
+mountCrawlResultRoutes(router, [isAuthenticated]);
 
 module.exports = router;

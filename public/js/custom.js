@@ -33,5 +33,5 @@ var Custom = (function() {
         delete listSettingAdultRoom[id];
         $('#input-list-setting-adult-room').val(JSON.stringify(listSettingAdultRoom));
       }
-  }); 
+  });
 })();

@@ -34,7 +34,8 @@ var Datepicker = (function() {
 	function init($this) {
 		var options = {
 			disableTouchKeyboard: true,
-			autoclose: false
+			autoclose: true,
+			format: 'yyyy/mm/dd'
 		};
 
 		$this.datepicker(options);
@@ -997,7 +998,7 @@ var SalesChart = (function() {
 	// Variables
 
 	var $chart = $('#chart-sales');
-
+	var chartData = $chart.data('init') ? $chart.data('init').data : {};
 
 	// Methods
 
@@ -1015,7 +1016,7 @@ var SalesChart = (function() {
 						ticks: {
 							callback: function(value) {
 								if (!(value % 10)) {
-									return '$' + value + 'k';
+									return '¥' + value;
 								}
 							}
 						}
@@ -1032,15 +1033,15 @@ var SalesChart = (function() {
 								content += '<span class="popover-body-label mr-auto">' + label + '</span>';
 							}
 
-							content += '<span class="popover-body-value">$' + yLabel + 'k</span>';
+							content += '<span class="popover-body-value">¥' + yLabel + '</span>';
 							return content;
 						}
 					}
 				}
 			},
 			data: {
-				labels: ['May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-				datasets: [{
+				labels: !$.isEmptyObject(chartData) ? chartData.labels : ['May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+				datasets: !$.isEmptyObject(chartData) ? chartData.datasets : [{
 					label: 'Performance',
 					data: [0, 20, 10, 30, 15, 40, 20, 60, 60]
 				}]
