@@ -23,7 +23,7 @@
                         <div class="input-group-prepend">
                           <span class="input-group-text"><i class="ni ni-calendar-grid-58"></i></span>
                         </div>
-                        <input class="form-control datepicker" name="implement_date" placeholder="Select date" type="text" value="">
+                        <input class="form-control datepicker" name="crawl_created_at" placeholder="Select date" type="text" value="<%= query.crawl_created_at %>">
                       </div>
                     </div>
                   </div>
@@ -34,7 +34,11 @@
                           <label class="form-control-label text-white mb-0" for="input-name">ホテル名</label>
                           <select class="custom-select crawl-results-hotel-id" name="hotel_id" form="get-crawl-result">
                             <% hotelData.forEach(hotel => { %>
-                              <option value="<%= hotel.id %>"><%= hotel.id %>. <%= hotel.name %></option>
+                              <% if(hotel.id == query.hotel_id) { %>
+                                <option value="<%= hotel.id %>" selected><%= hotel.id %>. <%= hotel.name %></option>
+                              <% } else { %>
+                                <option value="<%= hotel.id %>"><%= hotel.id %>. <%= hotel.name %></option>
+                              <% } %>
                             <% }) %>
                           </select>
                         </div>
@@ -47,7 +51,11 @@
                           <select class="custom-select crawl-results-hotel-room-type-id" name="hotel_room_type_id" form="get-crawl-result">
                             <% hotelData.forEach(hotel => { %>
                               <% hotel.hotel_room_types.forEach(hotelRoomType => { %>
-                                <option class="hotel_id-<%= hotelRoomType.data.hotel_id %>" value="<%= hotelRoomType.data.id %>" style="display:none;"><%= hotelRoomType.data.id %>. <%= hotelRoomType.data.name %></option>
+                                <% if(hotelRoomType.data.id == query.hotel_room_type_id) { %>
+                                  <option class="hotel_id-<%= hotelRoomType.data.hotel_id %>" value="<%= hotelRoomType.data.id %>" style="display:none;" selected><%= hotelRoomType.data.id %>. <%= hotelRoomType.data.name %></option>
+                                <% } else { %>
+                                  <option class="hotel_id-<%= hotelRoomType.data.hotel_id %>" value="<%= hotelRoomType.data.id %>" style="display:none;"><%= hotelRoomType.data.id %>. <%= hotelRoomType.data.name %></option>
+                                <% } %>
                               <% }) %>
                             <% }) %>
                           </select>
@@ -59,8 +67,12 @@
                         <div class="form-group">
                           <label class="form-control-label text-white mb-0" for="input-name">サイト</label>
                           <select class="custom-select" name="site_id" form="get-crawl-result">
-                            <% siteData.forEach(hotel => { %>
-                              <option value="<%= hotel.id %>"><%= hotel.id %>. <%= hotel.name %></option>
+                            <% siteData.forEach(site => { %>
+                              <% if(site.id == query.site_id) { %>
+                                <option value="<%= site.id %>" selected><%= site.id %>. <%= site.name %></option>
+                              <% } else { %>
+                                <option value="<%= site.id %>"><%= site.id %>. <%= site.name %></option>
+                              <% } %>
                             <% }) %>
                           </select>
                         </div>
@@ -69,7 +81,7 @@
                   </div>
                   <div class="col">
                     <div class="form-group">
-                      <label class="form-control-label text-white mb-0" for="input-name">Range (From ~ To)</label>
+                      <label class="form-control-label text-white mb-0" for="input-name">From ~ To</label>
                       <div class="row">
                         <div class="input-daterange datepicker row align-items-center">
                           <div class="col">
@@ -78,7 +90,7 @@
                                 <div class="input-group-prepend">
                                   <span class="input-group-text"><i class="ni ni-calendar-grid-58"></i></span>
                                 </div>
-                                <input class="form-control" name="start_date" placeholder="Start date" type="text" value="">
+                                <input class="form-control" name="start_date" placeholder="Start date" type="text" value="<%= query.start_date %>">
                               </div>
                             </div>
                           </div>
@@ -88,7 +100,7 @@
                                 <div class="input-group-prepend">
                                   <span class="input-group-text"><i class="ni ni-calendar-grid-58"></i></span>
                                 </div>
-                                <input class="form-control" name="end_date" placeholder="End date" type="text" value="">
+                                <input class="form-control" name="end_date" placeholder="End date" type="text" value="<%= query.end_date %>">
                               </div>
                             </div>
                           </div>
@@ -114,7 +126,7 @@
               <!-- Chart -->
               <div class="chart">
                 <!-- Chart wrapper -->
-                <canvas id="chart-sales" class="chart-canvas" data-init='{"data":{"datasets":[{"data":[50, 20, 10, 30, 15, 40, 20, 60, 200]}],"labels":[1,2,3,4,5,6,7,8,9]}}'></canvas>
+                <canvas id="chart-sales" class="chart-canvas" data-init='{"data":{"datasets":[{"data":<%= JSON.stringify(crawlResults.map((cr) => cr.sales_value ? cr.sales_value : 0))%>}],"labels":<%= JSON.stringify(crawlResults.map((cr) => moment(cr.date).format("YYYY-MM-DD")))%>}}'></canvas>
               </div>
             </div>
           </div>

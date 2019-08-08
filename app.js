@@ -8,6 +8,7 @@ const expressLayouts = require('express-ejs-layouts');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const querystring = require('querystring');
+const moment = require('moment');
 const RedisStore = require('connect-redis')(session);
 
 const initAuthMiddleware = require('./features/login/init-auth-middleware');
@@ -32,6 +33,7 @@ const staticFolder = process.env.NODE_ENV === 'development' ? 'public' : 'dist';
 const app = express();
 
 app.locals.querystring = querystring;
+app.locals.moment = moment;
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -63,6 +65,10 @@ initAuthMiddleware(app);
 
 // Middleware used for setting error and success messages as available in _ejs_ templates
 app.use((req, res, next) => {
+  if (req.query) {
+    res.locals.query = req.query;
+    res.locals.url   = req.originalUrl;
+  }
   if (req.session) {
     res.locals.messages = req.session.messages;
     res.locals.userInfo = req.session.userInfo;
