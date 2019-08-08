@@ -8,9 +8,15 @@ async function loadPageCrawlResults(req, res) {
   const hotelData = await getAllHotelWithHotelRoomTypes({});
   const siteData = await getAllSites({});
   // console.log(req.query);
-  let data = {};
+  const { crawl_created_at,
+    start_date,
+    end_date
+  } = req.query;
+  let data = [];
   try {
-    data = await getAllCrawlResults(req.query);
+    if (crawl_created_at && start_date && end_date) {
+      data = await getAllCrawlResults(req.query);
+    }
   } catch (error) {
     console.log(error);
     req.session.messages = { errors: { databaseError: FETCH_INFO_ERROR_MESSAGE  } }; 
