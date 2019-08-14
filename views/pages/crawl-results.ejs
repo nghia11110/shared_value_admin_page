@@ -50,11 +50,12 @@
                           <label class="form-control-label text-white mb-0" for="input-name">部屋タイプ</label>
                           <select class="custom-select crawl-results-hotel-room-type-id" name="hotel_room_type_id" form="get-crawl-result">
                             <% hotelData.forEach(hotel => { %>
+                              <option class="hotel_id-<%= hotel.id %>" value="" style="display:none">全て</option>
                               <% hotel.hotel_room_types.forEach(hotelRoomType => { %>
                                 <% if(hotelRoomType.data.id == query.hotel_room_type_id) { %>
-                                  <option class="hotel_id-<%= hotelRoomType.data.hotel_id %>" value="<%= hotelRoomType.data.id %>" style="display:none;" selected><%= hotelRoomType.data.id %>. <%= hotelRoomType.data.name %></option>
+                                  <option class="hotel_id-<%= hotelRoomType.data.hotel_id %>" value="<%= hotelRoomType.data.id %>" style="display:none" selected><%= hotelRoomType.data.id %>. <%= hotelRoomType.data.name %></option>
                                 <% } else { %>
-                                  <option class="hotel_id-<%= hotelRoomType.data.hotel_id %>" value="<%= hotelRoomType.data.id %>" style="display:none;"><%= hotelRoomType.data.id %>. <%= hotelRoomType.data.name %></option>
+                                  <option class="hotel_id-<%= hotelRoomType.data.hotel_id %>" value="<%= hotelRoomType.data.id %>" style="display:none"><%= hotelRoomType.data.id %>. <%= hotelRoomType.data.name %></option>
                                 <% } %>
                               <% }) %>
                             <% }) %>
