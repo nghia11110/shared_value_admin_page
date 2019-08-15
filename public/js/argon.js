@@ -1031,21 +1031,29 @@ var SalesChart = (function() {
 		var salesChart = new Chart($chart, {
 			type: 'line',
 			options: {
-				scales: {
-					yAxes: [{
-						gridLines: {
-							color: Charts.colors.gray[900],
-							zeroLineColor: Charts.colors.gray[900]
-						},
-						ticks: {
-							callback: function(value) {
-								if (!(value % 10)) {
-									return '¥' + value;
-								}
-							}
-						}
-					}]
+				legend: {
+					display: true,
+					position: "bottom",
+					labels: {
+						fontColor: "#fff",
+						fontSize: 16
+					}
 				},
+				// scales: {
+				// 	yAxes: [{
+				// 		gridLines: {
+				// 			color: Charts.colors.gray[900],
+				// 			zeroLineColor: Charts.colors.gray[900]
+				// 		},
+				// 		ticks: {
+				// 			callback: function(value) {
+				// 				if (!(value % 10)) {
+				// 					return '¥' + value;
+				// 				}
+				// 			}
+				// 		}
+				// 	}]
+				// },
 				tooltips: {
 					callbacks: {
 						label: function(item, data) {
