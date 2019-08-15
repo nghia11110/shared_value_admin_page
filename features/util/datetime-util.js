@@ -1,6 +1,14 @@
 class DatetimeUtil {
-   formatDate(day) {
-    const str = String(day.getFullYear()) + '-' + String(day.getMonth() + 1) + '-' + String(day.getDate());
+  formatDate(date) {
+    // 01, 02, 03, ... 29, 30, 31
+    const dd = String((date.getDate() < 10 ? '0' : '') + date.getDate());
+    // 01, 02, 03, ... 10, 11, 12
+    const MM = String(((date.getMonth() + 1) < 10 ? '0' : '') + (date.getMonth() + 1));
+     // 1970, 1971, ... 2015, 2016, ...
+    const yyyy = String(date.getFullYear());
+
+    // const str = String(day.getFullYear()) + '-' + String(day.getMonth() + 1) + '-' + String(day.getDate());
+    const str = yyyy + '-' + MM + '-' + dd;
     return str;
   }
 

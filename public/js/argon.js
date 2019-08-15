@@ -544,6 +544,17 @@ var Charts = (function() {
 		transparent: 'transparent',
 	};
 
+	var borderColors = [
+		"rgba(155,159,201,1)",
+		"rgba(87,194,146,1)",
+		"rgba(214,112,170,1)",
+		"rgba(92,183,208,1)",
+		"rgba(202,223,119,1)",
+		"rgba(245,209,116,1)",
+		"rgba(200,100,100,1)",
+		"rgba(100,200,100,1)",
+		"rgba(100,100,200,1)"
+	];
 
 	// Methods
 
@@ -999,9 +1010,22 @@ var SalesChart = (function() {
 
 	var $chart = $('#chart-sales');
 	var chartData = $chart.data('init') ? $chart.data('init').data : {};
+	var dynamicColors = function() {
+		var r = Math.floor(Math.random() * 255);
+		var g = Math.floor(Math.random() * 255);
+		var b = Math.floor(Math.random() * 255);
+		return "rgb(" + r + "," + g + "," + b + ")";
+	};
+
+	if (chartData.datasets) {
+		chartData.datasets = chartData.datasets.map(function(el) {
+			var o = Object.assign({}, el);
+			o.borderColor = dynamicColors();
+			return o;
+		});
+	}
 
 	// Methods
-
 	function init($chart) {
 
 		var salesChart = new Chart($chart, {

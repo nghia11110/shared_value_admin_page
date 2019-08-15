@@ -34,7 +34,7 @@
                           <label class="form-control-label text-white mb-0" for="input-name">ホテル名</label>
                           <select class="custom-select crawl-results-hotel-id" name="hotel_id" form="get-crawl-result">
                             <% hotelData.forEach(hotel => { %>
-                              <% if(hotel.id == query.hotel_id) { %>
+                              <% if (hotel.id == query.hotel_id) { %>
                                 <option value="<%= hotel.id %>" selected><%= hotel.id %>. <%= hotel.name %></option>
                               <% } else { %>
                                 <option value="<%= hotel.id %>"><%= hotel.id %>. <%= hotel.name %></option>
@@ -52,7 +52,7 @@
                             <% hotelData.forEach(hotel => { %>
                               <option class="hotel_id-<%= hotel.id %>" value="" style="display:none">全て</option>
                               <% hotel.hotel_room_types.forEach(hotelRoomType => { %>
-                                <% if(hotelRoomType.data.id == query.hotel_room_type_id) { %>
+                                <% if (hotelRoomType.data.id == query.hotel_room_type_id) { %>
                                   <option class="hotel_id-<%= hotelRoomType.data.hotel_id %>" value="<%= hotelRoomType.data.id %>" style="display:none" selected><%= hotelRoomType.data.id %>. <%= hotelRoomType.data.name %></option>
                                 <% } else { %>
                                   <option class="hotel_id-<%= hotelRoomType.data.hotel_id %>" value="<%= hotelRoomType.data.id %>" style="display:none"><%= hotelRoomType.data.id %>. <%= hotelRoomType.data.name %></option>
@@ -127,7 +127,7 @@
               <!-- Chart -->
               <div class="chart">
                 <!-- Chart wrapper -->
-                <canvas id="chart-sales" class="chart-canvas" data-init='{"data":{"datasets":[{"data":<%= JSON.stringify(crawlResults.map((cr) => cr.sales_value ? cr.sales_value : 0))%>}],"labels":<%= JSON.stringify(crawlResults.map((cr) => moment(cr.date).format("YYYY-MM-DD")))%>}}'></canvas>
+                <canvas id="chart-sales" class="chart-canvas" data-init='{"data":{"datasets":<%= JSON.stringify(crawlResults)%>,"labels":<%= JSON.stringify(initData.map((init) => moment(init.date).format("YYYY-MM-DD")))%>}}'></canvas>
               </div>
             </div>
           </div>
