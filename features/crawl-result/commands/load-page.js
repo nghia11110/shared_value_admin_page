@@ -7,7 +7,7 @@ const dateTimeUtil = require('../../util/datetime-util');
 const arrayUtil = require('../../util/array-util');
 const crawlResultService = require('../service');
 
-const { FETCH_INFO_ERROR_MESSAGE } = require('../constants');
+const { FETCH_INFO_ERROR_MESSAGE, WEEKDAY_ARRAY } = require('../constants');
 
 async function loadPageCrawlResults(req, res) {
   const hotelData = await getAllHotelWithHotelRoomTypes({});
@@ -83,6 +83,7 @@ async function loadPageCrawlResults(req, res) {
     hotelData: hotelData.data,
     siteData: siteData.data,
     initData,
+    weekdayArray: WEEKDAY_ARRAY,
   });
 }
 
