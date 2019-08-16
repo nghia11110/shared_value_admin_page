@@ -32,6 +32,10 @@ class CrawlResultService {
       }
     });
 
+    stayNumberSeparateAverageSalesValue.forEach((el, idx) => {
+      el.data = el.data.map(e => Math.round(e/idx));
+    });
+
     return stayNumberSeparateAverageSalesValue.filter(el => true);
   }
 }
