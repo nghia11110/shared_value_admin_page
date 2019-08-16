@@ -556,6 +556,13 @@ var Charts = (function() {
 		"rgba(100,100,200,1)"
 	];
 
+	function dynamicColors() {
+		var r = Math.floor(Math.random() * 255);
+		var g = Math.floor(Math.random() * 255);
+		var b = Math.floor(Math.random() * 255);
+		return "rgb(" + r + "," + g + "," + b + ")";
+	};
+
 	// Methods
 
 	// Chart.js global options
@@ -777,7 +784,7 @@ var Charts = (function() {
 	// Parse global options
 	function parseOptions(parent, options) {
 		for (var item in options) {
-			if (typeof options[item] !== 'object') {
+			if (typeof options[item] !== 'object' || Array.isArray(options[item])) {
 				parent[item] = options[item];
 			} else {
 				parseOptions(parent[item], options[item]);
@@ -842,6 +849,13 @@ var Charts = (function() {
 
 		// Parse options
 		parseOptions($chart, options);
+		if ($chart.data.datasets) {
+			$chart.data.datasets = $chart.data.datasets.map(function(el) {
+				var o = Object.assign({}, el);
+				o.borderColor = dynamicColors();
+				return o;
+			});
+		}
 
 		// Toggle ticks
 		toggleTicks(elem, $chart);

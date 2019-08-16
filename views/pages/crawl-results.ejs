@@ -120,13 +120,13 @@
             <div class="card-body">
               <div class="col">
                 <ul class="nav nav-pills justify-content-end">
-                  <li class="nav-item mr-2 mr-md-0" data-toggle="chart" data-target="#chart-sales" data-update='{"data":{"datasets":[{"data":[0, 0, 0, 0, 0, 0, 0, 0, 0]}]}}' data-prefix="" data-suffix="">
+                  <li class="nav-item mr-2 mr-md-0" data-toggle="chart" data-target="#chart-sales" data-update='{"data":{"datasets":<%= JSON.stringify(hotelRoomTypeSeparateSalesValue)%>}}' data-prefix="" data-suffix="">
                     <a href="#" class="nav-link py-2 px-3 active" data-toggle="tab">
                       <span class="d-none d-md-block">部屋タイプ別金額</span>
                       <span class="d-md-none">M</span>
                     </a>
                   </li>
-                  <li class="nav-item" data-toggle="chart" data-target="#chart-sales" data-update='{"data":{"datasets":[{"data":[10000, 10000, 10000, 10000, 10000, 10000, 10000, 10000, 10000]}]}}' data-prefix="" data-suffix="">
+                  <li class="nav-item" data-toggle="chart" data-target="#chart-sales" data-update='{"data":{"datasets":<%= JSON.stringify(stayNumberSeparateAverageSalesValue)%>}}' data-prefix="" data-suffix="">
                     <a href="#" class="nav-link py-2 px-3" data-toggle="tab">
                       <span class="d-none d-md-block">宿泊可能人数別平均金額</span>
                       <span class="d-md-none">W</span>
@@ -155,7 +155,7 @@
               <!-- Chart -->
               <div class="chart">
                 <!-- Chart wrapper -->
-                <canvas id="chart-sales" class="chart-canvas" data-init='{"data":{"datasets":<%= JSON.stringify(crawlResults)%>,"labels":<%= JSON.stringify(initData.map((init) => moment(init.date).format("YYYY-MM-DD")))%>}}'></canvas>
+                <canvas id="chart-sales" class="chart-canvas" data-init='{"data":{"datasets":<%= JSON.stringify(hotelRoomTypeSeparateSalesValue)%>,"labels":<%= JSON.stringify(initData.map((init) => init.date))%>}}'></canvas>
               </div>
             </div>
           </div>

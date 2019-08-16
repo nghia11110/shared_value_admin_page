@@ -13,6 +13,9 @@ const UPDATE_INFO_SUCCESS_MESSAGE = 'Successfully updated.';
 const UPDATE_INFO_ERROR_MESSAGE = 'Could not save your information';
 const FETCH_INFO_ERROR_MESSAGE = 'Could not fetch information';
 const NO_INPUT_CRAWL_TARGET_DAYS_ERROR = 'チェックして、crawl-target-daysに入力してください！';
+const STAY_NUMBER_TEXT = '宿泊可能人数';
+const SMOKING = '禁煙';
+const NO_SMOKING = '喫煙';
 
 module.exports = {
   NAME_MIN,
@@ -23,5 +26,8 @@ module.exports = {
   UPDATE_INFO_SUCCESS_MESSAGE,
   UPDATE_INFO_ERROR_MESSAGE,
   FETCH_INFO_ERROR_MESSAGE,
-  NO_INPUT_CRAWL_TARGET_DAYS_ERROR
+  NO_INPUT_CRAWL_TARGET_DAYS_ERROR,
+  STAY_NUMBER_TEXT,
+  SMOKING,
+  NO_SMOKING,
 };
