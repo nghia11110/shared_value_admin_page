@@ -888,7 +888,7 @@ var Charts = (function() {
 					content += '<span class="popover-body-label mr-auto">' + label + '</span>';
 				}
 
-				content += '<span class="popover-body-value">' + prefix + yLabel + suffix + '</span>';
+				content += '<span class="popover-body-value" style="margin-left: 5px">' + prefix + yLabel + suffix + '</span>';
 				return content;
 			}
 

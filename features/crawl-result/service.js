@@ -38,6 +38,27 @@ class CrawlResultService {
 
     return stayNumberSeparateAverageSalesValue.filter(el => true);
   }
+
+  // 曜日別平均金額
+  makeWeekdayHotelRoomTypeSeparateAverageSalesValue(data) {
+    const weekdayHotelRoomTypeSeparateAverageSalesValue = [];
+
+    return weekdayHotelRoomTypeSeparateAverageSalesValue;
+  }
+
+  // 宿泊可能人数別残室数
+  makeStayNumberSeparateRemainRooms(data) {
+    const stayNumberSeparateRemainRooms = [];
+
+    return stayNumberSeparateRemainRooms;
+  }
+
+  // 禁煙喫煙別残室数
+  makeSmokingStateSeparateRemainRooms(data) {
+    const smokingStateSeparateRemainRooms = [];
+
+    return smokingStateSeparateRemainRooms;
+  }
 }
 
 module.exports = new CrawlResultService();

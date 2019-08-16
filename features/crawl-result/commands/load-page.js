@@ -64,7 +64,9 @@ async function loadPageCrawlResults(req, res) {
       // init data
       hotelRoomTypeSeparateSalesValue = crawlResultService.makeHotelRoomTypeSeparateSalesValue(data);
       stayNumberSeparateAverageSalesValue = crawlResultService.makeStayNumberSeparateAverageSalesValue(data);
-      // console.log(stayNumberSeparateAverageSalesValue);
+      weekdayHotelRoomTypeSeparateAverageSalesValue = crawlResultService.makeWeekdayHotelRoomTypeSeparateAverageSalesValue(data);
+      stayNumberSeparateRemainRooms = crawlResultService.makeStayNumberSeparateRemainRooms(data);
+      smokingStateSeparateRemainRooms = crawlResultService.makeSmokingStateSeparateRemainRooms(data);
       // console.log(data[0], data[2]);
     }
   } catch (error) {
