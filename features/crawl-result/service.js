@@ -19,6 +19,7 @@ class CrawlResultService {
   // 宿泊可能人数別平均金額 data
   makeStayNumberSeparateAverageSalesValue(data) {
     const stayNumberSeparateAverageSalesValue = [];
+    let count = [];
     data.forEach(el => {
       const obj = {};
 
@@ -26,15 +27,20 @@ class CrawlResultService {
       obj.data = el.data.map(e => e.sales_value);
       if (typeof stayNumberSeparateAverageSalesValue[el.stay_numbers] === 'undefined') {
         stayNumberSeparateAverageSalesValue[el.stay_numbers] = obj;
+        count[el.stay_numbers] = obj.data.map(e => e !== '0' ? 1 : 0);
       } else {
         const tmp = obj.data.map((num, idx) => parseInt(num) + parseInt(stayNumberSeparateAverageSalesValue[el.stay_numbers].data[idx]));
-
+        obj.data.forEach((e, idx) => {
+          if (e !== '0') {
+            count[el.stay_numbers][idx]++;
+          }
+        });
         stayNumberSeparateAverageSalesValue[el.stay_numbers].data = tmp;
       }
     });
 
-    stayNumberSeparateAverageSalesValue.forEach((el, idx) => {
-      el.data = el.data.map(e => Math.round(e/idx));
+    stayNumberSeparateAverageSalesValue.forEach((el, idx1) => {
+      el.data = el.data.map((e, idx2) => count[idx1][idx2] > 0 ? Math.round(e/count[idx1][idx2]) : 0);
     });
 
     return stayNumberSeparateAverageSalesValue.filter(el => true);
