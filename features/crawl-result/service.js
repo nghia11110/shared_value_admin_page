@@ -1,4 +1,5 @@
-const { STAY_NUMBER_TEXT, SMOKING, NO_SMOKING } = require('./constants');
+const { STAY_NUMBER_TEXT, SMOKING, NO_SMOKING, SMOKING_STATE } = require('./constants');
+const dateTimeUtil = require('../util/datetime-util');
 
 class CrawlResultService {
   // 部屋タイプ別金額 data
@@ -23,7 +24,7 @@ class CrawlResultService {
 
       obj.label = STAY_NUMBER_TEXT + el.stay_numbers;
       obj.data = el.data.map(e => e.sales_value);
-      if (!stayNumberSeparateAverageSalesValue[el.stay_numbers]) {
+      if (typeof stayNumberSeparateAverageSalesValue[el.stay_numbers] === 'undefined') {
         stayNumberSeparateAverageSalesValue[el.stay_numbers] = obj;
       } else {
         const tmp = obj.data.map((num, idx) => parseInt(num) + parseInt(stayNumberSeparateAverageSalesValue[el.stay_numbers].data[idx]));
@@ -43,6 +44,28 @@ class CrawlResultService {
   makeWeekdayHotelRoomTypeSeparateAverageSalesValue(data) {
     const weekdayHotelRoomTypeSeparateAverageSalesValue = [];
 
+    data.forEach(el => {
+      const obj = {};
+      const count = [];
+
+      obj.label = el.label;
+      obj.data = [];
+      el.data.forEach(e => {
+        const weekDay = dateTimeUtil.getWeekday(e.date);
+
+        if (typeof obj.data[weekDay] === 'undefined') {
+          obj.data[weekDay] = parseInt(e.sales_value);
+          count[weekDay] = 1;
+        } else {
+          obj.data[weekDay] += parseInt(e.sales_value);
+          count[weekDay]++;
+        }
+      });
+      obj.data = obj.data.map((o,idx) => Math.round(o/count[idx]));
+
+      weekdayHotelRoomTypeSeparateAverageSalesValue.push(obj);
+    });
+
     return weekdayHotelRoomTypeSeparateAverageSalesValue;
   }
 
@@ -50,13 +73,39 @@ class CrawlResultService {
   makeStayNumberSeparateRemainRooms(data) {
     const stayNumberSeparateRemainRooms = [];
 
-    return stayNumberSeparateRemainRooms;
+    data.forEach(el => {
+      const obj = {};
+
+      obj.label = STAY_NUMBER_TEXT + el.stay_numbers;
+      obj.data = el.data.map(e => e.remain_rooms);
+      if (typeof stayNumberSeparateRemainRooms[el.stay_numbers] === 'undefined') {
+        stayNumberSeparateRemainRooms[el.stay_numbers] = obj;
+      } else {
+        const tmp = obj.data.map((num, idx) => parseInt(num) + parseInt(stayNumberSeparateRemainRooms[el.stay_numbers].data[idx]));
+
+        stayNumberSeparateRemainRooms[el.stay_numbers].data = tmp;
+      }
+    });
+    return stayNumberSeparateRemainRooms.filter(el => true);
   }
 
   // 禁煙喫煙別残室数
   makeSmokingStateSeparateRemainRooms(data) {
     const smokingStateSeparateRemainRooms = [];
 
+    data.forEach(el => {
+      const obj = {};
+
+      obj.label = el.label.includes(NO_SMOKING) ? NO_SMOKING : SMOKING;
+      obj.data = el.data.map(e => e.remain_rooms);
+      if (typeof smokingStateSeparateRemainRooms[SMOKING_STATE[obj.label]] === 'undefined') {
+        smokingStateSeparateRemainRooms[SMOKING_STATE[obj.label]] = obj;
+      } else {
+        const tmp = obj.data.map((num, idx) => parseInt(num) + parseInt(smokingStateSeparateRemainRooms[SMOKING_STATE[obj.label]].data[idx]));
+
+        smokingStateSeparateRemainRooms[SMOKING_STATE[obj.label]].data = tmp;
+      }
+    });
     return smokingStateSeparateRemainRooms;
   }
 }

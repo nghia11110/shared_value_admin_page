@@ -16,6 +16,10 @@ const NO_INPUT_CRAWL_TARGET_DAYS_ERROR = 'チェックして、crawl-target-days
 const STAY_NUMBER_TEXT = '宿泊可能人数';
 const SMOKING = '禁煙';
 const NO_SMOKING = '喫煙';
+const SMOKING_STATE = {
+  '禁煙': 0,
+  '喫煙': 1
+};
 const WEEKDAY_ARRAY = ['月','火','水','木','金','土','日'];
 
 module.exports = {
@@ -31,5 +35,6 @@ module.exports = {
   STAY_NUMBER_TEXT,
   SMOKING,
   NO_SMOKING,
+  SMOKING_STATE,
   WEEKDAY_ARRAY,
 };

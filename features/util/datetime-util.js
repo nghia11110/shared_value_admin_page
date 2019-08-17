@@ -23,6 +23,12 @@ class DatetimeUtil {
     };
     return days;
   }
+
+  getWeekday(date) {
+    const dt = new Date(date);
+    const currentWeekDay = dt.getDay();
+    return currentWeekDay === 0 ? 6 : currentWeekDay - 1;
+  }
 }
 
 module.exports = new DatetimeUtil();
