@@ -56,7 +56,7 @@ async function loadPageCrawlResults(req, res) {
       // rewrite data
       data.forEach(elem => {
         const tmp = elem.data
-          .map(e => ({ sales_value: e.sales_value ? e.sales_value : '0', remain_rooms: e.remain_rooms ? e.remain_rooms : '0', date: moment(e.date).format("YYYY-MM-DD")}));
+          .map(e => ({ sales_value: e.sales_value ? e.sales_value : '0', remain_rooms: e.remain_rooms ? e.remain_rooms : '0', number_booking: e.number_booking ? e.number_booking : '0',date: moment(e.date).format("YYYY-MM-DD")}));
         elem.data = arrayUtil.mergeArray(initData, tmp, "date")
           .sort((a,b) => a.date > b.date ? 1 : -1);
       });

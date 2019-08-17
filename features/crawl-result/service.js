@@ -61,13 +61,15 @@ class CrawlResultService {
 
         if (typeof obj.data[weekDay] === 'undefined') {
           obj.data[weekDay] = parseInt(e.sales_value);
-          count[weekDay] = 1;
+          count[weekDay] = e.sales_value !== '0' ? parseInt(e.number_booking) : 0;
         } else {
           obj.data[weekDay] += parseInt(e.sales_value);
-          count[weekDay]++;
+          if (e.sales_value !== '0') {
+            count[weekDay] += parseInt(e.number_booking);
+          }
         }
       });
-      obj.data = obj.data.map((o,idx) => Math.round(o/count[idx]));
+      obj.data = obj.data.map((o,idx) => count[idx] > 0 ? Math.round(o/count[idx]) : 0);
 
       weekdayHotelRoomTypeSeparateAverageSalesValue.push(obj);
     });

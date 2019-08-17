@@ -9,7 +9,7 @@ async function getAllCrawlResults(condition) {
     end_date
   } = condition;
   const data = await knex('scrape_results')
-    .select(knex.raw('sum(price_total) as sales_value, sum(remain_rooms) as remain_rooms, DATE(checkin)'))
+    .select(knex.raw('sum(price_total) as sales_value, sum(remain_rooms) as remain_rooms, count(*) as number_booking, DATE(checkin)'))
     .where({
       hotel_id,
       site_id,
