@@ -1024,6 +1024,7 @@ var SalesChart = (function() {
 
 	var $chart = $('#chart-sales');
 	var chartData = $chart.data('init') ? $chart.data('init').data : {};
+	var prefix = $chart.data('prefix') ? $chart.data('prefix') : '';
 	var dynamicColors = function() {
 		var r = Math.floor(Math.random() * 255);
 		var g = Math.floor(Math.random() * 255);
@@ -1062,7 +1063,7 @@ var SalesChart = (function() {
 						ticks: {
 							callback: function(value) {
 								if (!(value % 10)) {
-									return '¥' + value;
+									return prefix + value;
 								}
 							}
 						}
@@ -1079,7 +1080,7 @@ var SalesChart = (function() {
 								content += '<span class="popover-body-label mr-auto">' + label + '</span>';
 							}
 
-							content += '<span class="popover-body-value">¥' + yLabel + '</span>';
+							content += '<span class="popover-body-value">' + prefix + yLabel + '</span>';
 							return content;
 						}
 					}

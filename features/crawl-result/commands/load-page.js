@@ -12,7 +12,7 @@ const { FETCH_INFO_ERROR_MESSAGE, WEEKDAY_ARRAY } = require('../constants');
 async function loadPageCrawlResults(req, res) {
   const hotelData = await getAllHotelWithHotelRoomTypes({});
   const siteData = await getAllSites({});
-  // console.log(hotelData);
+  // console.log(req.query);
   const conditions = JSON.parse(JSON.stringify(req.query));
   const { crawl_created_at,
     start_date,
@@ -73,7 +73,11 @@ async function loadPageCrawlResults(req, res) {
     console.log(error);
     req.session.messages = { errors: { databaseError: FETCH_INFO_ERROR_MESSAGE  } }; 
   }
+
+  // parse req.query to view
   res.locals.query = req.query;
+
+  // render view
   res.render('pages/crawl-results', {
     hotelRoomTypeSeparateSalesValue,
     stayNumberSeparateAverageSalesValue ,

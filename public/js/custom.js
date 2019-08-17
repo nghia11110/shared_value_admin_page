@@ -43,3 +43,16 @@ var Custom = (function() {
       }
   });
 })();
+
+var ChartCrawlResults = (function() {
+  var $toggle = $('[data-toggle="chart"]');
+
+  $toggle.on({
+    'click': function() {
+      var $this = $(this);
+      if ($this.attr('id') !== 'undefined' && $this.attr('id').includes('crawl-results-chart')) {
+        $('#crawl-results-chart-type').val($this.attr('id'));
+      }
+    }
+  });
+})();
