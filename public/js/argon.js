@@ -881,11 +881,12 @@ var Charts = (function() {
 			// Update tooltips
 			$chart.options.tooltips.callbacks.label = function(item, data) {
 				var label = data.datasets[item.datasetIndex].label || '';
+				var borderColor = data.datasets[item.datasetIndex].borderColor || '';
 				var yLabel = item.yLabel;
 				var content = '';
 
 				if (data.datasets.length > 1) {
-					content += '<span class="popover-body-label mr-auto">' + label + '</span>';
+					content += '<span class="popover-body-label mr-auto" style="color: ' + borderColor + '">' + label + '</span>';
 				}
 
 				content += '<span class="popover-body-value" style="margin-left: 5px">' + prefix + yLabel + suffix + '</span>';
@@ -1075,11 +1076,12 @@ var SalesChart = (function() {
 					callbacks: {
 						label: function(item, data) {
 							var label = data.datasets[item.datasetIndex].label || '';
+							var borderColor = data.datasets[item.datasetIndex].borderColor || '';
 							var yLabel = item.yLabel;
 							var content = '';
 
 							if (data.datasets.length > 1) {
-								content += '<span class="popover-body-label mr-auto">' + label + '</span>';
+								content += '<span class="popover-body-label mr-auto" style="color: ' + borderColor + '">' + label + '</span>';
 							}
 
 							content += '<span class="popover-body-value" style="margin-left: 5px">' + prefix + yLabel + suffix + '</span>';
