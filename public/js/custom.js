@@ -55,4 +55,12 @@ var ChartCrawlResults = (function() {
       }
     }
   });
+
+  $("#btnZoomInCrawlResultChart").click(function () {
+    $('#crawl-results-chart').css( "height", "+=100px" );
+  });
+
+  $("#btnZoomOutCrawlResultChart").click(function () {
+    $('#crawl-results-chart').css( "height", "-=100px" );
+  });
 })();
