@@ -853,6 +853,7 @@ var Charts = (function() {
 			$chart.data.datasets = $chart.data.datasets.map(function(el) {
 				var o = Object.assign({}, el);
 				o.borderColor = dynamicColors();
+				o.lineTension = 0;
 				return o;
 			});
 		}
@@ -1040,6 +1041,7 @@ var SalesChart = (function() {
 		chartData.datasets = chartData.datasets.map(function(el) {
 			var o = Object.assign({}, el);
 			o.borderColor = dynamicColors();
+			o.lineTension = 0;
 			return o;
 		});
 	}
