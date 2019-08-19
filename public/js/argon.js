@@ -1029,7 +1029,7 @@ var SalesChart = (function() {
 	var chartData = $chart.data('init') ? $chart.data('init').data : {};
 	var prefix = $chart.data('prefix') ? $chart.data('prefix') : '';
 	var suffix = $chart.data('suffix') ? $chart.data('suffix') : '';
-	var title = $chart.data('init') ? $chart.data('init').options.title.text : '';
+	var title = ($chart.data('init') && $chart.data('init').options && $chart.data('init').options.title) ? $chart.data('init').options.title.text : '';
 
 	var dynamicColors = function() {
 		var r = Math.floor(Math.random() * 255);
