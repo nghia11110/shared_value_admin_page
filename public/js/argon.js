@@ -886,7 +886,8 @@ var Charts = (function() {
 				var content = '';
 
 				if (data.datasets.length > 1) {
-					content += '<span class="popover-body-label mr-auto" style="color: ' + borderColor + '">' + label + '</span>';
+					// content += '<span class="popover-body-label mr-auto" style="color: ' + borderColor + '">' + label + '</span>';
+					content += '<span class="popover-body-label mr-auto" style="color: white; background-color: ' + borderColor + '">' + label + '</span>';
 				}
 
 				content += '<span class="popover-body-value" style="margin-left: 5px">' + prefix + yLabel + suffix + '</span>';
@@ -1081,7 +1082,8 @@ var SalesChart = (function() {
 							var content = '';
 
 							if (data.datasets.length > 1) {
-								content += '<span class="popover-body-label mr-auto" style="color: ' + borderColor + '">' + label + '</span>';
+								// content += '<span class="popover-body-label mr-auto" style="color: ' + borderColor + '">' + label + '</span>';
+								content += '<span class="popover-body-label mr-auto" style="color: white; background-color: ' + borderColor + '">' + label + '</span>';
 							}
 
 							content += '<span class="popover-body-value" style="margin-left: 5px">' + prefix + yLabel + suffix + '</span>';
