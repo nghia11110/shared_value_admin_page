@@ -121,31 +121,31 @@
             <div class="card-body">
               <div class="col">
                 <ul class="nav nav-pills justify-content-end">
-                  <li id="crawl-results-chart1" class="nav-item mr-2 mr-md-0" data-toggle="chart" data-target="#chart-sales" data-update='{"data":{"datasets":<%= JSON.stringify(hotelRoomTypeSeparateSalesValue)%>,"labels":<%= JSON.stringify(initData.map((init) => init.date))%>}}' data-prefix="¥" data-suffix="">
+                  <li id="crawl-results-chart1" class="nav-item mr-2 mr-md-0" data-toggle="chart" data-target="#chart-sales" data-update='{"data":{"datasets":<%= JSON.stringify(hotelRoomTypeSeparateSalesValue)%>,"labels":<%= JSON.stringify(initData.map((init) => init.date))%>},"options":{"title":{"text":"部屋タイプ別金額"}}}' data-prefix="¥" data-suffix="">
                     <a href="#" class="nav-link py-2 px-3 <%= !query.chart_type || query.chart_type === 'crawl-results-chart1' ? 'active' : ''%>" data-toggle="tab">
                       <span class="d-none d-md-block">部屋タイプ別金額</span>
                       <!-- <span class="d-md-none">M</span> -->
                     </a>
                   </li>
-                  <li id="crawl-results-chart2" class="nav-item" data-toggle="chart" data-target="#chart-sales" data-update='{"data":{"datasets":<%= JSON.stringify(stayNumberSeparateAverageSalesValue)%>,"labels":<%= JSON.stringify(initData.map((init) => init.date))%>}}' data-prefix="¥" data-suffix="">
+                  <li id="crawl-results-chart2" class="nav-item" data-toggle="chart" data-target="#chart-sales" data-update='{"data":{"datasets":<%= JSON.stringify(stayNumberSeparateAverageSalesValue)%>,"labels":<%= JSON.stringify(initData.map((init) => init.date))%>},"options":{"title":{"text":"宿泊可能人数別平均金額"}}}' data-prefix="¥" data-suffix="">
                     <a href="#" class="nav-link py-2 px-3 <%= query.chart_type === 'crawl-results-chart2' ? 'active' : ''%>" data-toggle="tab">
                       <span class="d-none d-md-block">宿泊可能人数別平均金額</span>
                       <!-- <span class="d-md-none">W</span> -->
                     </a>
                   </li>
-                  <li id="crawl-results-chart3" class="nav-item" data-toggle="chart" data-target="#chart-sales" data-update='{"data":{"datasets":<%= JSON.stringify(weekdayHotelRoomTypeSeparateAverageSalesValue)%>,"labels":<%= JSON.stringify(weekdayArray)%>}}' data-prefix="¥" data-suffix="">
+                  <li id="crawl-results-chart3" class="nav-item" data-toggle="chart" data-target="#chart-sales" data-update='{"data":{"datasets":<%= JSON.stringify(weekdayHotelRoomTypeSeparateAverageSalesValue)%>,"labels":<%= JSON.stringify(weekdayArray)%>},"options":{"title":{"text":"曜日別平均金額"}}}' data-prefix="¥" data-suffix="">
                     <a href="#" class="nav-link py-2 px-3 <%= query.chart_type === 'crawl-results-chart3' ? 'active' : ''%>" data-toggle="tab">
                       <span class="d-none d-md-block">曜日別平均金額</span>
                       <!-- <span class="d-md-none">W</span> -->
                     </a>
                   </li>
-                  <li id="crawl-results-chart4" class="nav-item" data-toggle="chart" data-target="#chart-sales" data-update='{"data":{"datasets":<%= JSON.stringify(stayNumberSeparateRemainRooms)%>,"labels":<%= JSON.stringify(initData.map((init) => init.date))%>}}' data-prefix="" data-suffix="">
+                  <li id="crawl-results-chart4" class="nav-item" data-toggle="chart" data-target="#chart-sales" data-update='{"data":{"datasets":<%= JSON.stringify(stayNumberSeparateRemainRooms)%>,"labels":<%= JSON.stringify(initData.map((init) => init.date))%>},"options":{"title":{"text":"宿泊可能人数別残室数"}}}' data-prefix="" data-suffix="">
                     <a href="#" class="nav-link py-2 px-3 <%= query.chart_type === 'crawl-results-chart4' ? 'active' : ''%>" data-toggle="tab">
                       <span class="d-none d-md-block">宿泊可能人数別残室数</span>
                       <!-- <span class="d-md-none">W</span> -->
                     </a>
                   </li>
-                  <li id="crawl-results-chart5" class="nav-item" data-toggle="chart" data-target="#chart-sales" data-update='{"data":{"datasets":<%= JSON.stringify(smokingStateSeparateRemainRooms)%>,"labels":<%= JSON.stringify(initData.map((init) => init.date))%>}}' data-prefix="" data-suffix="">
+                  <li id="crawl-results-chart5" class="nav-item" data-toggle="chart" data-target="#chart-sales" data-update='{"data":{"datasets":<%= JSON.stringify(smokingStateSeparateRemainRooms)%>,"labels":<%= JSON.stringify(initData.map((init) => init.date))%>},"options":{"title":{"text":"禁煙喫煙別残室数"}}}' data-prefix="" data-suffix="">
                     <a href="#" class="nav-link py-2 px-3 <%= query.chart_type === 'crawl-results-chart5' ? 'active' : ''%>" data-toggle="tab">
                       <span class="d-none d-md-block">禁煙喫煙別残室数</span>
                       <!-- <span class="d-md-none">W</span> -->
@@ -161,19 +161,19 @@
               <div id="crawl-results-chart" class="chart" style="margin-top: 30px; height: 850px;">
                 <!-- Chart wrapper -->
                 <% if (!query.chart_type || query.chart_type === 'crawl-results-chart1') { %>
-                  <canvas id="chart-sales" class="chart-canvas" data-init='{"data":{"datasets":<%= JSON.stringify(hotelRoomTypeSeparateSalesValue)%>,"labels":<%= JSON.stringify(initData.map((init) => init.date))%>}}' data-prefix="¥" data-suffix=""></canvas>
+                  <canvas id="chart-sales" class="chart-canvas" data-init='{"data":{"datasets":<%= JSON.stringify(hotelRoomTypeSeparateSalesValue)%>,"labels":<%= JSON.stringify(initData.map((init) => init.date))%>},"options":{"title":{"text":"部屋タイプ別金額"}}}' data-prefix="¥" data-suffix=""></canvas>
                 <% } %>
                 <% if (query.chart_type === 'crawl-results-chart2') { %>
-                  <canvas id="chart-sales" class="chart-canvas" data-init='{"data":{"datasets":<%= JSON.stringify(stayNumberSeparateAverageSalesValue)%>,"labels":<%= JSON.stringify(initData.map((init) => init.date))%>}}' data-prefix="¥" data-suffix=""></canvas>
+                  <canvas id="chart-sales" class="chart-canvas" data-init='{"data":{"datasets":<%= JSON.stringify(stayNumberSeparateAverageSalesValue)%>,"labels":<%= JSON.stringify(initData.map((init) => init.date))%>},"options":{"title":{"text":"宿泊可能人数別平均金額"}}}' data-prefix="¥" data-suffix=""></canvas>
                 <% } %>
                 <% if (query.chart_type === 'crawl-results-chart3') { %>
-                  <canvas id="chart-sales" class="chart-canvas" data-init='{"data":{"datasets":<%= JSON.stringify(weekdayHotelRoomTypeSeparateAverageSalesValue)%>,"labels":<%= JSON.stringify(weekdayArray)%>}}' data-prefix="¥" data-suffix=""></canvas>
+                  <canvas id="chart-sales" class="chart-canvas" data-init='{"data":{"datasets":<%= JSON.stringify(weekdayHotelRoomTypeSeparateAverageSalesValue)%>,"labels":<%= JSON.stringify(weekdayArray)%>},"options":{"title":{"text":"曜日別平均金額"}}}' data-prefix="¥" data-suffix=""></canvas>
                 <% } %>
                 <% if (query.chart_type === 'crawl-results-chart4') { %>
-                  <canvas id="chart-sales" class="chart-canvas" data-init='{"data":{"datasets":<%= JSON.stringify(stayNumberSeparateRemainRooms)%>,"labels":<%= JSON.stringify(initData.map((init) => init.date))%>}}' data-prefix="" data-suffix=""></canvas>
+                  <canvas id="chart-sales" class="chart-canvas" data-init='{"data":{"datasets":<%= JSON.stringify(stayNumberSeparateRemainRooms)%>,"labels":<%= JSON.stringify(initData.map((init) => init.date))%>},"options":{"title":{"text":"宿泊可能人数別残室数"}}}' data-prefix="" data-suffix=""></canvas>
                 <% } %>
                 <% if (query.chart_type === 'crawl-results-chart5') { %>
-                  <canvas id="chart-sales" class="chart-canvas" data-init='{"data":{"datasets":<%= JSON.stringify(smokingStateSeparateRemainRooms)%>,"labels":<%= JSON.stringify(initData.map((init) => init.date))%>}}' data-prefix="" data-suffix=""></canvas>
+                  <canvas id="chart-sales" class="chart-canvas" data-init='{"data":{"datasets":<%= JSON.stringify(smokingStateSeparateRemainRooms)%>,"labels":<%= JSON.stringify(initData.map((init) => init.date))%>},"options":{"title":{"text":"禁煙喫煙別残室数"}}}' data-prefix="" data-suffix=""></canvas>
                 <% } %>
               </div>
             </div>

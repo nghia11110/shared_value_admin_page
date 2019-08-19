@@ -1029,6 +1029,7 @@ var SalesChart = (function() {
 	var chartData = $chart.data('init') ? $chart.data('init').data : {};
 	var prefix = $chart.data('prefix') ? $chart.data('prefix') : '';
 	var suffix = $chart.data('suffix') ? $chart.data('suffix') : '';
+	var title = $chart.data('init') ? $chart.data('init').options.title.text : '';
 
 	var dynamicColors = function() {
 		var r = Math.floor(Math.random() * 255);
@@ -1052,6 +1053,12 @@ var SalesChart = (function() {
 		var salesChart = new Chart($chart, {
 			type: 'line',
 			options: {
+				title: {
+					display: true,
+					text: title,
+					fontSize: 18,
+					fontColor: "#fff"
+				},
 				legend: {
 					display: true,
 					position: "bottom",
