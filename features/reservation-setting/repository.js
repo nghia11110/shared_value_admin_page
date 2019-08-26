@@ -121,7 +121,7 @@ async function searchReservation(object) {
       reservation_end_date,
     })
     .where(
-      knex.raw(`reservation_guest_phone_number%10000 = ${reservation_guest_phone_number}`)
+      knex.raw(`RIGHT(reservation_guest_phone_number, 4) = '${reservation_guest_phone_number}'`)
     )
     .returning(['id', 'reservation_code']);
   return reservation;

@@ -16,7 +16,7 @@ exports.up = async function up(knex) {
       .timestamp('reservation_end_date')
       .notNullable()
       .defaultTo(knex.fn.now());
-    table.integer('reservation_guest_phone_number').notNullable();
+    table.string('reservation_guest_phone_number', 15).notNullable();
     table.integer('hotel_id');
     table.integer('site_id');
     table

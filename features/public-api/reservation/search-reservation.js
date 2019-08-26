@@ -12,7 +12,7 @@ async function searchReservation(req, res) {
     return;
   } catch (e) {
     // console.log(e);
-    res.status(e.status).send(e.message);
+    res.status(400).send(e.message);
   }
 }
 
