@@ -101,9 +101,36 @@ async function deleteReservationSetting({ id }) {
   return reservation;
 }
 
+async function searchReservation(object) {
+  if (!Object.keys(object).length) {
+    return {};
+  }
+  const {
+    reservation_guest_first_name,
+    reservation_guest_last_name,
+    reservation_start_date,
+    reservation_end_date,
+    reservation_guest_phone_number
+  } = object;
+
+  const [reservation] = await knex('reservations')
+    .where({
+      reservation_guest_first_name,
+      reservation_guest_last_name,
+      reservation_start_date,
+      reservation_end_date,
+    })
+    .where(
+      knex.raw(`reservation_guest_phone_number%10000 = ${reservation_guest_phone_number}`)
+    )
+    .returning(['id', 'reservation_code']);
+  return reservation;
+}
+
 module.exports = {
   getAllReservationSettings,
   createReservationSetting,
   updateReservationSetting,
-  deleteReservationSetting
+  deleteReservationSetting,
+  searchReservation,
 };

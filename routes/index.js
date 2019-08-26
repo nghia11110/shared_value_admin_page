@@ -2,6 +2,10 @@ const express = require('express');
 
 const router = express.Router();
 
+// Public API
+const mountPublicApiRoutes = require('../features/public-api/routes');
+
+// Private API
 const mountRegisterRoutes = require('../features/register/routes');
 const mountLoginRoutes = require('../features/login/routes');
 const mountLogoutRoutes = require('../features/logout/routes');
@@ -38,6 +42,7 @@ router.get('/tables', isAuthenticated, (req, res) => {
   res.render('pages/tables');
 });
 
+mountPublicApiRoutes(router);
 mountRegisterRoutes(router);
 mountLoginRoutes(router);
 mountLogoutRoutes(router, [isAuthenticated]);
