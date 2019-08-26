@@ -1,0 +1,146 @@
+<body>
+  <% pageLink = 'reservation-settings' %>
+  <!-- Sidenav -->
+  <% include ../partials/sidebar %>
+  <!-- Main content -->
+  <div class="main-content">
+    <!-- Top navbar -->
+    <% include ../partials/navbar %>
+    <!-- Header -->
+    <% include ../partials/header %>
+    <!-- Page content -->
+    <div class="container-fluid mt--7">
+      <!-- Table -->
+      <div class="row">
+        <div class="col">
+          <div class="card shadow">
+            <div class="card-header bg-white border-0">
+              <div class="row align-items-center">
+                <div class="col-8">
+                  <h3 class="mb-0">予約一覧</h3>
+                </div>
+                <nav class="navbar navbar-top navbar-expand-md navbar-light" style="width: 80%" id="navbar-main">
+                  <div class="container-fluid">
+                    <form action="/reservation-settings" method="GET" class="navbar-search navbar-search-light form-inline mr-3 d-none d-md-flex ml-lg-auto">
+                      <div class="form-group mb-0">
+                        <div class="input-group input-group-alternative">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-search"></i></span>
+                          </div>
+                          <input class="form-control" placeholder="Search: ホテル名" type="text" name="search_hotel_name" value="<%= searchHotelName %>">
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </nav>
+                <div class="col-4 text-right">
+                  <a href="/reservation-setting/add" class="btn btn-sm btn-primary">予約追加</a>
+                </div>
+              </div>
+            </div>
+            <div class="table-responsive">
+              <table class="table align-items-center table-flush">
+                <thead class="thead-light">
+                  <tr>
+                    <th scope="col">No</th>
+                    <th class="" scope="col">予約コード</th>
+                    <th class="" scope="col">予約経由</th>
+                    <th class="" scope="col">代表者名</th>
+                    <th class="" scope="col">ホテル名</th>
+                    <th class="" scope="col">予定入室</th>
+                    <th class="" scope="col">予定退室</th>
+                    <th class="" scope="col">電話番号</th>
+                    <th scope="col"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% No = per_page * (current - 1) + 1; %>
+                  <% reservationSettings.forEach(reservationSetting => { %>
+                    <% reservationSetting.reservation_start_date = moment(reservationSetting.reservation_start_date).format('YYYY-MM-DD');
+                      reservationSetting.reservation_end_date = moment(reservationSetting.reservation_end_date).format('YYYY-MM-DD');
+                    %>
+                    <tr>
+                    <td>
+                      <%= No++ %>
+                    </td>
+                    <td>
+                      <%= reservationSetting.reservation_code %>
+                    </td>
+                    <td>
+                      <%= reservationSetting.site_name %>
+                    </td>
+                    <td>
+                      <%= reservationSetting.reservation_guest_first_name %>
+                      <%= reservationSetting.reservation_guest_last_name %>
+                    </td>
+                    <td>
+                      <%= reservationSetting.hotel_name %>
+                    </td>
+                    <td>
+                      <%= reservationSetting.reservation_start_date %>
+                    </td>
+                    <td>
+                      <%= reservationSetting.reservation_end_date %>
+                    </td>
+                    <td>
+                      <%= reservationSetting.reservation_guest_phone_number %>
+                    </td>
+                    <td class="text-right">
+                      <div class="dropdown">
+                        <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          <i class="fas fa-ellipsis-v"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+                          <a class="dropdown-item" href="/reservation-setting/edit/?<%= querystring.stringify(reservationSetting) %>">Edit</a>
+                          <a class="dropdown-item" href="/reservation-setting/delete/?<%= querystring.stringify(reservationSetting) %>">Delete</a>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                  <% }) %> 
+                </tbody>
+              </table>
+            </div>
+            <div class="card-footer py-4">
+              <nav aria-label="...">
+                <% if (pages > 0) { %>
+                    <ul class="pagination justify-content-end mb-0">
+                        <% if (current == 1) { %>
+                            <li class="page-item disabled"><a class="page-link">First</a></li>
+                        <% } else { %>
+                            <li class="page-item"><a class="page-link" href="/<%=pageLink%>/1/?search_hotel_name=<%= searchHotelName %>">First</a></li>
+                        <% } %>
+                        <% var i = (Number(current) > 5 ? Number(current) - 4 : 1) %>
+                        <% if (i !== 1) { %>
+                            <li class="page-item disabled"><a>...</a></li>
+                        <% } %>
+                        <% for (; i <= (Number(current) + 4) && i <= pages; i++) { %>
+                            <% if (i == current) { %>
+                                <li class="page-item active"><a class="page-link"><%= i %></a></li>
+                            <% } else { %>
+                                <li class="page-item"><a class="page-link" href="/<%=pageLink%>/<%= i %>/?search_hotel_name=<%= searchHotelName %>"><%= i %></a></li>
+                            <% } %>
+                            <% if (i == Number(current) + 4 && i < pages) { %>
+                                <li class="page-item disabled"><a>...</a></li>
+                            <% } %>
+                        <% } %>
+                        <% if (current == pages) { %>
+                            <li class="page-item disabled"><a class="page-link">Last</a></li>
+                        <% } else { %>
+                            <li class="page-item"><a class="page-link" href="/<%=pageLink%>/<%= pages %>/?search_hotel_name=<%= searchHotelName %>">Last</a></li>
+                        <% } %>
+                    </ul>
+                <% } %>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Footer -->
+      <% include ../partials/footer %>
+    </div>
+  </div>
+
+  <!-- Include scripts -->
+  <% include ../partials/scripts %>
+</body>

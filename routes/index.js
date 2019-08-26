@@ -11,6 +11,7 @@ const mountHotelRoutes = require('../features/hotel/routes');
 const mountSiteRoutes = require('../features/site/routes');
 const mountCrawlSettingRoutes = require('../features/crawl-setting/routes');
 const mountCrawlResultRoutes = require('../features/crawl-result/routes');
+const mountReservationSettingRoutes = require('../features/reservation-setting/routes');
 
 function isAuthenticated(req, res, next) {
   if (req.user && req.isAuthenticated()) {
@@ -46,5 +47,6 @@ mountHotelRoutes(router, [isAuthenticated]);
 mountSiteRoutes(router, [isAuthenticated]);
 mountCrawlSettingRoutes(router, [isAuthenticated]);
 mountCrawlResultRoutes(router, [isAuthenticated]);
+mountReservationSettingRoutes(router, [isAuthenticated]);
 
 module.exports = router;
