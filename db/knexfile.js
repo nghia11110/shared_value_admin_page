@@ -25,6 +25,7 @@ module.exports = {
     seeds: {
       directory: './seeds',
     },
+    searchPath: ['shared_value', 'public'],
   },
 
   staging: {
@@ -47,6 +48,7 @@ module.exports = {
     seeds: {
       directory: './seeds',
     },
+    searchPath: ['shared_value', 'public'],
   },
 
   production: {
@@ -69,6 +71,7 @@ module.exports = {
     seeds: {
       directory: './seeds',
     },
+    searchPath: ['shared_value', 'public'],
   },
 
   test: {
@@ -84,5 +87,6 @@ module.exports = {
       min: 2,
       max: 10,
     },
+    searchPath: ['shared_value', 'public'],
   },
 };
