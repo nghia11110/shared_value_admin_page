@@ -3,9 +3,6 @@ yarn.lock
 yarn-error.log
 .vscode
 /dist
-public/css/*.min.css
-public/js/*.min.js
-package-lock.json
 /env-files/development.env
 /env-files/production.env
 /env-files/staging.env
