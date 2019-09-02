@@ -43,7 +43,7 @@
                     <div class="col-lg-12">
                       <div class="form-group">
                         <label class="form-control-label" for="input-name">サイト名</label>
-                        <input type="text" id="input-name" class="form-control form-control-alternative" name="sitename" placeholder="例：rakuten" value="">
+                        <input type="text" id="input-name" class="form-control form-control-alternative" name="sitename" placeholder="例：rakuten" value="" required>
                         <% if (locals.messages && locals.messages.errors && locals.messages.errors.name) { %>
                           <strong class="invalid-feedback" style="display: block"><%= locals.messages.errors.name %></strong>
                         <% } %>
