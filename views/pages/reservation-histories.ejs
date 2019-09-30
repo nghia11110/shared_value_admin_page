@@ -1,0 +1,143 @@
+<body>
+  <!-- Sidenav -->
+  <% include ../partials/sidebar %>
+  <!-- Main content -->
+  <div class="main-content">
+    <!-- Top navbar -->
+    <% include ../partials/navbar %>
+    <!-- Header -->
+    <% include ../partials/header %>
+    <!-- Page content -->
+    <div class="container-fluid mt--7">
+      <div class="row">
+        <div class="col-xl-12 mb-5 mb-xl-0">
+          <div class="card bg-gradient-default shadow">
+            <form action="/crawl-results" method="GET" id="get-crawl-result">
+              <div class="card-header bg-transparent">
+                <h1 class="text-white mb-0">予約履歴</h1>
+                <div class="row">
+                  <div class="col">
+                    <div class="row">
+                      <div class="col-lg-12">
+                        <div class="form-group">
+                          <label class="form-control-label text-white mb-0" for="input-name">ホテル名</label>
+                          <select class="custom-select crawl-results-hotel-id" name="hotel_id" form="get-crawl-result">
+                            <% hotelData.forEach(hotel => { %>
+                              <% if (hotel.id == query.hotel_id) { %>
+                                <option value="<%= hotel.id %>" selected><%= hotel.id %>. <%= hotel.name %></option>
+                              <% } else { %>
+                                <option value="<%= hotel.id %>"><%= hotel.id %>. <%= hotel.name %></option>
+                              <% } %>
+                            <% }) %>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-lg-12">
+                        <div class="form-group">
+                          <label class="form-control-label text-white mb-0" for="input-name">部屋タイプ</label>
+                          <select class="custom-select crawl-results-hotel-room-type-id" name="hotel_room_type_id" form="get-crawl-result">
+                            <% hotelData.forEach(hotel => { %>
+                              <!-- <option class="hotel_id-<%= hotel.id %>" value="" style="display:none">全て</option -->>
+                              <% hotel.hotel_room_types.forEach(hotelRoomType => { %>
+                                <% if (hotelRoomType.data.id == query.hotel_room_type_id) { %>
+                                  <option class="hotel_id-<%= hotelRoomType.data.hotel_id %>" value="<%= hotelRoomType.data.id %>" style="display:none" selected><%= hotelRoomType.data.id %>. <%= hotelRoomType.data.name %></option>
+                                <% } else { %>
+                                  <option class="hotel_id-<%= hotelRoomType.data.hotel_id %>" value="<%= hotelRoomType.data.id %>" style="display:none"><%= hotelRoomType.data.id %>. <%= hotelRoomType.data.name %></option>
+                                <% } %>
+                              <% }) %>
+                            <% }) %>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-lg-12">
+                        <div class="form-group">
+                          <label class="form-control-label text-white mb-0" for="input-name">サイト</label>
+                          <select class="custom-select" name="site_id" form="get-crawl-result">
+                            <% siteData.forEach(site => { %>
+                              <% if(site.id == query.site_id) { %>
+                                <option value="<%= site.id %>" selected><%= site.id %>. <%= site.name %></option>
+                              <% } else { %>
+                                <option value="<%= site.id %>"><%= site.id %>. <%= site.name %></option>
+                              <% } %>
+                            <% }) %>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col">
+                    <div class="form-group">
+                      <label class="form-control-label text-white mb-0" for="input-name">From ~ To</label>
+                      <div class="row">
+                        <div class="input-daterange datepicker row align-items-center">
+                          <div class="col">
+                            <div class="form-group">
+                              <div class="input-group input-group-alternative">
+                                <div class="input-group-prepend">
+                                  <span class="input-group-text"><i class="ni ni-calendar-grid-58"></i></span>
+                                </div>
+                                <input class="form-control" name="start_date" placeholder="Start date" type="text" value="<%= query.start_date %>" autocomplete="off">
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col">
+                            <div class="form-group">
+                              <div class="input-group input-group-alternative">
+                                <div class="input-group-prepend">
+                                  <span class="input-group-text"><i class="ni ni-calendar-grid-58"></i></span>
+                                </div>
+                                <input class="form-control" name="end_date" placeholder="End date" type="text" value="<%= query.end_date %>" autocomplete="off">
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-lg-12 text-center">
+                          <button class="btn btn-primary mt-4 mb-4">検索</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <input id="crawl-results-chart-type" type="text" name="chart_type" value="<%= query.chart_type%>" style="display:none">
+                </div>
+              </div>
+            </form>
+            <div class="card-body">
+              <div class="col">
+                <ul class="nav nav-pills justify-content-end">
+                  <li id="crawl-results-chart1" class="nav-item mr-2 mr-md-0" data-toggle="chart" data-target="#chart-sales" data-update='{"data":{"datasets":<%= JSON.stringify(hotelRoomTypeSeparateSalesValue)%>,"labels":<%= JSON.stringify(initData.map((init) => init.date))%>},"options":{"title":{"text":"部屋タイプ別金額"}}}' data-prefix="¥" data-suffix="">
+                    <a href="#" class="nav-link py-2 px-3 <%= !query.chart_type || query.chart_type === 'crawl-results-chart1' ? 'active' : ''%>" data-toggle="tab">
+                      <span class="d-none d-md-block">部屋タイプ別金額</span>
+                      <!-- <span class="d-md-none">M</span> -->
+                    </a>
+                  </li>
+                </ul>
+              </div>
+              <div class="col">
+                <input type="image" id="btnZoomInCrawlResultChart" style="height: 30px; width: 30px;float: right" src="https://img.icons8.com/cute-clipart/64/000000/plus.png" />
+                <input type="image" id="btnZoomOutCrawlResultChart" style="height: 30px; width: 30px;float: right" src="https://img.icons8.com/color/48/000000/minus.png" />
+              </div>
+              <!-- Chart -->
+              <div id="crawl-results-chart" class="chart" style="margin-top: 30px; height: 850px;">
+                <!-- Chart wrapper -->
+                <% if (!query.chart_type || query.chart_type === 'crawl-results-chart1') { %>
+                  <canvas id="chart-sales" class="chart-canvas" data-init='{"data":{"datasets":<%= JSON.stringify(hotelRoomTypeSeparateSalesValue)%>,"labels":<%= JSON.stringify(initData.map((init) => init.date))%>},"options":{"title":{"text":"部屋タイプ別金額"}}}' data-prefix="¥" data-suffix=""></canvas>
+                <% } %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Footer -->
+      <% include ../partials/footer %>
+    </div>
+  </div>
+  <!-- Include scripts -->
+  <% include ../partials/scripts %>
+</body>
+
