@@ -63,10 +63,6 @@ async function loadPageCrawlResults(req, res) {
 
       // init data
       hotelRoomTypeSeparateSalesValue = crawlResultService.makeHotelRoomTypeSeparateSalesValue(data);
-      stayNumberSeparateAverageSalesValue = crawlResultService.makeStayNumberSeparateAverageSalesValue(data);
-      weekdayHotelRoomTypeSeparateAverageSalesValue = crawlResultService.makeWeekdayHotelRoomTypeSeparateAverageSalesValue(data);
-      stayNumberSeparateRemainRooms = crawlResultService.makeStayNumberSeparateRemainRooms(data);
-      smokingStateSeparateRemainRooms = crawlResultService.makeSmokingStateSeparateRemainRooms(data);
       // console.log(data[0], data[2]);
     }
   } catch (error) {
@@ -80,14 +76,9 @@ async function loadPageCrawlResults(req, res) {
   // render view
   res.render('pages/reservation-histories', {
     hotelRoomTypeSeparateSalesValue,
-    stayNumberSeparateAverageSalesValue ,
-    weekdayHotelRoomTypeSeparateAverageSalesValue,
-    stayNumberSeparateRemainRooms,
-    smokingStateSeparateRemainRooms,
     hotelData: hotelData.data,
     siteData: siteData.data,
     initData,
-    weekdayArray: WEEKDAY_ARRAY,
   });
 }
 

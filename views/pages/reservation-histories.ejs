@@ -109,16 +109,6 @@
             </form>
             <div class="card-body">
               <div class="col">
-                <ul class="nav nav-pills justify-content-end">
-                  <li id="crawl-results-chart1" class="nav-item mr-2 mr-md-0" data-toggle="chart" data-target="#chart-sales" data-update='{"data":{"datasets":<%= JSON.stringify(hotelRoomTypeSeparateSalesValue)%>,"labels":<%= JSON.stringify(initData.map((init) => init.date))%>},"options":{"title":{"text":"部屋タイプ別金額"}}}' data-prefix="¥" data-suffix="">
-                    <a href="#" class="nav-link py-2 px-3 <%= !query.chart_type || query.chart_type === 'crawl-results-chart1' ? 'active' : ''%>" data-toggle="tab">
-                      <span class="d-none d-md-block">部屋タイプ別金額</span>
-                      <!-- <span class="d-md-none">M</span> -->
-                    </a>
-                  </li>
-                </ul>
-              </div>
-              <div class="col">
                 <input type="image" id="btnZoomInCrawlResultChart" style="height: 30px; width: 30px;float: right" src="https://img.icons8.com/cute-clipart/64/000000/plus.png" />
                 <input type="image" id="btnZoomOutCrawlResultChart" style="height: 30px; width: 30px;float: right" src="https://img.icons8.com/color/48/000000/minus.png" />
               </div>
@@ -126,7 +116,7 @@
               <div id="crawl-results-chart" class="chart" style="margin-top: 30px; height: 850px;">
                 <!-- Chart wrapper -->
                 <% if (!query.chart_type || query.chart_type === 'crawl-results-chart1') { %>
-                  <canvas id="chart-sales" class="chart-canvas" data-init='{"data":{"datasets":<%= JSON.stringify(hotelRoomTypeSeparateSalesValue)%>,"labels":<%= JSON.stringify(initData.map((init) => init.date))%>},"options":{"title":{"text":"部屋タイプ別金額"}}}' data-prefix="¥" data-suffix=""></canvas>
+                  <canvas id="chart-groupableBars" class="chart-canvas" data-init='{"data":{"datasets":<%= JSON.stringify(hotelRoomTypeSeparateSalesValue)%>,"labels":<%= JSON.stringify(initData.map((init) => init.date))%>}' data-prefix="¥" data-suffix=""></canvas>
                 <% } %>
               </div>
             </div>

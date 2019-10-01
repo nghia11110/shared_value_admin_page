@@ -1124,3 +1124,190 @@ var SalesChart = (function() {
 	}
 
 })();
+
+Chart.defaults.groupableBar = Chart.helpers.clone(Chart.defaults.bar);
+
+var helpers = Chart.helpers;
+Chart.controllers.groupableBar = Chart.controllers.bar.extend({
+  calculateBarX: function (index, datasetIndex) {
+    // position the bars based on the stack index
+    var stackIndex = this.getMeta().stackIndex;
+    return Chart.controllers.bar.prototype.calculateBarX.apply(this, [index, stackIndex]);
+  },
+
+  hideOtherStacks: function (datasetIndex) {
+    var meta = this.getMeta();
+    var stackIndex = meta.stackIndex;
+
+    this.hiddens = [];
+    for (var i = 0; i < datasetIndex; i++) {
+      var dsMeta = this.chart.getDatasetMeta(i);
+      if (dsMeta.stackIndex !== stackIndex) {
+        this.hiddens.push(dsMeta.hidden);
+        dsMeta.hidden = true;
+      }
+    }
+  },
+
+  unhideOtherStacks: function (datasetIndex) {
+    var meta = this.getMeta();
+    var stackIndex = meta.stackIndex;
+
+    for (var i = 0; i < datasetIndex; i++) {
+      var dsMeta = this.chart.getDatasetMeta(i);
+      if (dsMeta.stackIndex !== stackIndex) {
+        dsMeta.hidden = this.hiddens.unshift();
+      }
+    }
+  },
+
+  calculateBarY: function (index, datasetIndex) {
+    this.hideOtherStacks(datasetIndex);
+    var barY = Chart.controllers.bar.prototype.calculateBarY.apply(this, [index, datasetIndex]);
+    this.unhideOtherStacks(datasetIndex);
+    return barY;
+  },
+
+  calculateBarBase: function (datasetIndex, index) {
+    this.hideOtherStacks(datasetIndex);
+    var barBase = Chart.controllers.bar.prototype.calculateBarBase.apply(this, [datasetIndex, index]);
+    this.unhideOtherStacks(datasetIndex);
+    return barBase;
+  },
+
+  getBarCount: function () {
+    var stacks = [];
+
+    // put the stack index in the dataset meta
+    Chart.helpers.each(this.chart.data.datasets, function (dataset, datasetIndex) {
+      var meta = this.chart.getDatasetMeta(datasetIndex);
+      if (meta.bar && this.chart.isDatasetVisible(datasetIndex)) {
+        var stackIndex = stacks.indexOf(dataset.stack);
+        if (stackIndex === -1) {
+          stackIndex = stacks.length;
+          stacks.push(dataset.stack);
+        }
+        meta.stackIndex = stackIndex;
+      }
+    }, this);
+
+    this.getMeta().stacks = stacks;
+    return stacks.length;
+  },
+});
+
+//
+// GroupableBar chart
+//
+
+var GroupableBarCharts = (function() {
+
+	//
+	// Variables
+	//
+
+	var $chart = $('#chart-groupableBars');
+	var chartData = $chart.data('init') ? $chart.data('init').data : {};
+	var prefix = $chart.data('prefix') ? $chart.data('prefix') : '';
+	var suffix = $chart.data('suffix') ? $chart.data('suffix') : '';
+
+	var dynamicColors = function() {
+		var r = Math.floor(Math.random() * 255);
+		var g = Math.floor(Math.random() * 255);
+		var b = Math.floor(Math.random() * 255);
+		return "rgb(" + r + "," + g + "," + b + ")";
+	};
+
+	if (!$.isEmptyObject(chartData) && chartData.datasets) {
+		chartData.datasets = chartData.datasets.map(function(el) {
+			var o = Object.assign({}, el);
+			o.backgroundColor = dynamicColors();
+			// o.lineTension = 0;
+			return o;
+		});
+	}
+
+	//
+	// Methods
+	//
+
+	// Init chart
+	function initGroupableBarCharts($chart) {
+
+		// Create chart
+		var groupableBarChart = new Chart($chart, {
+			type: 'groupableBar',
+			options: {
+				legend: {
+					labels: {
+						generateLabels: function(chart) {
+							return Chart.defaults.global.legend.labels.generateLabels.apply(this, [chart]).filter(function(item, i){
+								return i <= 2;
+							});
+						}
+					}
+				},
+				scales: {
+					yAxes: [{
+						ticks: {
+							callback: function(value) {
+								if (!(value % 10)) {
+									//return '$' + value + 'k'
+									return value
+								}
+							}
+						},
+						stacked: true,
+					}]
+				},
+				tooltips: {
+					callbacks: {
+						label: function(item, data) {
+							var label = data.datasets[item.datasetIndex].label || '';
+							var backgroundColor = data.datasets[item.datasetIndex].backgroundColor || '';
+							var yLabel = item.yLabel;
+							var content = '';
+
+							if (data.datasets.length > 1) {
+								content += '<span class="popover-body-label mr-auto" style="color: white; background-color: ' + backgroundColor + '">' + label + '</span>';
+							}
+
+							content += '<span class="popover-body-value" style="margin-left: 5px">' + yLabel + '</span>';
+
+							return content;
+						}
+					}
+				}
+			},
+			data: {
+				labels: !$.isEmptyObject(chartData) ? chartData.labels : [],
+				datasets: !$.isEmptyObject(chartData) ? chartData.datasets : [{}]
+				// labels: ["9/30", "10/01"],
+				// datasets: [
+				// 	{
+				// 	  label: "10/05",
+				// 	  backgroundColor: "rgb(99,255,132)",
+				// 	  data: [20,30],
+				// 	  stack: 1
+				// 	},
+				// 	{
+				// 	  label: "10/06",
+				// 	  backgroundColor: "rgb(99,132,255)",
+				// 	  data: [30,40],
+				// 	  stack: 1
+				// 	},
+				// ]
+			}
+		});
+
+		// Save to jQuery object
+		$chart.data('chart', groupableBarChart);
+	}
+
+
+	// Init chart
+	if ($chart.length) {
+		initGroupableBarCharts($chart);
+	}
+
+})();
