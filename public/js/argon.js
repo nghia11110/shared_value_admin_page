@@ -1288,14 +1288,14 @@ var GroupableBarCharts = (function() {
 						label: "10/05",
 						backgroundColor: "rgb(99,255,132)",
 						data: [20000,30000],
-						suffixExtraInfo: [1,2],
+						suffixExtraInfo: [2,3],
 						stack: 1
 					},
 					{
 						label: "10/06",
 						backgroundColor: "rgb(255,99,132)",
-						data: [30000,40000],
-						suffixExtraInfo: [2,4],
+						data: [40000,50000],
+						suffixExtraInfo: [4,5],
 						stack: 1
 					},
 				]

@@ -14,44 +14,30 @@ async function loadPageCrawlResults(req, res) {
   const siteData = await getAllSites({});
   // console.log(req.query);
   const conditions = JSON.parse(JSON.stringify(req.query));
-  const { crawl_created_at,
-    start_date,
+  const { start_date,
     end_date,
-    hotel_id
+    hotel_id,
+    hotel_room_type_id
   } = conditions;
   let data = [];
-  let hotelRoomTypeSeparateSalesValue = [],
-      stayNumberSeparateAverageSalesValue = [],
-      weekdayHotelRoomTypeSeparateAverageSalesValue = [],
-      stayNumberSeparateRemainRooms = [],
-      smokingStateSeparateRemainRooms= [];
+  let hotelRoomTypeSeparateSalesValue = [];
   const initData = dateTimeUtil
     .getDays(start_date, end_date)
     .map(day => ({ sales_value: '0', remain_rooms: '0', date: day }));
   const promise = [];
 
   try {
-    if (crawl_created_at && start_date && end_date) {
+    if (start_date && end_date) {
       const hotel = hotelData.data.filter(hd => parseInt(hd.id) === parseInt(hotel_id))[0];
-      if (conditions.hotel_room_type_id) {
-        const hotelRoomType = hotel.hotel_room_types
-          .filter(hrt1 => parseInt(conditions.hotel_room_type_id) === parseInt(hrt1.data.id))[0];
+      const hotelRoomType = hotel.hotel_room_types
+        .filter(hrt1 => parseInt(conditions.hotel_room_type_id) === parseInt(hrt1.data.id))[0];
 
-        const obj = {};
-        obj.label = hotelRoomType.data.id + '. ' + hotelRoomType.data.name;
-        obj.stay_numbers = hotelRoomType.data.stay_numbers;
-        obj.data = await getAllCrawlResults(conditions);
-        data.push(obj);
-      } else {
-        hotel.hotel_room_types.forEach(hrt2 => {
-          conditions.hotel_room_type_id = hrt2.data.id;
-          promise.push(
-            getAllCrawlResults(conditions)
-              .then(res => ({ label: hrt2.data.id + '. ' + hrt2.data.name, stay_numbers: hrt2.data.stay_numbers, data: res }))
-          );
-        });
-        data = await Promise.all(promise);
-      }
+      const obj = {};
+      obj.label = hotelRoomType.data.id + '. ' + hotelRoomType.data.name;
+      obj.stay_numbers = hotelRoomType.data.stay_numbers;
+      obj.data = await getAllCrawlResults(conditions);
+      data.push(obj);
+
 
       // rewrite data
       data.forEach(elem => {
