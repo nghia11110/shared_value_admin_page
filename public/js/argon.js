@@ -1252,8 +1252,7 @@ var GroupableBarCharts = (function() {
 						ticks: {
 							callback: function(value) {
 								if (!(value % 10)) {
-									//return '$' + value + 'k'
-									return value
+									return prefix + value
 								}
 							}
 						},
@@ -1266,13 +1265,14 @@ var GroupableBarCharts = (function() {
 							var label = data.datasets[item.datasetIndex].label || '';
 							var backgroundColor = data.datasets[item.datasetIndex].backgroundColor || '';
 							var yLabel = item.yLabel;
+							var suffixExtraInfo = data.datasets[item.datasetIndex].suffixExtraInfo && data.datasets[item.datasetIndex].suffixExtraInfo[item.index] || '';
 							var content = '';
 
 							if (data.datasets.length > 1) {
 								content += '<span class="popover-body-label mr-auto" style="color: white; background-color: ' + backgroundColor + '">' + label + '</span>';
 							}
 
-							content += '<span class="popover-body-value" style="margin-left: 5px">' + yLabel + '</span>';
+							content += '<span class="popover-body-value" style="margin-left: 5px">' + prefix + yLabel + ' ' + suffixExtraInfo + suffix + '</span>';
 
 							return content;
 						}
@@ -1280,23 +1280,25 @@ var GroupableBarCharts = (function() {
 				}
 			},
 			data: {
-				labels: !$.isEmptyObject(chartData) ? chartData.labels : [],
-				datasets: !$.isEmptyObject(chartData) ? chartData.datasets : [{}]
-				// labels: ["9/30", "10/01"],
-				// datasets: [
-				// 	{
-				// 	  label: "10/05",
-				// 	  backgroundColor: "rgb(99,255,132)",
-				// 	  data: [20,30],
-				// 	  stack: 1
-				// 	},
-				// 	{
-				// 	  label: "10/06",
-				// 	  backgroundColor: "rgb(99,132,255)",
-				// 	  data: [30,40],
-				// 	  stack: 1
-				// 	},
-				// ]
+				// labels: !$.isEmptyObject(chartData) ? chartData.labels : [],
+				// datasets: !$.isEmptyObject(chartData) ? chartData.datasets : [{}]
+				labels: ["9/30", "10/01"],
+				datasets: [
+					{
+						label: "10/05",
+						backgroundColor: "rgb(99,255,132)",
+						data: [20000,30000],
+						suffixExtraInfo: [1,2],
+						stack: 1
+					},
+					{
+						label: "10/06",
+						backgroundColor: "rgb(255,99,132)",
+						data: [30000,40000],
+						suffixExtraInfo: [2,4],
+						stack: 1
+					},
+				]
 			}
 		});
 

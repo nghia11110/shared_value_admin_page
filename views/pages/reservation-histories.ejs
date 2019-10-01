@@ -116,7 +116,7 @@
               <div id="crawl-results-chart" class="chart" style="margin-top: 30px; height: 850px;">
                 <!-- Chart wrapper -->
                 <% if (!query.chart_type || query.chart_type === 'crawl-results-chart1') { %>
-                  <canvas id="chart-groupableBars" class="chart-canvas" data-init='{"data":{"datasets":<%= JSON.stringify(hotelRoomTypeSeparateSalesValue)%>,"labels":<%= JSON.stringify(initData.map((init) => init.date))%>}' data-prefix="¥" data-suffix=""></canvas>
+                  <canvas id="chart-groupableBars" class="chart-canvas" data-init='{"data":{"datasets":<%= JSON.stringify(hotelRoomTypeSeparateSalesValue)%>,"labels":<%= JSON.stringify(initData.map((init) => init.date))%>}' data-prefix="¥" data-suffix="部屋"></canvas>
                 <% } %>
               </div>
             </div>
