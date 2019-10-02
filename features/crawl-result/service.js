@@ -145,7 +145,16 @@ class CrawlResultService {
   * output:
   */
   makeReservationHistoriesData(data) {
-    data = { '2019-07-16': [],
+    data = { '2019-07-16':
+            [{ "checkin": "2019-07-17T00:00:00.000Z",
+                 "price_total": 34780,
+                 "remain_rooms": 2 },
+               { "checkin": "2019-07-18T00:00:00.000Z",
+                 "price_total": null,
+                 "remain_rooms": 0 },
+               { "checkin": "2019-07-19T00:00:00.000Z",
+                 "price_total": null,
+                 "remain_rooms": 0 }],
             '2019-07-17':
              [ { "checkin": "2019-07-17T00:00:00.000Z",
                  "price_total": 34780,
@@ -175,31 +184,40 @@ class CrawlResultService {
       currentDate = key;
       nextDate = moment(currentDate, "YYYY-MM-DD").add(1, 'days').format("YYYY-MM-DD");
 
-      if (!data[currentDate].length || !data[nextDate].length) {
-
-      } else {
+      if (data[currentDate].length && data[nextDate] && data[nextDate].length) {
         data[currentDate].forEach((stockInfo) => {
           if (stockInfo.remain_rooms !== 0) {
             const stockInfoInNextDate = data[nextDate].filter(ele => ele.checkin === stockInfo.checkin);
             const obj = {};
+            let offset;
             obj.data = [];
             obj.suffixExtraInfo = [];
             obj.label = moment(stockInfo.checkin, "YYYY-MM-DD").format("YYYY-MM-DD")
+
             if (!stockInfoInNextDate.length) {
-
-            } else if(stockInfoInNextDate[0].remain_rooms < stockInfo.remain_rooms) {
-              const offet = stockInfo.remain_rooms - stockInfoInNextDate[0].remain_rooms;
-              obj.data.push(offet * stockInfo.price_total);
-              obj.suffixExtraInfo.push(offet);
+              offset = stockInfo.remain_rooms;
+            } else if(stockInfoInNextDate[0].remain_rooms !== stockInfo.remain_rooms) {
+              offset = stockInfo.remain_rooms - stockInfoInNextDate[0].remain_rooms;
             } else {
-
+              offset = 0;
             }
-          reservationHistories.push(obj);
+            obj.data.push(offset * stockInfo.price_total);
+            obj.suffixExtraInfo.push(offset);
+
+            const k = Object.keys(reservationHistories).find(k1 => reservationHistories[k1].label === obj.label);
+            // console.log("nghia ", k, k !== undefined);
+            if (k !== undefined) {
+              reservationHistories[k].data = reservationHistories[k].data.concat(obj.data);
+              reservationHistories[k].suffixExtraInfo = reservationHistories[k].suffixExtraInfo.concat(obj.suffixExtraInfo);
+            } else {
+              reservationHistories.push(obj);
+            }
           }
         });
       }
-      // console.log(reservationHistories);
     });
+
+    // console.log(reservationHistories);
   }
 }
 
