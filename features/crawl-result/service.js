@@ -1,3 +1,5 @@
+const moment = require('moment');
+
 const { STAY_NUMBER_TEXT, SMOKING, NO_SMOKING, SMOKING_STATE } = require('./constants');
 const dateTimeUtil = require('../util/datetime-util');
 
@@ -115,6 +117,89 @@ class CrawlResultService {
       }
     });
     return smokingStateSeparateRemainRooms;
+  }
+
+  /* reservation histories
+  * input: data = { '2019-07-16': [],
+            '2019-07-17':
+             [ { checkin: 2019-07-17T00:00:00.000Z,
+                 price_total: 34780,
+                 remain_rooms: 1 },
+               { checkin: 2019-07-18T00:00:00.000Z,
+                 price_total: null,
+                 remain_rooms: 0 },
+               { checkin: 2019-07-19T00:00:00.000Z,
+                 price_total: null,
+                 remain_rooms: 0 } ],
+            '2019-07-18':
+              [ { checkin: 2019-07-17T00:00:00.000Z,
+                 price_total: null,
+                 remain_rooms: 0 },
+               { checkin: 2019-07-18T00:00:00.000Z,
+                 price_total: null,
+                 remain_rooms: 0 },
+               { checkin: 2019-07-19T00:00:00.000Z,
+                 price_total: null,
+                 remain_rooms: 0 } ],
+          }
+  * output:
+  */
+  makeReservationHistoriesData(data) {
+    data = { '2019-07-16': [],
+            '2019-07-17':
+             [ { "checkin": "2019-07-17T00:00:00.000Z",
+                 "price_total": 34780,
+                 "remain_rooms": 1 },
+               { "checkin": "2019-07-18T00:00:00.000Z",
+                 "price_total": null,
+                 "remain_rooms": 0 },
+               { "checkin": "2019-07-19T00:00:00.000Z",
+                 "price_total": null,
+                 "remain_rooms": 0 } ],
+            '2019-07-18':
+              [ { "checkin": "2019-07-17T00:00:00.000Z",
+                 "price_total": null,
+                 "remain_rooms": 0 },
+               { "checkin": "2019-07-18T00:00:00.000Z",
+                 "price_total": null,
+                 "remain_rooms": 0 },
+               { "checkin": "2019-07-19T00:00:00.000Z",
+                 "price_total": null,
+                 "remain_rooms": 0 } ],
+          }
+    const reservationHistories = [];
+    let currentDate;
+    let nextDate;
+
+    Object.keys(data).forEach((key) => {
+      currentDate = key;
+      nextDate = moment(currentDate, "YYYY-MM-DD").add(1, 'days').format("YYYY-MM-DD");
+
+      if (!data[currentDate].length || !data[nextDate].length) {
+
+      } else {
+        data[currentDate].forEach((stockInfo) => {
+          if (stockInfo.remain_rooms !== 0) {
+            const stockInfoInNextDate = data[nextDate].filter(ele => ele.checkin === stockInfo.checkin);
+            const obj = {};
+            obj.data = [];
+            obj.suffixExtraInfo = [];
+            obj.label = moment(stockInfo.checkin, "YYYY-MM-DD").format("YYYY-MM-DD")
+            if (!stockInfoInNextDate.length) {
+
+            } else if(stockInfoInNextDate[0].remain_rooms < stockInfo.remain_rooms) {
+              const offet = stockInfo.remain_rooms - stockInfoInNextDate[0].remain_rooms;
+              obj.data.push(offet * stockInfo.price_total);
+              obj.suffixExtraInfo.push(offet);
+            } else {
+
+            }
+          reservationHistories.push(obj);
+          }
+        });
+      }
+      // console.log(reservationHistories);
+    });
   }
 }
 

@@ -1,6 +1,6 @@
 const moment = require('moment');
 
-const { getAllCrawlResults } = require('../repository');
+const { getAllCrawlResultsByCrawlDate } = require('../repository');
 const { getAllHotelWithHotelRoomTypes } = require('../../hotel/repository');
 const { getAllSites } = require('../../site/repository');
 const dateTimeUtil = require('../../util/datetime-util');
@@ -9,7 +9,7 @@ const crawlResultService = require('../service');
 
 const { FETCH_INFO_ERROR_MESSAGE, WEEKDAY_ARRAY } = require('../constants');
 
-async function loadPageCrawlResults(req, res) {
+async function loadPageReservationHistories(req, res) {
   const hotelData = await getAllHotelWithHotelRoomTypes({});
   const siteData = await getAllSites({});
   // console.log(req.query);
@@ -17,38 +17,24 @@ async function loadPageCrawlResults(req, res) {
   const { start_date,
     end_date,
     hotel_id,
-    hotel_room_type_id
   } = conditions;
-  let data = [];
-  let hotelRoomTypeSeparateSalesValue = [];
+  let data = {};
+  let reservationHistoriesData = [];
   const initData = dateTimeUtil
     .getDays(start_date, end_date)
     .map(day => ({ sales_value: '0', remain_rooms: '0', date: day }));
-  const promise = [];
 
   try {
     if (start_date && end_date) {
-      const hotel = hotelData.data.filter(hd => parseInt(hd.id) === parseInt(hotel_id))[0];
-      const hotelRoomType = hotel.hotel_room_types
-        .filter(hrt1 => parseInt(conditions.hotel_room_type_id) === parseInt(hrt1.data.id))[0];
-
-      const obj = {};
-      obj.label = hotelRoomType.data.id + '. ' + hotelRoomType.data.name;
-      obj.stay_numbers = hotelRoomType.data.stay_numbers;
-      obj.data = await getAllCrawlResults(conditions);
-      data.push(obj);
-
-
-      // rewrite data
-      data.forEach(elem => {
-        const tmp = elem.data
-          .map(e => ({ sales_value: e.sales_value ? e.sales_value : '0', remain_rooms: e.remain_rooms ? e.remain_rooms : '0', number_booking: e.number_booking ? e.number_booking : '0',date: moment(e.date).format("YYYY-MM-DD")}));
-        elem.data = arrayUtil.mergeArray(initData, tmp, "date")
-          .sort((a,b) => a.date > b.date ? 1 : -1);
-      });
-
+      currentDate = start_date;
+      while (moment(currentDate, "YYYY-MM-DD") <= moment(end_date, "YYYY-MM-DD")) {
+        conditions.crawl_created_at = currentDate;
+        data[currentDate] = await getAllCrawlResultsByCrawlDate(conditions);
+        currentDate = moment(currentDate, "YYYY-MM-DD").add(1, 'days').format("YYYY-MM-DD");
+      }
+      // console.log(data);
       // init data
-      hotelRoomTypeSeparateSalesValue = crawlResultService.makeHotelRoomTypeSeparateSalesValue(data);
+      reservationHistoriesData = crawlResultService.makeReservationHistoriesData(data);
       // console.log(data[0], data[2]);
     }
   } catch (error) {
@@ -61,11 +47,11 @@ async function loadPageCrawlResults(req, res) {
 
   // render view
   res.render('pages/reservation-histories', {
-    hotelRoomTypeSeparateSalesValue,
+    reservationHistoriesData,
     hotelData: hotelData.data,
     siteData: siteData.data,
     initData,
   });
 }
 
-module.exports = loadPageCrawlResults;
+module.exports = loadPageReservationHistories;

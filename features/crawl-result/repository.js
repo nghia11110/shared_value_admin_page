@@ -24,6 +24,33 @@ async function getAllCrawlResults(condition) {
   return data;
 }
 
+async function getAllCrawlResultsByCrawlDate(condition) {
+  const { crawl_created_at,
+    hotel_id,
+    hotel_room_type_id,
+    site_id,
+    // start_date,
+    // end_date
+  } = condition;
+  const data = await knex('scrape_results')
+    .select([
+      'checkin',
+      'price_total',
+      'remain_rooms',
+    ])
+    .where({
+      hotel_id,
+      site_id,
+      hotel_room_type_id,
+    })
+    .whereRaw('??::date = ?', ['crawl_created_at', crawl_created_at])
+    .limit(3)
+    .orderBy('checkin', 'asc');
+    // console.log(data);
+  return data;
+}
+
 module.exports = {
-  getAllCrawlResults
+  getAllCrawlResults,
+  getAllCrawlResultsByCrawlDate
 };
