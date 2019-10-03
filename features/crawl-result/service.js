@@ -120,29 +120,24 @@ class CrawlResultService {
   }
 
   /* reservation histories
-  * input: data = { '2019-07-16': [],
-            '2019-07-17':
-             [ { checkin: 2019-07-17T00:00:00.000Z,
-                 price_total: 34780,
-                 remain_rooms: 1 },
-               { checkin: 2019-07-18T00:00:00.000Z,
-                 price_total: null,
-                 remain_rooms: 0 },
-               { checkin: 2019-07-19T00:00:00.000Z,
-                 price_total: null,
-                 remain_rooms: 0 } ],
-            '2019-07-18':
-              [ { checkin: 2019-07-17T00:00:00.000Z,
-                 price_total: null,
-                 remain_rooms: 0 },
-               { checkin: 2019-07-18T00:00:00.000Z,
-                 price_total: null,
-                 remain_rooms: 0 },
-               { checkin: 2019-07-19T00:00:00.000Z,
-                 price_total: null,
-                 remain_rooms: 0 } ],
-          }
-  * output:
+  * input: data
+  * output: [
+      {
+        data: [ 2000, 0 ],
+        suffixExtraInfo: [ 2, 0 ],
+        label: '2019-07-17'
+      },
+      {
+        data: [ 5000, 5000 ],
+        suffixExtraInfo: [ 1, 1 ],
+        label: '2019-07-18'
+      },
+      {
+        data: [ 0, 7000 ],
+        suffixExtraInfo: [ 0, 1 ],
+        label: '2019-07-19'
+      }
+    ]
   */
   makeReservationHistoriesData(data) {
     // data = { '2019-07-16':
