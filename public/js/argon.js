@@ -653,11 +653,13 @@ var Charts = (function() {
 
 								// Add body
 								bodyLines.forEach(function(body, i) {
-									var colors = model.labelColors[i];
-									var styles = 'background-color: ' + colors.backgroundColor;
-									var indicator = '<span class="badge badge-dot"><i class="bg-primary"></i></span>';
-									var align = (bodyLines.length > 1) ? 'justify-content-left' : 'justify-content-center';
-									html += '<div class="popover-body d-flex align-items-center ' + align + '">' + indicator + body + '</div>';
+									if (body.length) {
+										var colors = model.labelColors[i];
+										var styles = 'background-color: ' + colors.backgroundColor;
+										var indicator = '<span class="badge badge-dot"><i class="bg-primary"></i></span>';
+										var align = (bodyLines.length > 1) ? 'justify-content-left' : 'justify-content-center';
+										html += '<div class="popover-body d-flex align-items-center ' + align + '">' + indicator + body + '</div>';
+									}
 								});
 
 								$tooltip.html(html);
@@ -1210,6 +1212,7 @@ var GroupableBarCharts = (function() {
 	var chartData = $chart.data('init') ? $chart.data('init').data : {};
 	var prefix = $chart.data('prefix') ? $chart.data('prefix') : '';
 	var suffix = $chart.data('suffix') ? $chart.data('suffix') : '';
+	var isShowZeroDataInTooltip = $chart.data('is-show-zero-data-in-tooltip') !== undefined ? $chart.data('is-show-zero-data-in-tooltip') : true;
 
 	var dynamicColors = function() {
 		var r = Math.floor(Math.random() * 255);
@@ -1262,19 +1265,21 @@ var GroupableBarCharts = (function() {
 				tooltips: {
 					callbacks: {
 						label: function(item, data) {
-							var label = data.datasets[item.datasetIndex].label || '';
-							var backgroundColor = data.datasets[item.datasetIndex].backgroundColor || '';
-							var yLabel = item.yLabel;
-							var suffixExtraInfo = data.datasets[item.datasetIndex].suffixExtraInfo && data.datasets[item.datasetIndex].suffixExtraInfo[item.index] || '';
-							var content = '';
+							if (isShowZeroDataInTooltip || (!isShowZeroDataInTooltip && item.yLabel !== 0)) {
+								var label = data.datasets[item.datasetIndex].label || '';
+								var backgroundColor = data.datasets[item.datasetIndex].backgroundColor || '';
+								var yLabel = item.yLabel;
+								var suffixExtraInfo = data.datasets[item.datasetIndex].suffixExtraInfo && data.datasets[item.datasetIndex].suffixExtraInfo[item.index] || '';
+								var content = '';
 
-							if (data.datasets.length > 1) {
-								content += '<span class="popover-body-label mr-auto" style="color: white; background-color: ' + backgroundColor + '">' + label + '</span>';
+								if (data.datasets.length > 1) {
+									content += '<span class="popover-body-label mr-auto" style="color: white; background-color: ' + backgroundColor + '">' + label + '</span>';
+								}
+
+								content += '<span class="popover-body-value" style="margin-left: 5px">' + prefix + yLabel + ' ' + suffixExtraInfo + suffix + '</span>';
+
+								return content;
 							}
-
-							content += '<span class="popover-body-value" style="margin-left: 5px">' + prefix + yLabel + ' ' + suffixExtraInfo + suffix + '</span>';
-
-							return content;
 						}
 					}
 				}
@@ -1287,8 +1292,8 @@ var GroupableBarCharts = (function() {
 					{
 						label: "10/05",
 						backgroundColor: "rgb(99,255,132)",
-						data: [20000,30000],
-						suffixExtraInfo: [2,3],
+						data: [0,30000],
+						suffixExtraInfo: [0,3],
 						stack: 1
 					},
 					{
@@ -1301,7 +1306,7 @@ var GroupableBarCharts = (function() {
 					{
 						label: "10/07",
 						backgroundColor: "rgb(25,99,132)",
-						data: [40000,-50000],
+						data: [40000,50000],
 						suffixExtraInfo: [4,5],
 						stack: 1
 					},
