@@ -29,8 +29,6 @@ async function getAllCrawlResultsByCrawlDate(condition) {
     hotel_id,
     hotel_room_type_id,
     site_id,
-    // start_date,
-    // end_date
   } = condition;
   const data = await knex('scrape_results')
     .select([
@@ -44,9 +42,9 @@ async function getAllCrawlResultsByCrawlDate(condition) {
       hotel_room_type_id,
     })
     .whereRaw('??::date = ?', ['crawl_created_at', crawl_created_at])
-    .limit(3)
+    // .limit(3)
     .orderBy('checkin', 'asc');
-    // console.log(data);
+    // console.log(data.length);
   return data;
 }
 

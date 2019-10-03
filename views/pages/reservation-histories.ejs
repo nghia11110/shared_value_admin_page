@@ -114,9 +114,7 @@
               <!-- Chart -->
               <div id="crawl-results-chart" class="chart" style="margin-top: 30px; height: 850px;">
                 <!-- Chart wrapper -->
-                <% if (!query.chart_type || query.chart_type === 'crawl-results-chart1') { %>
-                  <canvas id="chart-groupableBars" class="chart-canvas" data-init='{"data":{"datasets":<%= JSON.stringify(reservationHistoriesData)%>,"labels":<%= JSON.stringify(initData.map((init) => init.date))%>}' data-prefix="¥" data-suffix="部屋"></canvas>
-                <% } %>
+                <canvas id="chart-groupableBars" class="chart-canvas" data-init='{"data":<%= JSON.stringify(reservationHistoriesData)%>}' data-prefix="¥" data-suffix="部屋" data-is-show-zero-data-in-tooltip="<%=false%>"></canvas>
               </div>
             </div>
           </div>

@@ -1225,7 +1225,7 @@ var GroupableBarCharts = (function() {
 		chartData.datasets = chartData.datasets.map(function(el) {
 			var o = Object.assign({}, el);
 			o.backgroundColor = dynamicColors();
-			// o.lineTension = 0;
+			o.stack = 1;
 			return o;
 		});
 	}
@@ -1285,32 +1285,32 @@ var GroupableBarCharts = (function() {
 				}
 			},
 			data: {
-				// labels: !$.isEmptyObject(chartData) ? chartData.labels : [],
-				// datasets: !$.isEmptyObject(chartData) ? chartData.datasets : [{}]
-				labels: ["9/30", "10/01"],
-				datasets: [
-					{
-						label: "10/05",
-						backgroundColor: "rgb(99,255,132)",
-						data: [0,30000],
-						suffixExtraInfo: [0,3],
-						stack: 1
-					},
-					{
-						label: "10/06",
-						backgroundColor: "rgb(255,99,132)",
-						data: [40000,-10000],
-						suffixExtraInfo: [4,1],
-						stack: 1
-					},
-					{
-						label: "10/07",
-						backgroundColor: "rgb(25,99,132)",
-						data: [40000,50000],
-						suffixExtraInfo: [4,5],
-						stack: 1
-					},
-				]
+				labels: !$.isEmptyObject(chartData) ? chartData.labels : [],
+				datasets: !$.isEmptyObject(chartData) ? chartData.datasets : [{}]
+				// labels: ["9/30", "10/01"],
+				// datasets: [
+				// 	{
+				// 		label: "10/05",
+				// 		backgroundColor: "rgb(99,255,132)",
+				// 		data: [0,30000],
+				// 		suffixExtraInfo: [0,3],
+				// 		stack: 1
+				// 	},
+				// 	{
+				// 		label: "10/06",
+				// 		backgroundColor: "rgb(255,99,132)",
+				// 		data: [40000,-10000],
+				// 		suffixExtraInfo: [4,1],
+				// 		stack: 1
+				// 	},
+				// 	{
+				// 		label: "10/07",
+				// 		backgroundColor: "rgb(25,99,132)",
+				// 		data: [40000,50000],
+				// 		suffixExtraInfo: [4,5],
+				// 		stack: 1
+				// 	},
+				// ]
 			}
 		});
 
