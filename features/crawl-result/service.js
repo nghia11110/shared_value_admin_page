@@ -146,35 +146,35 @@ class CrawlResultService {
   */
   makeReservationHistoriesData(data) {
     // data = { '2019-07-16':
-    //         [ { "checkin": "2019-07-17T00:00:00.000Z",
-    //              "price_total": 1000,
-    //              "remain_rooms": 3 },
-    //            { "checkin": "2019-07-18T00:00:00.000Z",
-    //              "price_total": 5000,
-    //              "remain_rooms": 3 },
-    //            { "checkin": "2019-07-19T00:00:00.000Z",
-    //              "price_total": null,
-    //              "remain_rooms": 0 }],
+    //         [ { checkin: "2019-07-17T00:00:00.000Z",
+    //              price_total: 1000,
+    //              remain_rooms: 3 },
+    //            { checkin: "2019-07-18T00:00:00.000Z",
+    //              price_total: 5000,
+    //              remain_rooms: 3 },
+    //            { checkin: "2019-07-19T00:00:00.000Z",
+    //              price_total: null,
+    //              remain_rooms: 0 }],
     //         '2019-07-17':
-    //          [ { "checkin": "2019-07-17T00:00:00.000Z",
-    //              "price_total": 1000,
-    //              "remain_rooms": 1 },
-    //            { "checkin": "2019-07-18T00:00:00.000Z",
-    //              "price_total": 5000,
-    //              "remain_rooms": 2 },
-    //            { "checkin": "2019-07-19T00:00:00.000Z",
-    //              "price_total": 7000,
-    //              "remain_rooms": 1 } ],
+    //          [ { checkin: "2019-07-17T00:00:00.000Z",
+    //              price_total: 1000,
+    //              remain_rooms: 1 },
+    //            { checkin: "2019-07-18T00:00:00.000Z",
+    //              price_total: 5000,
+    //              remain_rooms: 2 },
+    //            { checkin: "2019-07-19T00:00:00.000Z",
+    //              price_total: 7000,
+    //              remain_rooms: 1 } ],
     //         '2019-07-18':
-    //           [ /*{ "checkin": "2019-07-17T00:00:00.000Z",
-    //              "price_total": 1000,
-    //              "remain_rooms": 1 },*/
-    //            { "checkin": "2019-07-18T00:00:00.000Z",
-    //              "price_total": 5000,
-    //              "remain_rooms": 1 },
-    //            { "checkin": "2019-07-19T00:00:00.000Z",
-    //              "price_total": 7000,
-    //              "remain_rooms": 0 } ],
+    //           [ /*{ checkin: "2019-07-17T00:00:00.000Z",
+    //              price_total: 1000,
+    //              remain_rooms: 1 },*/
+    //            { checkin: "2019-07-18T00:00:00.000Z",
+    //              price_total: 5000,
+    //              remain_rooms: 1 },
+    //            { checkin: "2019-07-19T00:00:00.000Z",
+    //              price_total: 7000,
+    //              remain_rooms: 0 } ],
     //       }
     const reservationHistories = [];
     const labels = [];
@@ -188,7 +188,8 @@ class CrawlResultService {
 
       if (data[currentDate].length && data[nextDate] && data[nextDate].length) {
         data[currentDate].forEach((stockInfo) => {
-          const stockInfoInNextDate = data[nextDate].filter(ele => ele.checkin === stockInfo.checkin);
+          const stockInfoInNextDate = data[nextDate]
+            .filter(ele => moment(ele.checkin, "YYYY-MM-DD").format("YYYY-MM-DD") === moment(stockInfo.checkin, "YYYY-MM-DD").format("YYYY-MM-DD"));
           const obj = {};
           let offset;
           obj.data = [];
@@ -223,7 +224,7 @@ class CrawlResultService {
     });
     const sortReservationHistories = reservationHistories.sort((a,b) => moment(a.label, "YYYY-MM-DD") > moment(b.label, "YYYY-MM-DD") ? 1 : -1);
 
-    // console.log({ labels, "datasets": sortReservationHistories });
+    // console.log(sortReservationHistories);
     return { labels, "datasets": sortReservationHistories };
   }
 }

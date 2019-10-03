@@ -40,11 +40,12 @@ async function getAllCrawlResultsByCrawlDate(condition) {
       hotel_id,
       site_id,
       hotel_room_type_id,
+      // checkin: "2019-07-17 00:00:00"
     })
     .whereRaw('??::date = ?', ['crawl_created_at', crawl_created_at])
     // .limit(3)
     .orderBy('checkin', 'asc');
-    // console.log(data.length);
+    // console.log(data);
   return data;
 }
 
