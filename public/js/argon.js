@@ -1281,7 +1281,120 @@ var GroupableBarCharts = (function() {
 								return content;
 							}
 						}
-					}
+					},
+					custom: function(model) {
+
+							// Get tooltip
+							var $tooltip = $('#chart-tooltip');
+
+							// Create tooltip on first render
+							if (!$tooltip.length) {
+								$tooltip = $('<div id="chart-tooltip" class="popover bs-popover-top" role="tooltip"></div>');
+
+								// Append to body
+								$('body').append($tooltip);
+							}
+
+							// Hide if no tooltip
+							if (model.opacity === 0) {
+								$tooltip.css('display', 'none');
+								return;
+							}
+
+							function getBody(bodyItem) {
+								return bodyItem.lines;
+							}
+
+							// Fill with content
+							if (model.body) {
+								var titleLines = model.title || [];
+								var bodyLines = model.body.map(getBody);
+								var keysPositive = [];
+								var keysNegative = [];
+								var bodyLinesPositive = [];
+								var bodyLinesNegative = [];
+
+								model.dataPoints.forEach((e, i) => {
+									if (parseInt(e.yLabel) > 0) {
+										keysPositive.push(i);
+									} else if(parseInt(e.yLabel) < 0){
+										keysNegative.push(i);
+									}
+								});
+
+								keysPositive.forEach((e, i) => {
+									var html = $.parseHTML(bodyLines[e][0]);
+									var size = (20 - i) > 15 ? (20 - i) : 15;
+									html[0].style.fontSize = size + "px";
+									// html[1].style.fontSize = size + "px";
+									bodyLines[e][0] = $('<div>').append(html).html();
+
+									bodyLinesPositive.push(bodyLines[e]);
+								});
+								keysNegative.forEach((e, i) => {
+									var html = $.parseHTML(bodyLines[e][0]);
+									var size = (20 - i) > 15 ? (20 - i) : 15;
+									html[0].style.fontSize = size + "px";
+									// html[1].style.fontSize = size + "px";
+									bodyLines[e][0] = $('<div>').append(html).html();
+
+									bodyLinesNegative.push(bodyLines[e]);
+								});
+								bodyLinesPositive.reverse();
+								if (bodyLinesPositive.length && bodyLinesNegative.length) {
+									bodyLinesPositive.push({isBreakLine: true});
+								}
+								bodyLines = bodyLinesPositive.concat(bodyLinesNegative);
+								var html = '';
+
+								// Add arrow
+								html += '<div class="arrow"></div>';
+
+								// Add header
+								titleLines.forEach(function(title) {
+									html += '<h3 class="popover-header text-center">' + title + '</h3>';
+								});
+
+								// Add body
+								bodyLines.forEach(function(body, i) {
+									if (Array.isArray(body)) {
+										if (body.length) {
+											var indicator = '<span class="badge badge-dot"><i class="bg-primary"></i></span>';
+											var align = (bodyLines.length > 1) ? 'justify-content-left' : 'justify-content-center';
+											html += '<div class="popover-body d-flex align-items-center ' + align + '">' + indicator + body + '</div>';
+										}
+									} else {
+										html += '<hr>';
+									}
+								});
+
+								$tooltip.html(html);
+							}
+
+							// Get tooltip position
+							var $canvas = $(this._chart.canvas);
+
+							var canvasWidth = $canvas.outerWidth();
+							var canvasHeight = $canvas.outerHeight();
+
+							var canvasTop = $canvas.offset().top;
+							var canvasLeft = $canvas.offset().left;
+
+							var tooltipWidth = $tooltip.outerWidth();
+							var tooltipHeight = $tooltip.outerHeight();
+
+							var top = canvasTop + model.caretY - tooltipHeight - 16;
+							var left = canvasLeft + model.caretX - tooltipWidth / 2;
+
+							// Display tooltip
+							$tooltip.css({
+								'top': top + 'px',
+								'left': left + 'px',
+								'display': 'block',
+								'z-index': '100'
+							});
+
+						},
 				}
 			},
 			data: {
