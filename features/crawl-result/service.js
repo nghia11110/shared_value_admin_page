@@ -140,37 +140,37 @@ class CrawlResultService {
     ]
   */
   makeReservationHistoriesData(data) {
-    // data = { '2019-07-16':
-    //         [ { checkin: "2019-07-17T00:00:00.000Z",
-    //              price_total: 1000,
-    //              remain_rooms: 3 },
-    //            { checkin: "2019-07-18T00:00:00.000Z",
-    //              price_total: 5000,
-    //              remain_rooms: 3 },
-    //            { checkin: "2019-07-19T00:00:00.000Z",
-    //              price_total: null,
-    //              remain_rooms: 0 }],
-    //         '2019-07-17':
-    //          [ { checkin: "2019-07-17T00:00:00.000Z",
-    //              price_total: 1000,
-    //              remain_rooms: 1 },
-    //            { checkin: "2019-07-18T00:00:00.000Z",
-    //              price_total: 5000,
-    //              remain_rooms: 2 },
-    //            { checkin: "2019-07-19T00:00:00.000Z",
-    //              price_total: 7000,
-    //              remain_rooms: 1 } ],
-    //         '2019-07-18':
-    //           [ /*{ checkin: "2019-07-17T00:00:00.000Z",
-    //              price_total: 1000,
-    //              remain_rooms: 1 },*/
-    //            { checkin: "2019-07-18T00:00:00.000Z",
-    //              price_total: 5000,
-    //              remain_rooms: 1 },
-    //            { checkin: "2019-07-19T00:00:00.000Z",
-    //              price_total: 7000,
-    //              remain_rooms: 0 } ],
-    //       }
+    /*data = { '2019-07-16':
+            [ { checkin: "2019-07-17T00:00:00.000Z",
+                 price_total: 1000,
+                 remain_rooms: 3 },
+               { checkin: "2019-07-18T00:00:00.000Z",
+                 price_total: 5000,
+                 remain_rooms: 3 },
+               { checkin: "2019-07-19T00:00:00.000Z",
+                 price_total: 2000,
+                 remain_rooms: 3 }],
+            '2019-07-17':
+             [ { checkin: "2019-07-17T00:00:00.000Z",
+                 price_total: 1000,
+                 remain_rooms: 1 },
+               { checkin: "2019-07-18T00:00:00.000Z",
+                 price_total: 5000,
+                 remain_rooms: 2 },
+               { checkin: "2019-07-19T00:00:00.000Z",
+                 price_total: 2000,
+                 remain_rooms: 1 } ],
+            '2019-07-18':
+              [ { checkin: "2019-07-17T00:00:00.000Z",
+                 price_total: 1000,
+                 remain_rooms: 5 },
+               { checkin: "2019-07-18T00:00:00.000Z",
+                 price_total: 5000,
+                 remain_rooms: 1 },
+               { checkin: "2019-07-19T00:00:00.000Z",
+                 price_total: 2000,
+                 remain_rooms: 2 } ],
+          }*/
     const reservationHistories = [];
     const labels = [];
     let currentDate;
@@ -217,7 +217,7 @@ class CrawlResultService {
         labels.push(key);
       }
     });
-    const sortReservationHistories = reservationHistories.sort((a,b) => moment(a.label, "YYYY-MM-DD") > moment(b.label, "YYYY-MM-DD") ? 1 : -1);
+    const sortReservationHistories = reservationHistories.sort((a,b) => moment(a.label, "YYYY-MM-DD") < moment(b.label, "YYYY-MM-DD") ? 1 : -1);
 
     // console.log(sortReservationHistories);
     return { labels, "datasets": sortReservationHistories };
