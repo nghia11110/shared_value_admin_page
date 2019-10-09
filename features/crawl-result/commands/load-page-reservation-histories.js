@@ -1,6 +1,6 @@
 const moment = require('moment');
 
-const { getAllCrawlResultsByCrawlDate } = require('../repository');
+const { getAllCrawlResultsByCrawlDate, getAllCrawlResultsByCheckinDate } = require('../repository');
 const { getAllHotelWithHotelRoomTypes } = require('../../hotel/repository');
 const { getAllSites } = require('../../site/repository');
 const crawlResultService = require('../service');
@@ -16,19 +16,32 @@ async function loadPageReservationHistories(req, res) {
     end_date,
   } = conditions;
   let data = {};
-  let reservationHistoriesData = {};
+  let reservationHistoriesData = {"labels": [], "datasets": []};
+  let reservationHistoriesByCheckinDateData = {"labels": [], "datasets": []};
 
   try {
     if (start_date && end_date) {
-      currentDate = start_date;
-      while (moment(currentDate, "YYYY-MM-DD") <= moment(end_date, "YYYY-MM-DD").add(1, 'days')) {
-        conditions.crawl_created_at = currentDate;
-        data[currentDate] = await getAllCrawlResultsByCrawlDate(conditions);
-        currentDate = moment(currentDate, "YYYY-MM-DD").add(1, 'days').format("YYYY-MM-DD");
+      if (conditions.chart_type === '' || conditions.chart_type === 'crawl-results-chart1') {
+        let currentDate = start_date;
+        while (moment(currentDate, "YYYY-MM-DD") <= moment(end_date, "YYYY-MM-DD").add(1, 'days')) {
+          conditions.crawl_created_at = currentDate;
+          data[currentDate] = await getAllCrawlResultsByCrawlDate(conditions);
+          currentDate = moment(currentDate, "YYYY-MM-DD").add(1, 'days').format("YYYY-MM-DD");
+        }
+        // init data
+        reservationHistoriesData = crawlResultService.makeReservationHistoriesData(data);
+      } else if(conditions.chart_type === 'crawl-results-chart2') {
+        const dataTmp = await getAllCrawlResultsByCheckinDate(conditions);
+        let currentDate = start_date;
+        while (moment(currentDate, "YYYY-MM-DD") <= moment(end_date, "YYYY-MM-DD")) {
+          data[currentDate] = dataTmp.filter(e => moment(e.checkin).format("YYYY-MM-DD") === moment(currentDate).format("YYYY-MM-DD"));
+          currentDate = moment(currentDate, "YYYY-MM-DD").add(1, 'days').format("YYYY-MM-DD");
+        }
+        // init data
+        reservationHistoriesByCheckinDateData = crawlResultService.makeReservationHistoriesByCheckinDateData(data);
+      } else if(conditions.chart_type === 'crawl-results-chart3') {
+
       }
-      // init data
-      reservationHistoriesData = crawlResultService.makeReservationHistoriesData(data);
-      // console.log(data[0], data[2]);
     }
   } catch (error) {
     console.log(error);
@@ -41,6 +54,7 @@ async function loadPageReservationHistories(req, res) {
   // render view
   res.render('pages/reservation-histories', {
     reservationHistoriesData,
+    reservationHistoriesByCheckinDateData,
     hotelData: hotelData.data,
     siteData: siteData.data,
   });

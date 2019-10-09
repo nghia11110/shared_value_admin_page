@@ -193,7 +193,7 @@ class CrawlResultService {
             obj.data[i] = 0;
             obj.suffixExtraInfo[i] = 0;
           }
-          obj.label = moment(stockInfo.checkin, "YYYY-MM-DD").format("YYYY-MM-DD")
+          obj.label = moment(stockInfo.checkin, "YYYY-MM-DD").format("YYYY-MM-DD");
 
           if (!stockInfoInNextDate.length || stockInfo.remain_rooms === 0) { // do not have info in next day -> not clear sell room
             offset = 0;                                                      // remain_rooms = 0 -> sell 0 room
@@ -222,6 +222,117 @@ class CrawlResultService {
     // console.log(sortReservationHistories);
     return { labels, "datasets": sortReservationHistories };
   }
+
+  /* reservation histories by checkin date
+  * input: { '2019-07-17':
+             [ { checkin: 2019-07-17T00:00:00.000Z,
+                 price_total: 34780,
+                 remain_rooms: 2,
+                 crawl_created_at: 2019-07-16T19:19:40.000Z },
+               { checkin: 2019-07-17T00:00:00.000Z,
+                 price_total: 1000,
+                 remain_rooms: 1,
+                 crawl_created_at: 2019-07-17T19:19:40.201Z },
+               { checkin: 2019-07-17T00:00:00.000Z,
+                 price_total: 34780,
+                 remain_rooms: 2,
+                 crawl_created_at: 2019-07-18T19:19:40.201Z } ],
+            '2019-07-18':
+             [ { checkin: "2019-07-18T00:00:00.000Z",
+                 price_total: 20000,
+                 remain_rooms: 1,
+                 crawl_created_at: "2019-07-17T19:19:40.365Z" },
+                 { checkin: "2019-07-18T00:00:00.000Z",
+                 price_total: null,
+                 remain_rooms: 0,
+                 crawl_created_at: "2019-07-18T19:19:40.365Z" }
+             ],
+            }
+
+  * output: [
+      {
+        data: [ 34780, 0 ],
+        suffixExtraInfo: [ 1, 0 ],
+        label: '2019-07-16'
+      },
+      {
+        data: [ -10000, 20000 ],
+        suffixExtraInfo: [ -1, 1 ],
+        label: '2019-07-17'
+      }
+    ]
+  */
+  makeReservationHistoriesByCheckinDateData(data) {
+    // data = { '2019-07-17':
+    //          [ { checkin: "2019-07-17T00:00:00.000Z",
+    //              price_total: 34780,
+    //              remain_rooms: 2,
+    //              crawl_created_at: "2019-07-16T19:19:40.000Z" },
+    //            { checkin: "2019-07-17T00:00:00.000Z",
+    //              price_total: 10000,
+    //              remain_rooms: 1,
+    //              crawl_created_at: "2019-07-17T19:19:40.201Z" },
+    //              { checkin: "2019-07-17T00:00:00.000Z",
+    //              price_total: null,
+    //              remain_rooms: 2,
+    //              crawl_created_at: "2019-07-18T19:19:40.201Z" },
+    //          ],
+    //         '2019-07-18':
+    //          [ { checkin: "2019-07-18T00:00:00.000Z",
+    //              price_total: 20000,
+    //              remain_rooms: 1,
+    //              crawl_created_at: "2019-07-17T19:19:40.365Z" },
+    //              { checkin: "2019-07-18T00:00:00.000Z",
+    //              price_total: null,
+    //              remain_rooms: 0,
+    //              crawl_created_at: "2019-07-18T19:19:40.365Z" }
+    //          ],
+    //         '2019-07-19':
+    //          [ { checkin: "2019-07-18T00:00:00.000Z",
+    //              price_total: 20000,
+    //              remain_rooms: 1,
+    //              crawl_created_at: "2019-07-17T19:19:40.365Z" },
+    //              { checkin: "2019-07-18T00:00:00.000Z",
+    //              price_total: null,
+    //              remain_rooms: 2,
+    //              crawl_created_at: "2019-07-18T19:19:40.365Z" }
+    //          ] }
+    const labels = [];
+    const reservationHistoriesByCheckinDate = [];
+    const numberDate = Object.keys(data).length;
+
+    Object.keys(data).forEach((key, index) => {
+      for (let scrapeResultCount = 0; scrapeResultCount < data[key].length; scrapeResultCount++) {
+        if (data[key][scrapeResultCount+1]) {
+          const obj = {};
+          let offset;
+          obj.data = [];
+          obj.suffixExtraInfo = [];
+          for (let i = 0; i < numberDate; i++) {
+            obj.data[i] = 0;
+            obj.suffixExtraInfo[i] = 0;
+          }
+          obj.label = moment(data[key][scrapeResultCount].crawl_created_at, "YYYY-MM-DD").format("YYYY-MM-DD");
+          offset = data[key][scrapeResultCount].remain_rooms - data[key][scrapeResultCount+1].remain_rooms;
+          obj.data[index] = offset * data[key][scrapeResultCount].price_total;
+          obj.suffixExtraInfo[index] = offset;
+
+          const k = Object.keys(reservationHistoriesByCheckinDate).find(k1 => reservationHistoriesByCheckinDate[k1].label === obj.label);
+          if (k !== undefined) {
+            reservationHistoriesByCheckinDate[k].data[index] = obj.data[index];
+            reservationHistoriesByCheckinDate[k].suffixExtraInfo[index] = obj.suffixExtraInfo[index];
+          } else {
+            reservationHistoriesByCheckinDate.push(obj);
+          }
+        }
+      }
+      labels.push(key);
+    });
+    // console.log(reservationHistoriesByCheckinDate);
+
+    return { labels, "datasets": reservationHistoriesByCheckinDate };
+  }
+
 }
 
 module.exports = new CrawlResultService();

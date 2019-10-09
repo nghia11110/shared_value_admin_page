@@ -1213,6 +1213,7 @@ var GroupableBarCharts = (function() {
 	var prefix = $chart.data('prefix') ? $chart.data('prefix') : '';
 	var suffix = $chart.data('suffix') ? $chart.data('suffix') : '';
 	var isShowZeroDataInTooltip = $chart.data('is-show-zero-data-in-tooltip') !== undefined ? $chart.data('is-show-zero-data-in-tooltip') : true;
+	var title = ($chart.data('init') && $chart.data('init').options && $chart.data('init').options.title) ? $chart.data('init').options.title.text : '';
 
 	var dynamicColors = function() {
 		var r = Math.floor(Math.random() * 255);
@@ -1241,6 +1242,12 @@ var GroupableBarCharts = (function() {
 		var groupableBarChart = new Chart($chart, {
 			type: 'groupableBar',
 			options: {
+				title: {
+					display: true,
+					text: title,
+					fontSize: 18,
+					fontColor: "#fff"
+				},
 				legend: {
 					labels: {
 						generateLabels: function(chart) {
@@ -1272,9 +1279,9 @@ var GroupableBarCharts = (function() {
 								var suffixExtraInfo = data.datasets[item.datasetIndex].suffixExtraInfo && data.datasets[item.datasetIndex].suffixExtraInfo[item.index] || '';
 								var content = '';
 
-								if (data.datasets.length > 1) {
+								// if (data.datasets.length > 1) {
 									content += '<span class="popover-body-label mr-auto" style="color: white; background-color: ' + backgroundColor + '">' + label + '</span>';
-								}
+								// }
 
 								content += '<span class="popover-body-value" style="margin-left: 5px">' + prefix + yLabel + ' ' + suffixExtraInfo + suffix + '</span>';
 
