@@ -856,6 +856,10 @@ var Charts = (function() {
 				var o = Object.assign({}, el);
 				o.borderColor = dynamicColors();
 				o.lineTension = 0;
+				if ($chart.config.type === "groupableBar") {
+					o.backgroundColor = o.borderColor;
+					o.stack = 1;
+				}
 				return o;
 			});
 		}
