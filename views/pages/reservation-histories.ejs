@@ -115,18 +115,26 @@
                       <span class="d-none d-md-block">日付別予約状況</span>
                     </a>
                   </li>
-                  <li id="crawl-results-chart2" class="nav-item" data-toggle="chart" data-target="#chart-groupableBars" data-update='{"data":<%= JSON.stringify(reservationHistoriesByCheckinDateData)%>,"options":{"title":{"text":"チェックイン日別予約状況"}}}' data-prefix="¥" data-suffix="部屋">
+                  <li id="crawl-results-chart2" class="nav-item" data-toggle="chart" data-target="#chart-groupableBars" data-update='{"data":<%= JSON.stringify(reservationHistoriesByCheckinDate)%>,"options":{"title":{"text":"チェックイン日別予約状況"}}}' data-prefix="¥" data-suffix="部屋">
                     <a href="#" class="nav-link py-2 px-3 <%= query.chart_type === 'crawl-results-chart2' ? 'active' : ''%>" data-toggle="tab">
                       <span class="d-none d-md-block">チェックイン日別予約状況</span>
                     </a>
                   </li>
-                  <li id="crawl-results-chart3" class="nav-item" data-toggle="chart" data-target="#chart-groupableBars" data-update='{"data":<%= JSON.stringify(reservationHistoriesByCheckinDateData)%>,"options":{"title":{"text":"プラン別予約状況"}}}' data-prefix="¥" data-suffix="部屋">
+                  <li id="crawl-results-chart3" class="nav-item" data-toggle="chart" data-target="#chart-groupableBars" data-update='{"data":<%= JSON.stringify(reservationHistoriesByCheckinDatePlanSeparate)%>,"options":{"title":{"text":"プラン別予約状況"}}}' data-prefix="¥" data-suffix="部屋">
                     <a href="#" class="nav-link py-2 px-3 <%= query.chart_type === 'crawl-results-chart3' ? 'active' : ''%>" data-toggle="tab">
                       <span class="d-none d-md-block">プラン別予約状況</span>
                     </a>
                   </li>
                 </ul>
               </div>
+              <% if (query.chart_type === 'crawl-results-chart2') { %>
+                <% Object.keys(reservationHistoriesByCheckinDateInPlan).forEach((key, index) => { %>
+                  <div class="custom-control custom-radio mb-3">
+                    <input name="custom-radio-2" class="custom-control-input" id="customRadio<%=index%>" type="radio" data-toggle="chart" data-target="#chart-groupableBars" data-update='{"data":<%= JSON.stringify(reservationHistoriesByCheckinDateInPlan[key])%>}' data-prefix="¥" data-suffix="部屋">
+                    <label class="custom-control-label text-white" for="customRadio<%=index%>"><%=key%></label>
+                  </div>
+                <% }) %>
+              <% } %>
               <div class="col">
                 <input type="image" id="btnZoomInCrawlResultChart" style="height: 30px; width: 30px;float: right" src="https://img.icons8.com/cute-clipart/64/000000/plus.png" />
                 <input type="image" id="btnZoomOutCrawlResultChart" style="height: 30px; width: 30px;float: right" src="https://img.icons8.com/color/48/000000/minus.png" />
@@ -138,10 +146,10 @@
                   <canvas id="chart-groupableBars" class="chart-canvas" data-init='{"data":<%= JSON.stringify(reservationHistoriesData)%>,"options":{"title":{"text":"日付別予約状況"}}}' data-prefix="¥" data-suffix="部屋" data-is-show-zero-data-in-tooltip="<%=false%>"></canvas>
                 <% } %>
                 <% if (query.chart_type === 'crawl-results-chart2') { %>
-                  <canvas id="chart-groupableBars" class="chart-canvas" data-init='{"data":<%= JSON.stringify(reservationHistoriesByCheckinDateData)%>,"options":{"title":{"text":"チェックイン日別予約状況"}}}' data-prefix="¥" data-suffix="部屋"></canvas>
+                  <canvas id="chart-groupableBars" class="chart-canvas" data-init='{"data":<%= JSON.stringify(reservationHistoriesByCheckinDate)%>,"options":{"title":{"text":"チェックイン日別予約状況"}}}' data-prefix="¥" data-suffix="部屋"></canvas>
                 <% } %>
                 <% if (query.chart_type === 'crawl-results-chart3') { %>
-                  <canvas id="chart-groupableBars" class="chart-canvas" data-init='{"data":<%= JSON.stringify(reservationHistoriesByCheckinDateData)%>,"options":{"title":{"text":"プラン別予約状況"}}}' data-prefix="¥" data-suffix="部屋"></canvas>
+                  <canvas id="chart-groupableBars" class="chart-canvas" data-init='{"data":<%= JSON.stringify(reservationHistoriesByCheckinDatePlanSeparate)%>,"options":{"title":{"text":"プラン別予約状況"}}}' data-prefix="¥" data-suffix="部屋"></canvas>
                 <% } %>
               </div>
             </div>

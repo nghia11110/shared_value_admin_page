@@ -62,6 +62,7 @@ async function getAllCrawlResultsByCheckinDate(condition) {
       'price_total',
       'remain_rooms',
       'crawl_created_at',
+      'option_condition_text'
     ])
     .where({
       hotel_id,

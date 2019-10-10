@@ -5,7 +5,7 @@ const { getAllHotelWithHotelRoomTypes } = require('../../hotel/repository');
 const { getAllSites } = require('../../site/repository');
 const crawlResultService = require('../service');
 
-const { FETCH_INFO_ERROR_MESSAGE, WEEKDAY_ARRAY } = require('../constants');
+const { FETCH_INFO_ERROR_MESSAGE, WEEKDAY_ARRAY, PLAN_LIST } = require('../constants');
 
 async function loadPageReservationHistories(req, res) {
   const hotelData = await getAllHotelWithHotelRoomTypes({});
@@ -17,7 +17,10 @@ async function loadPageReservationHistories(req, res) {
   } = conditions;
   let data = {};
   let reservationHistoriesData = {"labels": [], "datasets": []};
-  let reservationHistoriesByCheckinDateData = {"labels": [], "datasets": []};
+  let reservationHistoriesByCheckinDateData = {};
+  let reservationHistoriesByCheckinDate = {"labels": [], "datasets": []};
+  let reservationHistoriesByCheckinDateInPlan = {};
+  let reservationHistoriesByCheckinDatePlanSeparate = {"labels": [], "datasets": []};
 
   try {
     if (start_date && end_date) {
@@ -30,7 +33,7 @@ async function loadPageReservationHistories(req, res) {
         }
         // init data
         reservationHistoriesData = crawlResultService.makeReservationHistoriesData(data);
-      } else if(conditions.chart_type === 'crawl-results-chart2') {
+      } else if(conditions.chart_type === 'crawl-results-chart2' || conditions.chart_type === 'crawl-results-chart3') {
         const dataTmp = await getAllCrawlResultsByCheckinDate(conditions);
         let currentDate = start_date;
         while (moment(currentDate, "YYYY-MM-DD") <= moment(end_date, "YYYY-MM-DD")) {
@@ -39,8 +42,21 @@ async function loadPageReservationHistories(req, res) {
         }
         // init data
         reservationHistoriesByCheckinDateData = crawlResultService.makeReservationHistoriesByCheckinDateData(data);
-      } else if(conditions.chart_type === 'crawl-results-chart3') {
-
+        reservationHistoriesByCheckinDate = {
+          labels: reservationHistoriesByCheckinDateData.labels,
+          datasets: reservationHistoriesByCheckinDateData.reservationHistoriesByCheckinDate,
+        };
+        reservationHistoriesByCheckinDatePlanSeparate = {
+          labels: reservationHistoriesByCheckinDateData.labels,
+          datasets: reservationHistoriesByCheckinDateData.reservationHistoriesByCheckinDatePlanSeparate,
+        };
+        Object.keys(PLAN_LIST).forEach(key => {
+          reservationHistoriesByCheckinDateInPlan[key] = {
+            labels: reservationHistoriesByCheckinDateData.labels,
+            datasets: reservationHistoriesByCheckinDateData.reservationHistoriesByCheckinDateInPlan[PLAN_LIST[key]],
+          };
+        });
+        // console.log(reservationHistoriesByCheckinDateInPlan);
       }
     }
   } catch (error) {
@@ -54,7 +70,9 @@ async function loadPageReservationHistories(req, res) {
   // render view
   res.render('pages/reservation-histories', {
     reservationHistoriesData,
-    reservationHistoriesByCheckinDateData,
+    reservationHistoriesByCheckinDate,
+    reservationHistoriesByCheckinDatePlanSeparate,
+    reservationHistoriesByCheckinDateInPlan,
     hotelData: hotelData.data,
     siteData: siteData.data,
   });

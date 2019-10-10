@@ -21,6 +21,14 @@ const SMOKING_STATE = {
   '喫煙': 1
 };
 const WEEKDAY_ARRAY = ['月','火','水','木','金','土','日'];
+const PLAN_LIST = {
+  '複数プラン': 0,
+  '返金不可': 1,
+  'キャンセル無料': 2,
+};
+const PLAN_0 = '複数プラン';
+const PLAN_1 = '返金不可';
+const PLAN_2 = 'キャンセル無料';
 
 module.exports = {
   NAME_MIN,
@@ -37,4 +45,8 @@ module.exports = {
   NO_SMOKING,
   SMOKING_STATE,
   WEEKDAY_ARRAY,
+  PLAN_0,
+  PLAN_1,
+  PLAN_2,
+  PLAN_LIST,
 };
