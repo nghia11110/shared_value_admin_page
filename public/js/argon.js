@@ -881,7 +881,7 @@ var Charts = (function() {
 			// Update ticks
 			$chart.options.scales.yAxes[0].ticks.callback = function(value) {
 				if (!(value % 10)) {
-					return prefix + value + suffix;
+					return prefix + value;
 				}
 			}
 
@@ -891,13 +891,14 @@ var Charts = (function() {
 				var borderColor = data.datasets[item.datasetIndex].borderColor || '';
 				var yLabel = item.yLabel;
 				var content = '';
+				var suffixExtraInfo = data.datasets[item.datasetIndex].suffixExtraInfo && data.datasets[item.datasetIndex].suffixExtraInfo[item.index] || '';
 
 				if (data.datasets.length > 1) {
 					// content += '<span class="popover-body-label mr-auto" style="color: ' + borderColor + '">' + label + '</span>';
 					content += '<span class="popover-body-label mr-auto" style="color: white; background-color: ' + borderColor + '">' + label + '</span>';
 				}
 
-				content += '<span class="popover-body-value" style="margin-left: 5px">' + prefix + yLabel + suffix + '</span>';
+				content += '<span class="popover-body-value" style="margin-left: 5px">' + prefix + yLabel + ' ' + suffixExtraInfo + suffix + '</span>';
 				return content;
 			}
 
