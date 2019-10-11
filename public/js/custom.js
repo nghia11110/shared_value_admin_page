@@ -52,6 +52,14 @@ var ChartCrawlResults = (function() {
       var $this = $(this);
       if ($this.attr('id') !== 'undefined' && $this.attr('id').includes('crawl-results-chart')) {
         $('#crawl-results-chart-type').val($this.attr('id'));
+        if ($this.attr('id') === 'crawl-results-chart2') {
+          $("input[id^='customRadio']").each(function (i, el) {
+            this.checked = false;
+          });
+          $('#plan-radio-button').show();
+        } else {
+          $('#plan-radio-button').hide();
+        }
       }
     }
   });
