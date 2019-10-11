@@ -127,16 +127,14 @@
                   </li>
                 </ul>
               </div>
-              <% if (query.chart_type === 'crawl-results-chart2') { %>
-                <div id="plan-radio-button">
-                  <% Object.keys(reservationHistoriesByCheckinDateInPlan).forEach((key, index) => { %>
-                    <div class="custom-control custom-radio mb-3">
-                      <input name="custom-radio-2" class="custom-control-input" id="customRadio<%=index%>" type="radio" data-toggle="chart" data-target="#chart-groupableBars" data-update='{"data":<%= JSON.stringify(reservationHistoriesByCheckinDateInPlan[key])%>,"options":{"title":{"text":"チェックイン日別予約状況（<%=key%>）"}}}' data-prefix="¥" data-suffix="部屋">
-                      <label class="custom-control-label text-white" for="customRadio<%=index%>"><%=key%></label>
-                    </div>
-                  <% }) %>
-                </div>
-              <% } %>
+              <div id="plan-radio-button" style="<%= (query.chart_type !== 'crawl-results-chart2') ? 'display:none' : ''%>">
+                <% Object.keys(reservationHistoriesByCheckinDateInPlan).forEach((key, index) => { %>
+                  <div class="custom-control custom-radio mb-3">
+                    <input name="custom-radio-2" class="custom-control-input" id="customRadio<%=index%>" type="radio" data-toggle="chart" data-target="#chart-groupableBars" data-update='{"data":<%= JSON.stringify(reservationHistoriesByCheckinDateInPlan[key])%>,"options":{"title":{"text":"チェックイン日別予約状況（<%=key%>）"}}}' data-prefix="¥" data-suffix="部屋">
+                    <label class="custom-control-label text-white" for="customRadio<%=index%>"><%=key%></label>
+                  </div>
+                <% }) %>
+              </div>
               <div class="col">
                 <input type="image" id="btnZoomInCrawlResultChart" style="height: 30px; width: 30px;float: right" src="https://img.icons8.com/cute-clipart/64/000000/plus.png" />
                 <input type="image" id="btnZoomOutCrawlResultChart" style="height: 30px; width: 30px;float: right" src="https://img.icons8.com/color/48/000000/minus.png" />
