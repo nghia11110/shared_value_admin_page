@@ -274,17 +274,17 @@ class CrawlResultService {
                  remain_rooms: 3,
                  crawl_created_at: "2019-07-16T19:19:40.201Z",
                  option_condition_text: ' キャンセル無料 123' },
-               { checkin: "2019-07-17T00:00:00.000Z",
-                 price_total: 20000,
-                 remain_rooms: 2,
-                 crawl_created_at: "2019-07-18T19:19:40.201Z",
-                 option_condition_text: ' 返金不可 ' },
+               // { checkin: "2019-07-17T00:00:00.000Z",
+               //   price_total: 20000,
+               //   remain_rooms: 2,
+               //   crawl_created_at: "2019-07-18T19:19:40.201Z",
+               //   option_condition_text: ' 返金不可 ' },
               { checkin: "2019-07-17T00:00:00.000Z",
                  price_total: 10000,
                  remain_rooms: 1,
                  crawl_created_at: "2019-07-19T19:19:40.201Z",
                  option_condition_text: ' キャンセル無料 123123' },
-                 { checkin: "2019-07-17T00:00:00.000Z",
+              { checkin: "2019-07-17T00:00:00.000Z",
                  price_total: 10000,
                  remain_rooms: 0,
                  crawl_created_at: "2019-07-20T19:19:40.201Z",
@@ -295,13 +295,13 @@ class CrawlResultService {
                  price_total: 20000,
                  remain_rooms: 2,
                  crawl_created_at: "2019-07-17T19:19:40.365Z",
-                 option_condition_text: ' 返金不可 ' },
+                 option_condition_text: null },
                { checkin: "2019-07-18T00:00:00.000Z",
                  price_total: 20000,
                  remain_rooms: 1,
                  crawl_created_at: "2019-07-18T19:19:40.365Z",
-                 option_condition_text: ' キャンセル無料 ' },
-                 { checkin: "2019-07-18T00:00:00.000Z",
+                 option_condition_text: 'null' },
+               { checkin: "2019-07-18T00:00:00.000Z",
                  price_total: null,
                  remain_rooms: 0,
                  crawl_created_at: "2019-07-19T19:19:40.365Z",
@@ -343,7 +343,7 @@ class CrawlResultService {
               )
             ) {
             obj.playType[index] = PLAN_LIST[PLAN_0];
-          } else {
+          } else if(data[key][scrapeResultCount].option_condition_text) {
             if (data[key][scrapeResultCount].option_condition_text.includes(PLAN_1)) {
               obj.playType[index] = PLAN_LIST[PLAN_1];
             } else if(data[key][scrapeResultCount].option_condition_text.includes(PLAN_2)) {
