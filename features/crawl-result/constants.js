@@ -30,6 +30,15 @@ const PLAN_0 = '複数プラン';
 const PLAN_1 = '返金不可';
 const PLAN_2 = 'キャンセル無料';
 
+const WEEKLY_COUNT = {
+  '1週間以内': 0,
+  '2週間以内': 1,
+  '3週間以内': 2,
+  '1ヶ月以内': 3,
+  '3ヶ月以内': 11,
+  '3ヶ月以上': 54,
+};
+
 module.exports = {
   NAME_MIN,
   NAME_MAX,
@@ -49,4 +58,5 @@ module.exports = {
   PLAN_1,
   PLAN_2,
   PLAN_LIST,
+  WEEKLY_COUNT,
 };

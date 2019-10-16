@@ -1,6 +1,15 @@
 const moment = require('moment');
 
-const { STAY_NUMBER_TEXT, SMOKING, NO_SMOKING, SMOKING_STATE, PLAN_1, PLAN_2, PLAN_0, PLAN_LIST } = require('./constants');
+const { STAY_NUMBER_TEXT,
+  SMOKING,
+  NO_SMOKING,
+  SMOKING_STATE,
+  PLAN_1,
+  PLAN_2,
+  PLAN_0,
+  PLAN_LIST,
+  WEEKLY_COUNT,
+} = require('./constants');
 const dateTimeUtil = require('../util/datetime-util');
 
 class CrawlResultService {
@@ -265,63 +274,46 @@ class CrawlResultService {
   makeReservationHistoriesByCheckinDateData(data) {
     /*data = { '2019-07-17':
              [ { checkin: "2019-07-17T00:00:00.000Z",
-                 price_total: 30000,
+                 price_total: 10000,
                  remain_rooms: 3,
-                 crawl_created_at: "2019-07-16T19:19:40.000Z",
+                 crawl_created_at: "2019-07-08T19:19:40.000Z",
                  option_condition_text: ' 返金不可 ' },
-               { checkin: "2019-07-17T00:00:00.000Z",
-                 price_total: 30000,
-                 remain_rooms: 3,
-                 crawl_created_at: "2019-07-16T19:19:40.201Z",
-                 option_condition_text: ' キャンセル無料 123' },
-               // { checkin: "2019-07-17T00:00:00.000Z",
-               //   price_total: 20000,
-               //   remain_rooms: 2,
-               //   crawl_created_at: "2019-07-18T19:19:40.201Z",
-               //   option_condition_text: ' 返金不可 ' },
               { checkin: "2019-07-17T00:00:00.000Z",
                  price_total: 10000,
-                 remain_rooms: 1,
-                 crawl_created_at: "2019-07-19T19:19:40.201Z",
-                 option_condition_text: ' キャンセル無料 123123' },
-              { checkin: "2019-07-17T00:00:00.000Z",
-                 price_total: 10000,
-                 remain_rooms: 0,
-                 crawl_created_at: "2019-07-20T19:19:40.201Z",
+                 remain_rooms: 2,
+                 crawl_created_at: "2019-07-09T19:19:40.201Z",
                  option_condition_text: ' 返金不可' },
              ],
             '2019-07-18':
              [ { checkin: "2019-07-18T00:00:00.000Z",
                  price_total: 20000,
                  remain_rooms: 2,
-                 crawl_created_at: "2019-07-17T19:19:40.365Z",
+                 crawl_created_at: "2019-06-20T19:19:40.365Z",
                  option_condition_text: null },
                { checkin: "2019-07-18T00:00:00.000Z",
                  price_total: 20000,
                  remain_rooms: 1,
-                 crawl_created_at: "2019-07-18T19:19:40.365Z",
+                 crawl_created_at: "2019-07-17T19:19:40.365Z",
                  option_condition_text: 'null' },
                { checkin: "2019-07-18T00:00:00.000Z",
-                 price_total: null,
+                 price_total: 20000,
                  remain_rooms: 0,
-                 crawl_created_at: "2019-07-19T19:19:40.365Z",
-               }
+                 crawl_created_at: "2019-07-18T19:19:40.365Z",
+                 option_condition_text: 'null' },
              ],
             '2019-07-19':
-             [ { checkin: "2019-07-18T00:00:00.000Z",
-                 price_total: 20000,
+             [ { checkin: "2019-07-19T00:00:00.000Z",
+                 price_total: 30000,
                  remain_rooms: 1,
-                 crawl_created_at: "2019-07-17T19:19:40.365Z",
+                 crawl_created_at: "2019-05-17T19:19:40.365Z",
                  option_condition_text: ' キャンセル無料 23132 ' },
-                 { checkin: "2019-07-18T00:00:00.000Z",
+                 { checkin: "2019-07-19T00:00:00.000Z",
                  price_total: null,
-                 remain_rooms: 2,
-                 crawl_created_at: "2019-07-18T19:19:40.365Z" }
+                 remain_rooms: 0,
+                 crawl_created_at: "2019-05-18T19:19:40.365Z" }
              ] }*/
     const labels = [];
     const reservationHistoriesByCheckinDate = [];
-    const reservationHistoriesByCheckinDateInPlan = {};
-    const reservationHistoriesByCheckinDatePlanSeparate = [];
     const numberDate = Object.keys(data).length;
 
     Object.keys(data).forEach((key, index) => {
@@ -367,6 +359,22 @@ class CrawlResultService {
       }
       labels.push(key);
     });
+    // console.log(labels, reservationHistoriesByCheckinDate);
+
+    const [reservationHistoriesByCheckinDateInPlan, reservationHistoriesByCheckinDatePlanSeparate] = this.makeReservationHistoriesByCheckinDatePlanSeparateData(reservationHistoriesByCheckinDate);
+    const reservationHistoriesByCheckinDateWeeklySeparate = this.makeReservationHistoriesByCheckinDateWeeklySeparate(labels, reservationHistoriesByCheckinDate);
+
+    return { labels,
+      reservationHistoriesByCheckinDate,
+      reservationHistoriesByCheckinDateInPlan,
+      reservationHistoriesByCheckinDatePlanSeparate,
+      reservationHistoriesByCheckinDateWeeklySeparate,
+    };
+  }
+
+  makeReservationHistoriesByCheckinDatePlanSeparateData(reservationHistoriesByCheckinDate) {
+    const reservationHistoriesByCheckinDateInPlan = {};
+    const reservationHistoriesByCheckinDatePlanSeparate = [];
 
     Object.keys(PLAN_LIST).forEach(key => {
       reservationHistoriesByCheckinDateInPlan[PLAN_LIST[key]] = reservationHistoriesByCheckinDate
@@ -387,7 +395,7 @@ class CrawlResultService {
       reduceObj.data = [];
       reduceObj.suffixExtraInfo = [];
       reservationHistoriesByCheckinDateInPlan[PLAN_LIST[key]].forEach(el => {
-        for (let i = 0; i < numberDate; i++) {
+        for (let i = 0; i < el.data.length; i++) {
           if (!reduceObj.data[i]) {
             reduceObj.data[i] = 0;
           }
@@ -400,9 +408,45 @@ class CrawlResultService {
       });
       reservationHistoriesByCheckinDatePlanSeparate.push(reduceObj);
     });
-    // console.log(reservationHistoriesByCheckinDatePlanSeparate);
 
-    return { labels, reservationHistoriesByCheckinDate, reservationHistoriesByCheckinDateInPlan, reservationHistoriesByCheckinDatePlanSeparate };
+    return [reservationHistoriesByCheckinDateInPlan, reservationHistoriesByCheckinDatePlanSeparate];
+  }
+
+  makeReservationHistoriesByCheckinDateWeeklySeparate(labels, reservationHistoriesByCheckinDate) {
+    const reservationHistoriesByCheckinDateWeeklySeparate = [];
+
+    Object.keys(WEEKLY_COUNT).forEach(key => {
+      const obj = {};
+      obj.data = [];
+      obj.suffixExtraInfo = [];
+      for (let i = 0; i < labels.length; i++) {
+        obj.data[i] = 0;
+        obj.suffixExtraInfo[i] = 0;
+      }
+      obj.label = key;
+      reservationHistoriesByCheckinDateWeeklySeparate[WEEKLY_COUNT[key]] = obj;
+    });
+
+    for (let i = 0; i < labels.length; i++) {
+      for (let j = 0; j < reservationHistoriesByCheckinDate.length; j++) {
+        let count = moment(labels[i]).diff(moment(reservationHistoriesByCheckinDate[j].label), 'weeks');
+        while (true) {
+          if (reservationHistoriesByCheckinDateWeeklySeparate[count]) {
+            reservationHistoriesByCheckinDateWeeklySeparate[count].data[i] += reservationHistoriesByCheckinDate[j].data[i];
+            reservationHistoriesByCheckinDateWeeklySeparate[count].suffixExtraInfo[i] += reservationHistoriesByCheckinDate[j].suffixExtraInfo[i];
+            break;
+          } else {
+            count++;
+          }
+          if (count > 54) { // 54 weeks = 1 year
+            break;
+          }
+        }
+      }
+    }
+    // console.log(reservationHistoriesByCheckinDateWeeklySeparate.filter(el => true));
+
+    return reservationHistoriesByCheckinDateWeeklySeparate.filter(el => true);
   }
 
 }

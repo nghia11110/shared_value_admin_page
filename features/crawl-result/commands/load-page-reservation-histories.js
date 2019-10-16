@@ -21,6 +21,7 @@ async function loadPageReservationHistories(req, res) {
   let reservationHistoriesByCheckinDate = {"labels": [], "datasets": []};
   let reservationHistoriesByCheckinDateInPlan = {};
   let reservationHistoriesByCheckinDatePlanSeparate = {"labels": [], "datasets": []};
+  let reservationHistoriesByCheckinDateWeeklySeparate = {"labels": [], "datasets": []};
 
   try {
     if (start_date && end_date) {
@@ -33,7 +34,7 @@ async function loadPageReservationHistories(req, res) {
         }
         // init data
         reservationHistoriesData = crawlResultService.makeReservationHistoriesData(data);
-      } else if(conditions.chart_type === 'crawl-results-chart2' || conditions.chart_type === 'crawl-results-chart3') {
+      } else {
         const dataTmp = await getAllCrawlResultsByCheckinDate(conditions);
         let currentDate = start_date;
         while (moment(currentDate, "YYYY-MM-DD") <= moment(end_date, "YYYY-MM-DD")) {
@@ -42,6 +43,7 @@ async function loadPageReservationHistories(req, res) {
         }
         // init data
         reservationHistoriesByCheckinDateData = crawlResultService.makeReservationHistoriesByCheckinDateData(data);
+
         reservationHistoriesByCheckinDate = {
           labels: reservationHistoriesByCheckinDateData.labels,
           datasets: reservationHistoriesByCheckinDateData.reservationHistoriesByCheckinDate,
@@ -56,6 +58,10 @@ async function loadPageReservationHistories(req, res) {
             datasets: reservationHistoriesByCheckinDateData.reservationHistoriesByCheckinDateInPlan[PLAN_LIST[key]],
           };
         });
+        reservationHistoriesByCheckinDateWeeklySeparate = {
+          labels: reservationHistoriesByCheckinDateData.labels,
+          datasets: reservationHistoriesByCheckinDateData.reservationHistoriesByCheckinDateWeeklySeparate,
+        };
         // console.log(reservationHistoriesByCheckinDateInPlan);
       }
     }
@@ -73,6 +79,7 @@ async function loadPageReservationHistories(req, res) {
     reservationHistoriesByCheckinDate,
     reservationHistoriesByCheckinDatePlanSeparate,
     reservationHistoriesByCheckinDateInPlan,
+    reservationHistoriesByCheckinDateWeeklySeparate,
     hotelData: hotelData.data,
     siteData: siteData.data,
   });
