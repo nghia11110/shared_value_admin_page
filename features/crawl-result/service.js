@@ -439,7 +439,7 @@ class CrawlResultService {
             count++;
           }
           if (count > 54) { // 54 weeks = 1 year
-            break;
+            count = 54;
           }
         }
       }
