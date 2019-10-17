@@ -111,7 +111,7 @@
               <div class="col">
                 <ul class="nav nav-pills justify-content-end">
                   <li id="crawl-results-chart4" class="nav-item" data-toggle="chart" data-target="#chart-groupableBars" data-update='{"data":<%= JSON.stringify(reservationHistoriesByCheckinDateWeeklySeparate)%>,"options":{"title":{"text":"ウイークリー別予約状況"}}}' data-prefix="¥" data-suffix="部屋">
-                    <a href="#" class="nav-link py-2 px-3 <%= query.chart_type === 'crawl-results-chart4' ? 'active' : ''%>" data-toggle="tab">
+                    <a href="#" class="nav-link py-2 px-3 <%= !query.chart_type || query.chart_type === 'crawl-results-chart4' ? 'active' : ''%>" data-toggle="tab">
                       <span class="d-none d-md-block">ウイークリー別予約状況</span>
                     </a>
                   </li>
@@ -126,7 +126,7 @@
                     </a>
                   </li>
                   <li id="crawl-results-chart1" class="nav-item mr-2 mr-md-0" data-toggle="chart" data-target="#chart-groupableBars" data-update='{"data":<%= JSON.stringify(reservationHistoriesData)%>,"options":{"title":{"text":"日付別予約状況"}}}' data-prefix="¥" data-suffix="部屋">
-                    <a href="#" class="nav-link py-2 px-3 <%= !query.chart_type || query.chart_type === 'crawl-results-chart1' ? 'active' : ''%>" data-toggle="tab">
+                    <a href="#" class="nav-link py-2 px-3 <%= query.chart_type === 'crawl-results-chart1' ? 'active' : ''%>" data-toggle="tab">
                       <span class="d-none d-md-block">日付別予約状況</span>
                     </a>
                   </li>

@@ -288,7 +288,7 @@ class CrawlResultService {
              [ { checkin: "2019-07-18T00:00:00.000Z",
                  price_total: 20000,
                  remain_rooms: 2,
-                 crawl_created_at: "2019-06-20T19:19:40.365Z",
+                 crawl_created_at: "2019-07-16T19:19:40.365Z",
                  option_condition_text: null },
                { checkin: "2019-07-18T00:00:00.000Z",
                  price_total: 20000,
@@ -297,7 +297,7 @@ class CrawlResultService {
                  option_condition_text: 'null' },
                { checkin: "2019-07-18T00:00:00.000Z",
                  price_total: 20000,
-                 remain_rooms: 0,
+                 remain_rooms: 2,
                  crawl_created_at: "2019-07-18T19:19:40.365Z",
                  option_condition_text: 'null' },
              ],
@@ -311,7 +311,8 @@ class CrawlResultService {
                  price_total: null,
                  remain_rooms: 0,
                  crawl_created_at: "2019-05-18T19:19:40.365Z" }
-             ] }*/
+             ]
+           }*/
     const labels = [];
     const reservationHistoriesByCheckinDate = [];
     const numberDate = Object.keys(data).length;
@@ -424,7 +425,10 @@ class CrawlResultService {
         obj.suffixExtraInfo[i] = 0;
       }
       obj.label = key;
-      reservationHistoriesByCheckinDateWeeklySeparate[WEEKLY_COUNT[key]] = obj;
+      reservationHistoriesByCheckinDateWeeklySeparate[WEEKLY_COUNT[key]] = {
+        'new': JSON.parse(JSON.stringify(obj)),
+        'cancel': JSON.parse(JSON.stringify(obj)),
+      };
     });
 
     for (let i = 0; i < labels.length; i++) {
@@ -432,8 +436,14 @@ class CrawlResultService {
         let count = moment(labels[i]).diff(moment(reservationHistoriesByCheckinDate[j].label), 'weeks');
         while (true) {
           if (reservationHistoriesByCheckinDateWeeklySeparate[count]) {
-            reservationHistoriesByCheckinDateWeeklySeparate[count].data[i] += reservationHistoriesByCheckinDate[j].data[i];
-            reservationHistoriesByCheckinDateWeeklySeparate[count].suffixExtraInfo[i] += reservationHistoriesByCheckinDate[j].suffixExtraInfo[i];
+            if (parseInt(reservationHistoriesByCheckinDate[j].data[i]) > 0) {
+              reservationHistoriesByCheckinDateWeeklySeparate[count].new.data[i] += reservationHistoriesByCheckinDate[j].data[i];
+              reservationHistoriesByCheckinDateWeeklySeparate[count].new.suffixExtraInfo[i] += reservationHistoriesByCheckinDate[j].suffixExtraInfo[i];
+            } else {
+              reservationHistoriesByCheckinDateWeeklySeparate[count].cancel.data[i] += reservationHistoriesByCheckinDate[j].data[i];
+              reservationHistoriesByCheckinDateWeeklySeparate[count].cancel.suffixExtraInfo[i] += reservationHistoriesByCheckinDate[j].suffixExtraInfo[i];
+            }
+
             break;
           } else {
             count++;
@@ -444,9 +454,13 @@ class CrawlResultService {
         }
       }
     }
-    // console.log(reservationHistoriesByCheckinDateWeeklySeparate.filter(el => true));
+    const arr = reservationHistoriesByCheckinDateWeeklySeparate
+    .filter(el => true)
+    .map(el => ([el.new, el.cancel]));
 
-    return reservationHistoriesByCheckinDateWeeklySeparate.filter(el => true);
+    const ret = [].concat.apply([],arr);
+
+    return ret;
   }
 
 }
