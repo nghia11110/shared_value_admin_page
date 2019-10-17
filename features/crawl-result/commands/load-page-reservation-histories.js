@@ -25,7 +25,7 @@ async function loadPageReservationHistories(req, res) {
 
   try {
     if (start_date && end_date) {
-      if (conditions.chart_type === '' || conditions.chart_type === 'crawl-results-chart1') {
+      if (conditions.chart_type === 'crawl-results-chart1') {
         let currentDate = start_date;
         while (moment(currentDate, "YYYY-MM-DD") <= moment(end_date, "YYYY-MM-DD").add(1, 'days')) {
           conditions.crawl_created_at = currentDate;

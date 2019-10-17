@@ -147,7 +147,7 @@
               <!-- Chart -->
               <div id="crawl-results-chart" class="chart" style="margin-top: 30px; height: 850px;">
                 <!-- Chart wrapper -->
-                <% if (!query.chart_type || query.chart_type === 'crawl-results-chart1') { %>
+                <% if (query.chart_type === 'crawl-results-chart1') { %>
                   <canvas id="chart-groupableBars" class="chart-canvas" data-init='{"data":<%= JSON.stringify(reservationHistoriesData)%>,"options":{"title":{"text":"日付別予約状況"}}}' data-prefix="¥" data-suffix="部屋" data-is-show-zero-data-in-tooltip="<%=false%>"></canvas>
                 <% } %>
                 <% if (query.chart_type === 'crawl-results-chart2') { %>
@@ -156,7 +156,7 @@
                 <% if (query.chart_type === 'crawl-results-chart3') { %>
                   <canvas id="chart-groupableBars" class="chart-canvas" data-init='{"data":<%= JSON.stringify(reservationHistoriesByCheckinDatePlanSeparate)%>,"options":{"title":{"text":"プラン別予約状況"}}}' data-prefix="¥" data-suffix="部屋"></canvas>
                 <% } %>
-                <% if (query.chart_type === 'crawl-results-chart4') { %>
+                <% if (!query.chart_type || query.chart_type === 'crawl-results-chart4') { %>
                   <canvas id="chart-groupableBars" class="chart-canvas" data-init='{"data":<%= JSON.stringify(reservationHistoriesByCheckinDateWeeklySeparate)%>,"options":{"title":{"text":"ウイークリー別予約状況"}}}' data-prefix="¥" data-suffix="部屋"></canvas>
                 <% } %>
               </div>
